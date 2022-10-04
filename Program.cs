@@ -36,7 +36,7 @@ namespace Task
 
         static bool CheckTriangle(double a, double b, double c)
         {
-            if (Math.Max(a, Math.Max(b, c)) * 2 <= a + b + c)
+            if (Math.Max(a, Math.Max(b, c)) * 2 <= a + b + c && a >= 0 && b >= 0 && c >= 0) 
             {
                 return true;
             }
@@ -48,8 +48,7 @@ namespace Task
         static double Geron(double a, double b, double c)
         {
             double p = (a + b + c) / 2,ans;
-            ans = Math.Sqrt(p*(p-a)*(p-b)*(p-c));
-            return ans;
+            return Math.Sqrt(p * (p - a) * (p - b) * (p - c)); ;
         }
         static void exercise_1_2()
         {
@@ -97,11 +96,24 @@ namespace Task
             }
             return ans;
         }
+        static double[] SplitArrays(double[] A, double[] B)
+        {
+            double[] ans = new double[A.Length + B.Length];
+            for(int j = 0; j < A.Length; j++)
+            {
+                ans[j] = A[j];
+            }
+            for (int j = 0; j < B.Length; j++)
+            {
+                ans[j+ A.Length] = B[j];
+            }
+            return ans;
+        }
         static void exercise_2_6()
         {
             string error = "ошибка 2_6";
             int n = 7, m = 8;
-            double[] A = new double[n], B = new double[m];
+            double[] A = new double[n], B = new double[m], C = new double[n + m + 2];
 
             List<double> read = new List<double>();
 
@@ -134,7 +146,8 @@ namespace Task
                     maxB = i;
                 }
             }
-            Console.WriteLine(ArrayToString(RemoveIndex(A,maxA)) + ArrayToString(RemoveIndex(B, maxB)));
+            C = SplitArrays(RemoveIndex(A, maxA), RemoveIndex(B, maxB));
+            Console.WriteLine(ArrayToString(C));
 
         }
         
@@ -491,13 +504,13 @@ namespace Task
             exercise_1_1();
             #endregion*/
 
-            /*#region exercise 1_2
+            #region exercise 1_2
             exercise_1_2();
-            #endregion*/
+            #endregion
 
-            /*#region exercise 2_6
+            #region exercise 2_6
             exercise_2_6();
-            #endregion*/
+            #endregion
 
             /*#region exercise 2_10
             exercise_2_10();
