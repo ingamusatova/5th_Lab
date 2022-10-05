@@ -1,125 +1,731 @@
 ﻿using System;
 
-namespace _5th_Lab
+namespace Task
 {
+
     class Program
     {
-        static int PolymorphMethod() { return 0; }
-        static int PolymorphMethod(int number) { return number; }
-        static int PolymorphMethod(ref int number) { return number; }   // either with ,odificator ref - you send a link to your variable
-    //    static int PolymorphMethod(out int number) { return number; } // or out - you get additional variale (use if you need >1 variable to return. But tuple is better)
-        static int PolymorphMethod(double anotherNumber) { return (int)anotherNumber; }
-        static int PolymorphMethod<T>(T yourType) { return yourType.GetHashCode(); } // general type
-
-        //     static T PolymorphMethod<T>(T yourType) { return number; } - cannot create since there is method with same input params
-        static double PolymorphMethod(int count, double[] array) 
+        
+        static int Fact(int n)
         {
-            var sum = 0.0;
-            foreach(double value in array)
+            if(n<0)
             {
-                sum += value;
+                Console.WriteLine("не верное значение");
+                return 1;
             }
-            return sum + count;
+            int ans = 1;
+            for (int i = 2; i <= n; i++)
+            {
+                ans *= i;
+            }
+            return ans;
+        }
+        static int Сombination(int n, int k)
+        {
+            int ans = 0;
+            ans = Fact(n)/(Fact(k)*Fact(n-k));
+            return ans;
+        }
+        static void exercise_1_1()
+        {
+            //string error = "ошибка 1_1";
+            InputOutput.Write(Сombination(8, 5));
+            InputOutput.Write(Сombination(10, 5));
+            InputOutput.Write(Сombination(11, 5));
         }
 
-        static bool Compare(int left, int right) => left > right; // => it is lambda operator the same as { return }
-        static bool Compare(double left, double right) => left > right;
+        static bool CheckTriangle(double a, double b, double c)
+        {
+            if (Math.Max(a, Math.Max(b, c)) * 2 <= a + b + c && a >= 0 && b >= 0 && c >= 0) 
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        static double Geron(double a, double b, double c)
+        {
+            double p = (a + b + c) / 2,ans;
+            return Math.Sqrt(p * (p - a) * (p - b) * (p - c)); ;
+        }
+        static void exercise_1_2()
+        {
+            string error = "ошибка 1_2";
+            double a1, a2, b1, b2, c1, c2;
+            Console.WriteLine("ведите a1 b1 c1");
+            List<double> read = new List<double>();
+
+            if (!InputOutput.CheckSplitRead(out read, error, 3))
+            {
+                return;
+            }
+            (a1, b1, c1) = (read[0], read[1], read[2]);
+            if (!CheckTriangle(a1, b1, c1)){
+                Console.WriteLine("невозможный треугольник");
+                return;
+            }
+            Console.WriteLine("ведите a2 b2 c2");
+            if (!InputOutput.CheckSplitRead(out read, error, 3))
+            {
+                return;
+            }
+            (a2, b2, c2) = (read[0], read[1], read[2]);
+            if (!CheckTriangle(a2, b2, c2)){
+                Console.WriteLine("невозможный треугольник");
+                return;
+            }
+
+            double ans = Math.Max(Geron(a1,b1, c1), Geron(a2, b2, c2));
+            InputOutput.Write(ans);
+        }
+
+        static double[] RemoveIndex(double[] x,int ind)
+        {
+            double[] ans = new double[x.Length - 1];
+            int shi = 0;
+            for(int i = 0; i < x.Length; i++)
+            {
+                if (i == ind) 
+                {
+                    continue;
+                }
+                ans[shi] = x[i];
+                shi++;
+            }
+            return ans;
+        }
+        static double[] SplitArrays(double[] A, double[] B)
+        {
+            double[] ans = new double[A.Length + B.Length];
+            for(int j = 0; j < A.Length; j++)
+            {
+                ans[j] = A[j];
+            }
+            for (int j = 0; j < B.Length; j++)
+            {
+                ans[j+ A.Length] = B[j];
+            }
+            return ans;
+        }
+        static void exercise_2_6()
+        {
+            string error = "ошибка 2_6";
+            int n = 7, m = 8;
+            double[] A = new double[n], B = new double[m], C = new double[n + m + 2];
+
+            List<double> read = new List<double>();
+
+            Console.WriteLine($"ведите {n} элементов");
+            if (!InputOutput.CheckSplitRead(out read, error, n))
+            {
+                return;
+            }
+
+            int maxA = 0;
+            for (int i = 0; i < n; ++i) 
+            {
+                A[i] = read[i];
+                if (A[maxA] < A[i])
+                {
+                    maxA = i;
+                }
+            }
+            Console.WriteLine($"ведите {m} элементов");
+            if (!InputOutput.CheckSplitRead(out read, error, m))
+            {
+                return;
+            }
+            int maxB = 0;
+            for (int i = 0; i < m; ++i)
+            {
+                B[i] = read[i];
+                if (B[maxA] < B[i])
+                {
+                    maxB = i;
+                }
+            }
+            C = SplitArrays(RemoveIndex(A, maxA), RemoveIndex(B, maxB));
+            Console.WriteLine(ArrayToString(C));
+
+        }
+        
+        static double[,] RemoveСolumn(double[,] A,int ind)
+        {
+            int n = A.GetLength(0), m = A.GetLength(1);
+            double[,] ans = new double[n, m - 1];
+
+            for(int i = 0; i < n; ++i)
+            {
+                int shj = 0;
+                for (int j = 0; j < m; ++j)
+                {
+                    if (j == ind)
+                    {
+                        continue;
+                    }
+
+                    ans[i, shj] = A[i, j];
+                    shj++;
+                }
+            }
+            return ans;
+            
+        }
+
+        static void exercise_2_10()
+        {
+            string error = "ошибка 2_10";
+            int n = 7;
+            Console.WriteLine("ведите n(n >= 0)");
+            if (!InputOutput.CheckRead(out n, error))
+            {
+                return;
+            }
+            if (n < 0)
+            {
+                Console.WriteLine(error);
+                return;
+            }
+            Console.WriteLine($"ведите {n} строк {n} столбцов");
+            double[,] A = new double[n,n];
+            int minI = 0, maxI = 0, minJ = 0, maxJ = 0;
+            for (int i = 0; i < n; ++i)
+            {
+                List<double> read = new List<double>();
+                if (!InputOutput.CheckSplitRead(out read, error, n))
+                {
+                    return;
+                }
+                for (int j = 0; j < n; ++j)
+                {
+                    double a = read[j];
+                    A[i, j] = a;
+                    if (j > i && (A[minI, minJ] > a || (minI == 0 && minJ == 0)))
+                    {
+                        minJ = j;
+                        minI = i;
+                    }
+                    if (j < i && (A[maxI, maxJ] < a || (maxI == 0 && maxJ == 0)))
+                    {
+                        maxJ = j;
+                        maxI = i;
+                    }
+                }
+            }
+
+            if(minJ > maxJ)
+            {
+                (minJ, maxJ) = (maxJ, minJ);
+            }
+            string[] S = ArrayToString(RemoveСolumn(RemoveСolumn(A, minJ), maxJ -1));
+
+            Console.WriteLine("ans :");
+            foreach(var s in S)
+            {
+                Console.WriteLine(s);
+            }
+
+        }
+
+        static void Task_2_23_UpdateArray(double[,] A)
+        {
+            PriorityQueue<(int, int), double> Q = new PriorityQueue<(int, int), double>();
+            int n = A.GetLength(0);
+            int m = A.GetLength(1);
+            for (int i = 0; i < n; ++i) 
+            {
+                for (int j = 0; j < m; ++j)
+                {
+                    Q.Enqueue((i, j), -A[i, j]);
+                }
+            }
+            int sh = 0;
+            while(Q.Count > 0 && sh < 5)
+            {
+                (int x, int y) = Q.Peek();
+                A[x, y] *= 2;
+                sh++;
+                Q.Dequeue();
+            }
+            while (Q.Count > 0)
+            {
+                (int x, int y) = Q.Peek();
+                A[x, y] /= 2;
+                Q.Dequeue();
+            }
+        }
+        static void exercise_2_23()
+        {
+            string error = "ошибка 2_23";
+            int n ,m;
+            Console.WriteLine("ведите n(n >= 0)");
+            if (!InputOutput.CheckRead(out n, error))
+            {
+                return;
+            }
+            if (n < 0)
+            {
+                Console.WriteLine(error);
+                return;
+            }
+            Console.WriteLine($"ведите {n} строк {n} столбцов");
+            double[,] A = new double[n, n];
+            for (int i = 0; i < n; ++i)
+            {
+                List<double> read = new List<double>();
+                if (!InputOutput.CheckSplitRead(out read, error, n))
+                {
+                    return;
+                }
+                for (int j = 0; j < n; ++j)
+                {
+                    double a = read[j];
+                    A[i, j] = a;
+                }
+            }
+
+            Console.WriteLine("ведите m(m >= 0)");
+            if (!InputOutput.CheckRead(out m, error))
+            {
+                return;
+            }
+            if (m < 0)
+            {
+                Console.WriteLine(error);
+                return;
+            }
+            Console.WriteLine($"ведите {m} строк {m} столбцов");
+            double[,] B = new double[m, m];
+            for (int i = 0; i < m; ++i)
+            {
+                List<double> read = new List<double>();
+                if (!InputOutput.CheckSplitRead(out read, error, m))
+                {
+                    return;
+                }
+                for (int j = 0; j < m; ++j)
+                {
+                    double a = read[j];
+                    B[i, j] = a;
+                }
+            }
+
+            Task_2_23_UpdateArray(A);
+            Task_2_23_UpdateArray(B);
+
+            string[] S;
+            S = ArrayToString(A);
+            Console.WriteLine("ans :");
+            foreach (var s in S)
+            {
+                Console.WriteLine(s);
+            }
+
+            S = ArrayToString(B);
+            Console.WriteLine();
+            foreach (var s in S)
+            {
+                Console.WriteLine(s);
+            }
+
+        }
+
+        delegate double Term(double x);
+        delegate double Check(double x);
+        const double eps = 0.000001;
+        static double Term_1(double x)
+        {
+            double ans = 0;
+            double F = 1;
+            for(int i = 1;i == i; ++i)
+            {
+                F *= i;
+                double term = Math.Cos(i * x) / F;
+                ans += term;
+                if (term <= eps) break;
+            }
+            return ans;
+        }
+        static double Check_1(double x)
+        {
+            double ans = Math.Exp(Math.Cos(x)) * Math.Cos(Math.Sin(x));
+            return ans;
+        }
+        static double Term_2(double x)
+        {
+            double ans = 0;
+            double f = -1;
+            for (int i = 1; i == i; ++i)
+            {
+              
+                double term = Math.Cos(i * x) / (i*i) * f;
+                f *= -1;
+                ans += term;
+                if (term <= eps) break;
+            }
+            return ans;
+        }
+        static double Check_2(double x)
+        {
+            double Pi = Math.PI;
+            double ans = ((x * x) - Pi * Pi / 3) / 4;
+            return ans;
+        }
+        static void Task_3_1(double a, double b, double h, Check check, Term term,double start = 0)
+        {
+            for (double x = a; x <= b; x += h)
+            {
+                double y = check(x);
+                double sum = term(x) + start;
+
+                Console.WriteLine($"y = {y} sum = {sum} ");
+            }
+        }
+        static void exercise_3_1()
+        {
+            double Pi = Math.PI;
+            Task_3_1(0.1, 1, 0.1, Check_1, Term_1, 1);
+            Console.WriteLine();
+            Task_3_1(Pi / 5, Pi, Pi / 25, Check_2, Term_2, 0);
+        }
+
+        delegate void Comp(double x, double y, out double X, out double Y);
+        static void Compare1(double x, double y, out double X, out double Y)
+        {
+            if (x <= y)
+            {
+                X = x;
+                Y = y;
+            }
+            else
+            {
+                X = y;
+                Y = x;
+            }
+        }
+        static void Compare2(double x, double y, out double X, out double Y)
+        {
+            if (x >= y)
+            {
+                X = x;
+                Y = y;
+            }
+            else
+            {
+                X = y;
+                Y = x;
+            }
+        }
+       
+        static void Sort(double[,] A, Comp comp ,int nom)
+        {
+            for(int i = 0; i < A.GetLength(1); i++)
+            {
+                for(int j = 0; j < A.GetLength(1); j++)
+                {
+                    comp(A[nom, i], A[nom, j], out A[nom, i], out A[nom, j]);
+                }
+            }
+        }
+        static void Task_3_2(double[,] A, int n, int m)
+        {
+            for(int i = 0; i < n; i++)
+            {
+                Comp comp = Compare1;
+                if (i % 2 == 0)
+                {
+                    comp = Compare2;
+                }
+                Sort(A, comp, i);
+            }
+        }
+
+        static void exercise_3_2()
+        {
+            string error = "ошибка 3_2";
+            int n, m;
+            Console.WriteLine("ведите n(n >= 0)");
+            if (!InputOutput.CheckRead(out n, error))
+            {
+                return;
+            }
+            if (n < 0)
+            {
+                Console.WriteLine(error);
+                return;
+            }
+
+            Console.WriteLine("ведите m(m >= 0)");
+            if (!InputOutput.CheckRead(out m, error))
+            {
+                return;
+            }
+            if (m < 0)
+            {
+                Console.WriteLine(error);
+                return;
+            }
+
+            double[,] A = new double[n,m];
+            Console.WriteLine($"ведите {n} строк {m} столбца ");
+
+            for (int i = 0; i < n; ++i)
+            {
+                if (!InputOutput.CheckSplitRead(out List<double> L, error, m))
+                {
+                    return;
+                }
+                for (int j = 0; j < m; ++j)
+                {
+
+                    double a = L[j];
+
+                    A[i,j] = a;
+                }
+            }
+
+            Task_3_2(A,n,m);
+
+            string[] S;
+            S = ArrayToString(A);
+            Console.WriteLine("ans : ");
+
+            foreach (string a in S)
+            {
+                Console.WriteLine(a);
+            }
+        }
 
         static void Main(string[] args)
         {
-            #region OOP principles
+            /*#region exercise 1_1
+            exercise_1_1();
+            #endregion*/
 
-            /* You operation mith moduls. Modul can work with data he get or keep inside. 
-             * Moduls of higher lvl hould not know about lower ones.
-             * So your code will be safe and logical.
-             * 
-             * 
-             * What are you need?
-             * 
-             * Abstraction - noone shuld know HOW another modul (class / method) works.
-             * You have to provide input value and get the output.
-             * User interface shouldn't affect on the system's work.
-             * Also realization should not change the pattern (abstract scheme)
-             * 
-             * Encapsulation - do not provide more than asked.
-             * Another class or method shouldn't know about any field or method in your object (class, structure and so on) except you provide to it.
-             * Group your data in a single object. One object (entity) should know and do only that things that incuded or were gotten outside.
-             * 
-             * Inheritance - Inheritance is the method of acquiring features of the existing class into the new class with additional properties or methods.
-             * Also it is allow us to reach better incapsulation (up-cast).
-             * Inheritance can be from 1 to many (classes / interfaces) or from many to one (interfaces only). 
-             * So we can create an object (entity) with such properties we need and agregate in with another objects that have the same property.
-             * 
-             * Polymorphism - the most essential concept which allow any object or method has more than one name associated with it. And it allow your code be more flexible.
-             * Difference can be in the type it use, parameters it get.
-             * 
-             * In that lab you will have an acquaintance with polymorphism
-             * 
-             */
-
-            Console.WriteLine(PolymorphMethod());
-
-            Console.WriteLine(PolymorphMethod(10));
-
-            Console.WriteLine(PolymorphMethod(2.56));
-
-            Console.WriteLine(PolymorphMethod("Abracadabra")); // general type will be called, because no another method that suit to this type
-
-            Console.WriteLine(PolymorphMethod(5, new []{ 0.1223, 1.2, 8.9, -1.5 }));
-
+            #region exercise 1_2
+            exercise_1_2();
             #endregion
 
-            #region DRY - don't repeat yourself
-
-            /* Very simple advice :)
-             * You already did it, using cycle, for example instead maing calculation on each line
-             * 
-             * If you see that in your program is repeat, make a separate method and call it when it needs.
-             */
-
-            int numerator = 1, denominator = 1;
-
-
-            double sum = 0, average = 0;
-
-            if (numerator > denominator)
-            {
-                Console.WriteLine(true);
-            }    
-            else
-            {
-                Console.WriteLine(false);
-            }
-
-            if (sum > average)
-            {
-                Console.WriteLine(true);
-            }
-            else
-            {
-                Console.WriteLine(false);
-            }
-
-            // Carry out the logic (DRY + Incapsilation + Polymorphism in such small example)) - look in the head of program
-            Compare(numerator, denominator);
-            Compare(sum, average);
-
+            #region exercise 2_6
+            exercise_2_6();
             #endregion
 
-            #region SOLID principles
+            /*#region exercise 2_10
+            exercise_2_10();
+            #endregion*/
 
-            /* single responsibility, open–closed, Liskov substitution, interface segregation и dependency inversion
-             * 
-             * S - Each class should keep everithing he need for work inside itself.
-             * O - Your program should be open for extentions but closed for changes. It is very difficlt to reach it, actually.
-             * L - Heirs should be able to use father's metods.
-             * I - Separate your program to interfaces and provide only what need in particular cases.
-             * D - One object shouldn't to talk another at the same level what to do. Use actions instead.
-             */
+            /*#region exercise 2_23
+            exercise_2_23();
+            #endregion*/
 
-            // We will work with SOLID closely at 7-8 & 10th labs.
+            /*#region exercise 3_1
+            exercise_3_1();
+            #endregion*/
 
-            #endregion
+            /*#region exercise 3_2
+            exercise_3_2();
+            #endregion*/
+
+        }
+
+        static string ListToString(List<double> L)
+        {
+            string s = "";
+            foreach (double v in L)
+            {
+                s += v.ToString();
+                s += " ";
+            }
+            return s;
+        }
+        static string ArrayToString(double[] L)
+        {
+            string s = "";
+            foreach (double v in L)
+            {
+                s += v.ToString();
+                s += " ";
+            }
+            return s;
+        }
+        static string[] ArrayToString(double[][] L ,int n = 0)
+        {
+            string[] S = new string[n];
+            int sh = 0;
+            foreach (double[] v in L)
+            {
+                S[sh] = ArrayToString(v);
+                sh++;
+            }
+            return S;
+        }
+        static string[] ArrayToString(double[,] L)
+        {
+            int n = L.GetLength(0), m = L.GetLength(1);
+            string[] S = new string[n];
+            for (int i = 0; i < n; i++)
+            {
+                string s = "";
+                for (int j = 0; j < m; j++)
+                {
+                    s += L[i, j].ToString();
+                    s += " ";
+                }
+                S[i] = s;
+            }
+            return S;
+        }
+        static int Compare((double, int) x, (double, int) y)
+        {
+            if (x.Item1 < y.Item1)
+            {
+                return 1;
+            }
+
+            if (x.Item1 > y.Item1)
+            {
+                return -1;
+            }
+
+            return 0;
         }
     }
+
+    static class InputOutput
+    {
+        const string EndString = "";
+        static public void Write(int ans)
+        {
+            Console.WriteLine("ans : " + ans.ToString());
+        }
+        static public void Write(double ans)
+        {
+            Console.WriteLine("ans : " + ans.ToString());
+        }
+        static public bool Read(out double x)
+        {
+            string s;
+            s = Console.ReadLine();
+
+            if (!double.TryParse(s, out x))
+            {
+                return false;
+            }
+            return true;
+        }
+        static public bool Read(out int x)
+        {
+            string s;
+            s = Console.ReadLine();
+
+            if (!int.TryParse(s, out x))
+            {
+                return false;
+            }
+            return true;
+        }
+        static public bool Read(out int x, out bool fl)
+        {
+            fl = false;
+            string s;
+            s = Console.ReadLine();
+            if (s == EndString) fl = true;
+            if (!int.TryParse(s, out x))
+            {
+                return fl;
+            }
+            return true;
+        }
+        static public bool Read(out double x, out bool fl)
+        {
+            fl = false;
+            string s;
+            s = Console.ReadLine();
+            if (s == EndString) fl = true;
+            if (!double.TryParse(s, out x))
+            {
+                return fl;
+            }
+            return true;
+        }
+
+        static public bool CheckRead(out double x, string Erorr = "ошибка", string? ans = null)
+        {
+            bool fl;
+            if (!Read(out x, out fl))
+            {
+                Console.WriteLine(Erorr);
+                return false;
+            }
+
+            if (fl)
+            {
+                if (ans != null)
+                {
+                    Console.WriteLine(ans);
+                }
+                return false;
+            }
+            return true;
+        }
+        static public bool CheckRead(out int x, string Erorr = "ошибка", string? ans = null)
+        {
+            bool fl;
+            if (!Read(out x, out fl))
+            {
+                Console.WriteLine(Erorr);
+                return false;
+            }
+
+            if (fl)
+            {
+                if (ans != null)
+                {
+                    Console.WriteLine(ans);
+                }
+                return false;
+            }
+            return true;
+        }
+        static public bool CheckSplitRead(out List<double> L, string Erorr = "ошибка", int? kol = null, string? ans = null)
+        {
+            List<double> l = new List<double>();
+            L = l;
+            string? s = Console.ReadLine();
+            if (s == EndString)
+            {
+                if (ans != null)
+                {
+                    Console.WriteLine(ans);
+                }
+                return false;
+            }
+            if (s == null)
+            {
+                Console.WriteLine(Erorr);
+                return false;
+            }
+            string[] S = s.Split(" ");
+            foreach (string st in S)
+            {
+                double x;
+                if (st == "") continue;
+                if (!double.TryParse(st, out x))
+                {
+                    Console.WriteLine(Erorr);
+                    return false;
+                }
+                L.Add(x);
+            }
+            if (kol != null && L.Count() != kol)
+            {
+                Console.WriteLine("не верное количество элементов в строке");
+                return false;
+            }
+            return true;
+        }
+    }
+
 }
