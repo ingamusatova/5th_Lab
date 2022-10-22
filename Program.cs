@@ -480,9 +480,9 @@ namespace _1st_Lab
                     }
                 }
 
-                c = merge_arrays(remove_idx(a, idx_a), remove_idx(b, idx_b));
+                a = merge_arrays(remove_idx(a, idx_a), remove_idx(b, idx_b));
 
-                Console.WriteLine(array2string(c));
+                Console.WriteLine(array2string(a));
             }
             #endregion
 
@@ -529,13 +529,13 @@ namespace _1st_Lab
                         j++;
                         a[i, j] = value;
 
-                        if (j < i && (a[max_i, max_j] < value || (max_i == 0 && max_j == 0)))
+                        if (j <= i && (a[max_i, max_j] < value || (max_i == 0 && max_j == 0)))
                         {
                             max_j = j;
                             max_i = i;
                         }
 
-                        if (j > i && (a[min_i, min_j] > value || (min_i == 0 && min_j == 0)))
+                        if (j >= i && (a[min_i, min_j] > value || (min_i == 0 && min_j == 0)))
                         {
                             min_j = j;
                             min_i = i;
