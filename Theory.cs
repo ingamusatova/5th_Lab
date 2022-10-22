@@ -120,6 +120,13 @@ namespace _5th_Lab
             // We will work with SOLID closely at 7-8 & 10th labs.
 
             #endregion
+            
+            #refion Semantics
+            /* Semantics is a linguistic concept separate from the concept of syntax, which is also often related to attributes of computer programming languages.
+             * In c# for methods (and delegates) it is type of ouptut parameter, name of method and amount and types of parameters.            *
+             */
+             
+            #endregion
         }
     }
 }
