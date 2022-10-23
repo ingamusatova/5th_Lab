@@ -6,7 +6,7 @@ namespace _5th_Lab
     {
         static int PolymorphMethod() { return 0; }
         static int PolymorphMethod(int number) { return number; }
-        static int PolymorphMethod(ref int number) { return number; }   // either with ,odificator ref - you send a link to your variable
+        static int PolymorphMethod(ref int number) { return number; }   // either with modificator ref - you send a link to your variable
     //    static int PolymorphMethod(out int number) { return number; } // or out - you get additional variale (use if you need >1 variable to return. But tuple is better)
         static int PolymorphMethod(double anotherNumber) { return (int)anotherNumber; }
         static int PolymorphMethod<T>(T yourType) { return yourType.GetHashCode(); } // general type
