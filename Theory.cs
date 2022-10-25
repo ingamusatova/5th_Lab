@@ -21,21 +21,21 @@ namespace _5_Lab
             Console.WriteLine("1 Level:");
             Console.WriteLine("1 Task:");
             n = 8;
-            Fact(n, out Fn);
-            Fact(k, out Fk);
-            Fact((n - k), out Fnk);
+            Fn = Fact(n);
+            Fk = Fact(k);
+            Fnk = Fact(n - k);
             Combinations(Fn, Fk, Fnk, out C);
             Console.WriteLine($"Combinations for {n} people:");
             Console.WriteLine(C);
             n = 10;
-            Fact(n, out Fn);
-            Fact((n - k), out Fnk);
+            Fn = Fact(n);
+            Fnk = Fact(n - k);
             Combinations(Fn, Fk, Fnk, out C);
             Console.WriteLine($"Combinations for {n} people:");
             Console.WriteLine(C);
             n = 11;
-            Fact(n, out Fn);
-            Fact((n - k), out Fnk);
+            Fn = Fact(n);
+            Fnk = Fact(n - k);
             Combinations(Fn, Fk, Fnk, out C);
             Console.WriteLine($"Combinations for {n} people:");
             Console.WriteLine(C);
@@ -151,7 +151,7 @@ namespace _5_Lab
                             }
                         }
                     }
-                    MatrixTransform(A, out A);
+                    Matrix5Maximums(A, out A);
                     for (int i = 0; i < n; i++)
                     {
                         for (int j = 0; j < m; j++)
@@ -180,7 +180,7 @@ namespace _5_Lab
                             }
                         }
                     }
-                    MatrixTransform(A, out A);
+                    Matrix5Maximums(A, out A);
                     for (int i = 0; i < n; i++)
                     {
                         for (int j = 0; j < m; j++)
@@ -201,14 +201,14 @@ namespace _5_Lab
             Console.WriteLine("First sum:");
             for (double i = 0.1; i <= 1.0; i += 0.1)
             {
-                S = sw2(f1, i);
+                S = ElementsCycle(TaylorsRow1, i);
                 Console.WriteLine($"x: {i}, y: {Math.Round(Math.Pow(Math.E, Math.Cos(i)) * Math.Cos(Math.Sin(i)), 5)}, s: {Math.Round(S + 1, 5)}");
             }
 
             Console.WriteLine("Second sum");
             for (double i = Math.PI / 5; i <= Math.PI; i += Math.PI / 25)
             {
-                S = sw2(f2, i);
+                S = ElementsCycle(TaylorsRow2, i);
                 Console.WriteLine($"x: {i}, y: {Math.Round((i * i - Math.PI * Math.PI / 3) / 4, 5)}, s: {Math.Round(S, 5)}");
             }
         }
@@ -217,7 +217,7 @@ namespace _5_Lab
             Console.WriteLine("2 Task:");
             double[,] A = new double[4, 4]
                 { { 56, 23, 142, 5 }, { 764, -54, 63, 123 }, { -564, 1435, 92, 4 }, { 90, 78, 5762, -56 } };
-            MatrixWork(A, out A);
+            MatrixFindingRows(A, out A);
             Console.WriteLine("Matix:");
             for (int i = 0; i < 4; i++)
             {
@@ -273,7 +273,6 @@ namespace _5_Lab
             }
         }
         delegate int MaxFindMatrix(double[,] x);
-
         static int MaxFind1(double[,] x)
         {
             double NMax = Double.MinValue;
@@ -312,19 +311,19 @@ namespace _5_Lab
         {
             return f(x);
         }
-        delegate double fi(double i, int t);
-        static double f1(double i, int t)
+        delegate double TaylorsRow(double i, int t);
+        static double TaylorsRow1(double i, int t)
         {
-            Fact(t, out Fk);
+            Fk = Fact(t);
             return Math.Cos(t * i) / Fk;
         }
 
-        static double f2(double i, int t)
+        static double TaylorsRow2(double i, int t)
         {
             return Math.Pow(-1, t) * Math.Cos(t * i) / (t * t);
         }
 
-        static double sw2(fi f, double x)
+        static double ElementsCycle(TaylorsRow f, double x)
         {
             double k = 1, s = 0;
             int i = 1;
@@ -337,23 +336,23 @@ namespace _5_Lab
 
             return s;
         }
-        delegate double[] fx(double[] x);
-        static double[] f1(double[] x)
+        delegate double[] SortingRows(double[] x);
+        static double[] SortingRowsEven(double[] x)
         {
             Array.Sort(x);
             return x;
         }
-        static double[] f2(double[] x)
+        static double[] SortingRowsOdd(double[] x)
         {
             Array.Sort(x);
             Array.Reverse(x);
             return x;
         }
-        static double[] sw(fx f, double[] Array)
+        static double[] DelegateCall(SortingRows f, double[] Array)
         {
             return f(Array);
         }
-        static void MatrixWork(double[,] Matrix1, out double[,] Matrix2)
+        static void MatrixFindingRows(double[,] Matrix1, out double[,] Matrix2)
         {
             Matrix2 = new double[Matrix1.GetLength(0), Matrix1.GetLength(1)];
             double[] Array = new double[Matrix1.GetLength(1)];
@@ -365,9 +364,9 @@ namespace _5_Lab
                 }
                 if (i % 2 == 0)
                 {
-                    Array = sw(f1, Array);
+                    Array = DelegateCall(SortingRowsEven, Array);
                 }
-                else Array = sw(f2, Array);
+                else Array = DelegateCall(SortingRowsOdd, Array);
 
                 for (int t = 0; t < Matrix1.GetLength(1); t++)
                 {
@@ -375,7 +374,7 @@ namespace _5_Lab
                 }
             }
         }
-        static void MatrixTransform(double[,] Matrix1, out double[,] Matrix2)
+        static void Matrix5Maximums(double[,] Matrix1, out double[,] Matrix2)
         {
             double NMax = Double.MinValue;
             k = 0;
@@ -446,13 +445,14 @@ namespace _5_Lab
             C = 0;
             C = n / (k * nk);
         }
-        static void Fact(int z, out double fz)
+        static double Fact(int z)
         {
-            fz = 1;
+            double fz = 1;
             for (int i = 1; i <= z; i++)
             {
                 fz *= i;
             }
+            return fz;
         }
         static void Square(double a1, double b1, double c1, out double s)
         {
