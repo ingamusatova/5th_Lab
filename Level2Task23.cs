@@ -4,23 +4,21 @@ using System.Windows.Markup;
 
 class HelloWorld
 {
-    static void maxim(List<List<int>> matrix, out int k, out int l)
+    static List<int> maxim(List<List<int>> matrix, List<int>maxi)
     {
         int max = matrix[0][0];
-        k = 0;
-        l = 0;
         for (int i = 0; i < matrix.Count; i++)
         {
             for (int j = 0; j < matrix[i].Count; j++)
             {
-                if (matrix[i][j] > max)
+                if (matrix[i][j] > max && maxi.Contains(matrix[i][j]) == false)
                 {
                     max = matrix[i][j];
-                    k = i;
-                    l = j;
                 }
             }
         }
+        maxi.Add(max);
+        return maxi;
     }
     static void vvodmatrici(int n, int m, out List<List<int>> matrix)
     {
@@ -54,32 +52,17 @@ class HelloWorld
             Console.WriteLine();
         }
     }
-    static void preobr1(List<List<int>> matrix, List<List<int>> koordinati, int h, out List<List<int>> koordinati1)
+    static List<List<int>> preobr1(List<List<int>> matrix, List<int> maxi)
     {
-        int k;
-        int l;
-        maxim(matrix, out k, out l);
-        koordinati.Add(new List<int>());
-        koordinati[h].Add(k);
-        koordinati[h].Add(l);
-        koordinati[h].Add(matrix[k][l]);
-        matrix[k][l] = matrix[0].Min() - 1;
-        koordinati1 = koordinati;
-    }
-    static void preobr2(List<List<int>> matrix, List<List<int>> koordinati, out List<List<int>> matrix1)
-    {
-        for (int i = 0; i < matrix.Count; i++)
+        for (int i=0; i<matrix.Count; i++)
         {
-            for (int j = 0; j < matrix[0].Count; j++)
+            for(int j=0; j<matrix[0].Count(); j++)
             {
-                matrix[i][j] = matrix[i][j] / 2;
-                for (int t = 0; t < 5; t++)
-                {
-                    if (i == koordinati[t][0] && j == koordinati[t][1]) { matrix[i][j] = koordinati[t][2] * 2; }
-                }
+                if (maxi.Contains(matrix[i][j]) == true) matrix[i][j] = matrix[i][j] * 2;
+                else matrix[i][j] = matrix[i][j] / 2;
             }
         }
-        matrix1 = matrix;
+        return matrix;
     }
     static int Main()
     {
@@ -98,20 +81,18 @@ class HelloWorld
         Console.WriteLine("Enter second matrix: ");
         vvodmatrici(n2, m2, out matrix2);
 
-        List<List<int>> koordinati1 = new List<List<int>>();
-        List<List<int>> koordinati2 = new List<List<int>>();
-        for (int i = 0; i < 5; i++)
+        List<int> maxi1 = new List<int>();
+        List<int> maxi2 = new List<int>();
+
+
+        for (int i=0; i<5; i++)
         {
-            preobr1(matrix1, koordinati1, i, out koordinati1);
-        }
-        for (int i = 0; i < 5; i++)
-        {
-            preobr1(matrix2, koordinati2, i, out koordinati2);
+            maxim(matrix1, maxi1);
+            maxim(matrix2, maxi2);
         }
 
-        preobr2(matrix1, koordinati1, out matrix1);
-        preobr2(matrix2, koordinati2, out matrix2);
-
+        matrix1 = preobr1(matrix1, maxi1);
+        matrix2 = preobr1(matrix2, maxi2);
 
         Console.WriteLine("New first matrix: ");
         vivodmatrici(matrix1);
