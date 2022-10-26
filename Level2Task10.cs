@@ -4,18 +4,23 @@ using System.Windows.Markup;
 
 class HelloWorld
 {
-    static void rem(List<List<int>> matrix, int k, out List<List<int>> matrix1)
+    static List<List<int>> rem(List<List<int>> matrix, int k)
     {
-        for (int i=0; i < matrix.Count; i++)
+        for (int i = 0; i < matrix.Count; i++)
         {
             matrix[i].RemoveAt(k);
         }
-        matrix1 = matrix;
+        return matrix;
     }
     static int Main()
     {
         Console.WriteLine("Enter the lenght of side of matrix: ");
         int n = Convert.ToInt32(Console.ReadLine());
+        if (n == 1)
+        {
+            Console.WriteLine("In a one-element matrix, there are no elements below the main diagonal.");
+            return 0;
+        }
         List<List<int>> matrix = new List<List<int>>();
         var A = new List<int>();
         var B = new List<int>();
@@ -36,13 +41,13 @@ class HelloWorld
                 matrix[i].Add(Convert.ToInt32(line[j]));
             }
         }
-        double max = matrix[0][1];
-        int k = 1;
-        double min = matrix[1][0];
+        double max = matrix[0][0];
+        int k = 0;
+        double min = matrix[0][0];
         int v = 0;
-        for (int i=0; i < matrix.Count; i++)
+        for (int i = 0; i < matrix.Count; i++)
         {
-            for (int j=i+1; j < matrix[i].Count; j++)
+            for (int j = i + 1; j < matrix[i].Count; j++)
             {
                 if (matrix[i][j] > max) { max = matrix[i][j]; k = j; }
             }
@@ -54,8 +59,8 @@ class HelloWorld
                 if (matrix[i][j] < min) { min = matrix[i][j]; v = j; }
             }
         }
-        rem(matrix, k, out matrix);
-        rem(matrix, v, out matrix);
+        matrix = rem(matrix, k);
+        matrix = rem(matrix, v);
         Console.WriteLine("New matrix: ");
         for (int i = 0; i < matrix.Count(); i++)
         {
