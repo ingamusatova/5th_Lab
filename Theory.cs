@@ -48,17 +48,37 @@ namespace _5_Lab
             if (double.TryParse(Console.ReadLine(), out a) && double.TryParse(Console.ReadLine(), out b) &&
                 double.TryParse(Console.ReadLine(), out c))
             {
-                Square(a, b, c, out s1);
+                if (TriangleCheck(a, b, c))
+                {
+                    Square(a, b, c, out s1);
+                }
+                else
+                {
+                    s1 = 0;
+                    Console.WriteLine("Triangle doesnt exist");
+                }
             }
             Console.WriteLine("Enter 3 sides of 2 triangle:");
             if (double.TryParse(Console.ReadLine(), out a) && double.TryParse(Console.ReadLine(), out b) &&
                 double.TryParse(Console.ReadLine(), out c))
             {
-                Square(a, b, c, out s2);
+                if (TriangleCheck(a, b, c))
+                {
+                    Square(a, b, c, out s2);
+                }
+                else
+                {
+                    s2 = 0;
+                    Console.WriteLine("Triangle doesnt exist");
+                }
             }
-            if (s1 > s2) Console.WriteLine("Area of the 1 triangle is larger");
-            else if (s2 > s1) Console.WriteLine("Area of the 1 triangle is larger");
-            else Console.WriteLine("Areas are equal");
+
+            if (s1 != 0 && s2 != 0)
+            {
+                if (s1 > s2) Console.WriteLine("Area of the 1 triangle is larger");
+                else if (s2 > s1) Console.WriteLine("Area of the 1 triangle is larger");
+                else Console.WriteLine("Areas are equal");
+            }
         }
         static void Task6_2lvl()
         {
@@ -87,7 +107,7 @@ namespace _5_Lab
         {
             double MaxN = Double.MinValue;
             double MinN = Double.MaxValue;
-            int MinJ = 0, MaxJ = 0;
+            int MinJ = -1, MaxJ = -1;
             Console.WriteLine("10 Task:");
             Console.WriteLine("Enter the number of rows and columns:");
             if (int.TryParse(Console.ReadLine(), out n))
@@ -116,13 +136,12 @@ namespace _5_Lab
                         }
                     }
                 }
-
-                DelColumn(A, MaxJ, out A);
-                DelColumn(A, MinJ, out A);
+                if (MaxJ != -1) DelColumn(A, MaxJ, out A);
+                if (MinJ != -1) DelColumn(A, MinJ, out A);
                 Console.WriteLine("Matrix:");
                 for (int i = 0; i < n; i++)
                 {
-                    for (int j = 0; j < (n - 2); j++)
+                    for (int j = 0; j < (A.GetLength(1)); j++)
                     {
                         Console.Write($"{A[i, j], 5}");
                     }
@@ -259,6 +278,18 @@ namespace _5_Lab
             Task6_3lvl();
         }
 
+        static bool TriangleCheck(double a, double b, double c)
+        {
+            if (a > 0 && b > 0 && c > 0)
+            {
+                if (a + b > c && b + c > a && a + c > b) return true;
+                return false;
+            }
+            else
+            {
+                return false;
+            }
+        }
         static void ColumnsSwap(double[,] Matrix1, int j1, int j2, out double[,] Matrix2)
         {
             Matrix2 = new double[Matrix1.GetLength(0), Matrix1.GetLength(1)];
@@ -476,8 +507,8 @@ namespace _5_Lab
 
             for (int i = 0; i < (length - 1); i++)
             {
-                if (i == IMax) continue;
-                Array2[i] = Array1[i];
+                if (i < IMax) Array2[i] = Array1[i];
+                else Array2[i] = Array1[i + 1];
             }
         }
     }
