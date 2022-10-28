@@ -6,7 +6,7 @@ namespace _5th_Lab
     {
         static int PolymorphMethod() { return 0; }
         static int PolymorphMethod(int number) { return number; }
-        static int PolymorphMethod(ref int number) { return number; }   // either with ,odificator ref - you send a link to your variable
+        static int PolymorphMethod(ref int number) { return number; }   // either with modificator ref - you send a link to your variable
     //    static int PolymorphMethod(out int number) { return number; } // or out - you get additional variale (use if you need >1 variable to return. But tuple is better)
         static int PolymorphMethod(double anotherNumber) { return (int)anotherNumber; }
         static int PolymorphMethod<T>(T yourType) { return yourType.GetHashCode(); } // general type
@@ -119,6 +119,14 @@ namespace _5th_Lab
 
             // We will work with SOLID closely at 7-8 & 10th labs.
 
+            #endregion
+            
+            #refion Signature
+            /* Signature is a linguistic concept separate from the concept of syntax, which is also often related to attributes of computer programming languages.
+             * In c# for methods (and delegates) it is the access modificator (and additional like abstract, virtual, override, new, sealed modificators),
+             * type of ouptut parameter, name of method and amount and types of parameters.
+             */
+             
             #endregion
         }
     }
