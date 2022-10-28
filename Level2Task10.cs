@@ -15,7 +15,8 @@ class HelloWorld
     static int Main()
     {
         Console.WriteLine("Enter the lenght of side of matrix: ");
-        int n = Convert.ToInt32(Console.ReadLine());
+        int n;
+        int.TryParse(Console.ReadLine(), out n);
         if (n == 1)
         {
             Console.WriteLine("In a one-element matrix, there are no elements below the main diagonal.");
@@ -38,29 +39,35 @@ class HelloWorld
 
             for (int j = 0; j < n; j++)
             {
-                matrix[i].Add(Convert.ToInt32(line[j]));
+                int x;
+                int.TryParse(line[j], out x);
+                matrix[i].Add(x);
             }
         }
         double max = matrix[0][0];
         int k = 0;
-        double min = matrix[0][0];
-        int v = 0;
+        double min = matrix[0][1];
+        int v = 1;
         for (int i = 0; i < matrix.Count; i++)
         {
             for (int j = i + 1; j < matrix[i].Count; j++)
             {
-                if (matrix[i][j] > max) { max = matrix[i][j]; k = j; }
+                if (matrix[i][j] < min) { min = matrix[i][j]; v = j; }
             }
         }
         for (int i = 0; i < matrix.Count; i++)
         {
-            for (int j = 0; j < i; j++)
+            for (int j = 0; j < i + 1; j++)
             {
-                if (matrix[i][j] < min) { min = matrix[i][j]; v = j; }
+                if (matrix[i][j] > max) { max = matrix[i][j]; k = j; }
             }
         }
-        matrix = rem(matrix, k);
-        matrix = rem(matrix, v);
+        if (k != v)
+        {
+            matrix = rem(matrix, k);
+            matrix = rem(matrix, v);
+        }
+        else matrix = rem(matrix, v);
         Console.WriteLine("New matrix: ");
         for (int i = 0; i < matrix.Count(); i++)
         {
