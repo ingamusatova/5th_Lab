@@ -121,7 +121,7 @@ namespace _5th_Lab
 
             #endregion
             
-            #refion Signature
+            #region Signature
             /* Signature is a linguistic concept separate from the concept of syntax, which is also often related to attributes of computer programming languages.
              * In c# for methods (and delegates) it includes full name (namespace, class(es), method name) and type, modificator (ref/out) and order of input parameters.
              */
