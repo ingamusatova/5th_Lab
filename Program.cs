@@ -1,6 +1,3 @@
-﻿using System;
-
-
 namespace lab5
 {
     class Program
@@ -75,8 +72,8 @@ namespace lab5
                 Console.ReadLine();
                 return;
             }
-
-            Console.WriteLine($"1st triangle: {a1}; {b1}; {c1}. S = {geron(a1, b1, c1)}.");
+            double s1 = geron(a1, b1, c1);
+            Console.WriteLine($"1st triangle: {a1}; {b1}; {c1}. S = s1.");
 
             Console.WriteLine();
             Console.WriteLine("Enter the sides of the 2nd triangle.");
@@ -114,16 +111,16 @@ namespace lab5
                 Console.ReadLine();
                 return;
             }
-
-            Console.WriteLine($"2nd triangle: {a2}; {b2}; {c2}. S = {geron(a2, b2, c2)}.");
+            double s2 = geron(a2, b2, c2);
+            Console.WriteLine($"2nd triangle: {a2}; {b2}; {c2}. S = {s2}.");
             Console.WriteLine();
 
-            if (geron(a2, b2, c2) > geron(a1, b1, c1))
+            if (s2 > s1)
             {
                 Console.WriteLine("The 2nd triangle's surface area is bigger.");
             }
 
-            else if (geron(a2, b2, c2) < geron(a1, b1, c1))
+            else if (s2 < s1)
             {
                 Console.WriteLine("The 1st triangle's surface area is bigger.");
             }
@@ -317,9 +314,9 @@ namespace lab5
             int m = n - 1;
             double[,] temp_matrix = (double[,])matrix.Clone();
 
-            matrix = delete_column(matrix, n, m, min_j);
-            if (matrix != temp_matrix)
+            if (max_j != min_j)
             {
+                matrix = delete_column(matrix, n, m, min_j);
                 m--;
             }
 
