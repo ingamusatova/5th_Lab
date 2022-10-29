@@ -123,8 +123,7 @@ namespace _5th_Lab
             
             #refion Signature
             /* Signature is a linguistic concept separate from the concept of syntax, which is also often related to attributes of computer programming languages.
-             * In c# for methods (and delegates) it is the access modificator (and additional like abstract, virtual, override, new, sealed modificators),
-             * type of ouptut parameter, name of method and amount and types of parameters.
+             * In c# for methods (and delegates) it include full name (namespace, class(es), method name) and type, modificator (ref/out) and order of input parameters.
              */
              
             #endregion
