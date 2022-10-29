@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 namespace _5th_Lab
@@ -599,4 +599,3 @@ namespace _5th_Lab
         }
     }
 }
-
