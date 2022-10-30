@@ -1,0 +1,387 @@
+namespace Lab5
+{
+    internal class Program
+    {
+        #region Task3_2
+        delegate double[] Raw_Poryad(double[] Ar);
+        Raw_Poryad Ybiv = GnomeSort;
+        Raw_Poryad Vosrast = InsertSort;
+        static double[] GnomeSort(double[] Ar)
+        {
+            int Index = 0;
+            int Len = Ar.Length;
+            while (Index < Len)
+            {
+                if (Index == 0)    //Index == 0 ? Index++:continue;     - DOESN'T WORK!
+                    Index++;
+                if (Ar[Index] <= Ar[Index - 1])
+                    Index++;
+                else
+                {
+                    double temp = Ar[Index];
+                    Ar[Index] = Ar[Index - 1];
+                    Ar[Index - 1] = temp;
+                    Index--;
+                }
+                
+            }
+            return Ar;
+        }
+        static double[] InsertSort(double[] Ar)
+        {
+            for (int i = 1; i < Ar.Length; i++)
+            {
+                double Remember = Ar[i];
+                int j = i;
+                while (j > 0 && Ar[j] < Ar[j - 1])
+                {
+                    double temp = Ar[j];
+                    Ar[j] = Ar[j - 1];
+                    Ar[j - 1] = temp;
+                    j--;
+                }
+                Ar[j] = Remember;
+            }
+            return Ar;
+        }
+        #endregion
+
+        #region Task3_6
+        delegate int Max(double[,] Ar);
+        Max Diag= MaxDiag;
+        Max Perv= MaxPerv;
+        static int MaxDiag(double[,] Ar)
+        {
+            int iMax = 0;
+            double Max = Ar[0, 0];
+            for (int i = 0; i != Ar.GetLength(0); i++)
+            {
+                if (Ar[i, i] > Max)
+                {
+                    Max = Ar[i, i];
+                    iMax = i;
+                }
+            }
+            return iMax;
+        }
+        static int MaxPerv(double[,] Ar)
+        {
+            int iMax = 0;
+            double Max = Ar[0, 0];
+            for (int i = 0; i != Ar.GetLength(0); i++)
+            {
+                if (Ar[0, i] > Max)
+                {
+                    Max = Ar[i, i];
+                    iMax = i;
+                }
+            }
+            return iMax;
+        }
+        #endregion
+
+        static void Main(string[] args)
+        {
+
+            static void Print(double[,] Ar, int n, int m)
+            {
+                for (int i = 0; i != n; i++)
+                {
+                    for (int j = 0; j != m; j++)
+                        Console.Write("{0,5}", Ar[i, j]);
+                    Console.WriteLine();
+                }
+            }
+
+            static int Sol1_1(int k, int n)
+            {
+                int chisl = 1;
+                for (int i = k + 1; i <= n; i++)
+                {
+                    chisl *= i;
+                }
+                int znam = 1;
+                for (int i = 1; i <= n - k; i++)
+                {
+                    znam *= i;
+                }
+                return chisl / znam;
+            }
+            static void Task1_1()
+            {
+                Console.WriteLine(Sol1_1(5, 8));
+                Console.WriteLine(Sol1_1(5, 10));
+                Console.WriteLine(Sol1_1(5, 11));
+            }
+
+            static double Sol1_2(double a, double b, double c)
+            {
+                double p = (a + b + c) / 2;
+                return Math.Sqrt(p * (p - a) * (p - b) * (p - c));
+            }
+            static void Task1_2()
+            {
+                double A1 = 2;
+                double B1 = 2.3;
+                double C1 = 3.2;
+
+                double A2 = 23;
+                double B2 = 34;
+                double C2 = 20.12;
+
+                if (A1 + B1 > C1 & A1 + C1 > B1 & B1 + C1 > A1)
+                    if (A2 + B2 > C2 & A2 + C2 > B2 & B2 + C2 > A2)
+                    {
+                        double Plosh1 = Sol1_2(A1, B1, C1);
+                        double Plosh2 = Sol1_2(A1, B1, C1);
+                        if (Plosh1 > Plosh2)
+                        {
+                            Console.WriteLine($"Square FIRST is begger and equals {Plosh1}");
+                        }
+                        else { Console.WriteLine($"Square SECOND is begger and equals {Plosh2}"); }
+                    }
+                    else Console.WriteLine("Wrong second");
+                else Console.WriteLine("Wrong first");
+            }
+
+            static double[] Sol2_6(double[] Ar, int k)
+            {
+                for (int i = k; i != Ar.Length - 1; i++)
+                {
+                    double temp = Ar[i];
+                    Ar[i] = Ar[i + 1];
+                    Ar[i + 1] = temp;
+                }
+                Array.Resize(ref Ar, Ar.Length - 1);
+                return Ar;
+            }
+            static void Task2_6()
+            {
+                double[] ArA = new double[7] { 23, 0.6, -23, 65454, -4.5, 100, 3 };
+                double[] ArB = new double[8] { -0, 1, 0.243, 2454, 65454, 4, 0, 334934 };
+
+                int iMaxA = 0;
+                double MaxA = ArA[0];
+                for (int i = 0; i != ArA.Length; i++)
+                {
+                    if (ArA[i] > MaxA)
+                    {
+                        MaxA = ArA[i];
+                        iMaxA = i;
+                    }
+                }
+                ArA = Sol2_6(ArA, iMaxA);
+
+                int iMaxB = 0;
+                double MaxB = ArB[0];
+                for (int i = 0; i != ArB.Length; i++)
+                {
+                    if (ArB[i] > MaxB)
+                    {
+                        MaxB = ArB[i];
+                        iMaxB = i;
+                    }
+                }
+                ArB = Sol2_6(ArB, iMaxB);
+
+                double[] ArC = new double[ArA.Length + ArB.Length];
+                Array.Copy(ArA, ArC, ArA.Length);
+                Array.Copy(ArB, 0, ArC, ArA.Length, ArB.Length);
+                foreach (double x in ArC)
+                    Console.WriteLine(x);
+            }
+
+            static double[,] Sol2_10(double[,] Ar, int k, int l)
+            {
+                if (k != l)
+                {
+                    double[,] ArRes = new double[Ar.GetLength(0), Ar.GetLength(0) - 2];
+                    for (int i = 0; i != Ar.GetLength(0); i++)
+                    {
+                        int count = 0;
+                        for (int j = 0; j != Ar.GetLength(0); j++)
+                        {
+                            if (k != j & l != j)
+                            {
+                                ArRes[i, j] = Ar[i, count];
+                                count++;
+                            }
+                        }
+                    }
+                    return ArRes;
+                }
+                else
+                {
+                    double[,] ArRes = new double[Ar.GetLength(0), Ar.GetLength(0) - 1];
+                    for (int i = 0; i != Ar.GetLength(0); i++)
+                    {
+                        int count = 0;
+                        for (int j = 0; j != Ar.GetLength(0); j++)
+                        {
+                            if (k != j)
+                            {
+                                ArRes[i, j] = Ar[i, count];
+                                count++;
+                            }
+                        }
+                    }
+                    return ArRes;
+                }
+
+            }  //Maybe there are some CLEVER & FASTER ways to delete column | raw?
+            static void Task2_10()
+            {
+                double[,] Ar = new double[4, 4] { { 10,-12, 2, 3},
+                                                  { 5.1, 6, -3.1,-100},
+                                                  { 9,10, 13, 10 },
+                                                  { -10,13, 14, 15}};
+
+                int jMax = 0;
+                double Max = Ar[0, 0];
+
+                int jMin = 1;
+                double Min = Ar[0, 1];
+                for (int i = 0; i != Ar.GetLength(0); i++)
+                {
+                    for (int j = 0; j != Ar.GetLength(0); j++)
+                    {
+                        if (i >= j)
+                        {
+                            if (Ar[i, j] > Max)
+                            {
+                                jMax = j;
+                                Max = Ar[i, j];
+                            }
+                        }
+                        else
+                        {
+                            if (Ar[i, j] < Min)
+                            {
+                                jMin = j;
+                                Min = Ar[i, j];
+                            }
+                        }
+                    }
+                }
+                //Console.WriteLine($"{iMax}   {jMax}  {Max}   {iMin}   {jMin}   {Min}");
+                Ar = Sol2_10(Ar, jMin, jMax);
+                Print(Ar, Ar.GetLength(0), Ar.GetLength(1));
+            }
+
+            static double[] Sol2_23(double[] Ar, int[] ArIndex)
+            {
+                int k = 0;
+                for (int i = 0; i != Ar.Length; i++)
+                {
+                    if (ArIndex[k] == i)
+                    {
+                        Ar[i] = Ar[i] * 2;
+                        k++;
+                    }
+                    else Ar[i] = Ar[i] / 2;
+
+                }
+                return Ar;
+            }
+            static void Task2_23()
+            {
+                double[] Ar = new double[10] { 234, -123, 0.234, -34.4, 4, 6, 7, 9, -13, 243.43 }; //234 234.34 6 7 9 
+                double[] ArNotSorted = new double[10];
+                Array.Copy(Ar, ArNotSorted, Ar.Length);
+                Array.Sort(Ar);
+                Array.Reverse(Ar);
+                Array.Resize(ref Ar, 5);
+                int[] ArIndex = new int[5];
+                for (int j = 0; j != ArIndex.Length; j++)
+                {
+                    for (int i = 0; i != ArNotSorted.Length; i++)
+                    {
+                        if (Ar[j] == ArNotSorted[i])
+                        {
+                            ArIndex[j] = i;
+                            break;
+                        }
+                    }
+                }
+                Array.Sort(ArIndex);
+
+                ArNotSorted = Sol2_23(ArNotSorted, ArIndex);
+                foreach (double x in ArNotSorted)
+                    Console.WriteLine(x);
+
+            }
+
+            static void Task3_2()
+            {
+                double[,] Ar = new double[6, 4] { { 111, -2,-3, 0 },
+                                                  { 5, 6, 7, 6 },
+                                                  { 9, -10, 11, 12 },
+                                                  { -13, -14, -15, -1 },
+                                                  {23,-12,54,32 },
+                                                  { -1,0,-12,-124} };
+                for (int i = 0; i != Ar.GetLength(0); i++)
+                {
+                    if (i % 2 == 0)
+                    {
+                        double[] temp = new double[Ar.GetLength(1)];
+                        for (int j = 0; j != Ar.GetLength(1); j++)
+                        {
+                            temp[j] = Ar[i, j];
+                        }
+
+                        Program Pr = new Program();
+                        temp = Pr.Vosrast(temp);
+
+                        for (int j = 0; j != Ar.GetLength(1); j++)
+                        {
+                            Ar[i, j] = temp[j];
+                        }
+                    }
+                    else
+                    {
+
+                        double[] temp = new double[Ar.GetLength(1)];
+                        for (int j = 0; j != Ar.GetLength(1); j++)
+                        {
+                            temp[j] = Ar[i, j];
+                        }
+                        Program Pr = new Program();
+                        temp = Pr.Ybiv(temp);
+                        for (int j = 0; j != Ar.GetLength(1); j++)
+                        {
+                            Ar[i, j] = temp[j];
+                        }
+
+                    }
+                }
+                Print(Ar, Ar.GetLength(0), Ar.GetLength(1));
+            }
+
+            static double[,] Change(double[,] Ar,int k,int j)
+            {
+                for (int i = 0; i != Ar.GetLength(0); i++)
+                {
+                    double temp = Ar[i, k];
+                    Ar[i, k] = Ar[i, j];
+                    Ar[i, j] = temp;
+                }
+                return Ar;
+            }
+            static void Task3_6()
+            {
+                double[,] Ar = new double[4, 4] { { 100, -2,-3, 1000 },
+                                                  { 5, 1, 7, 6 },
+                                                  { 9, -10, 11, 12 },
+                                                  { -13, -14, -15, -1 }};
+                Program pr = new Program();
+                int k = pr.Diag(Ar);
+                int j = pr.Perv(Ar);
+
+                Ar = Change(Ar, k, j);
+                Print(Ar, Ar.GetLength(0), Ar.GetLength(1));
+            }
+
+            Task3_6();
+        }
+    }
+}
