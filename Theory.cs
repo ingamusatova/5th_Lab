@@ -152,30 +152,31 @@ namespace _5th_Lab
                 int k = 5;
                 quality = Factorial(candidates) / (Factorial(k) * Factorial(candidates - k));
             }
-            static void for_1_2(double a, double b, double c, out double s)
+            static double for_1_2(double a, double b, double c)
             {
                 double p = (a + b + c) / 2;
-                s = Math.Sqrt(p * (p - a) * (p - b) * (p - c));
-            }
-            static void for_2_6(double[] A, double[] B, out double[] array_in_use_a)
+                double s = Math.Sqrt(p * (p - a) * (p - b) * (p - c));
+                return s;
+            }//fixed
+            static void for_2_6(ref double[] array_in_use_a, ref double[] arrau_in_use_b)
             {
-                int ind_to_delete = (int)max_value_index(A)[1];
-                for (int i = ind_to_delete; i < A.Length - 1; i++)
+                int ind_to_delete = (int)max_value_index(array_in_use_a)[1];
+                for (int i = ind_to_delete; i < array_in_use_a.Length - 1; i++)
                 {
-                    A[i] = A[i + 1];
+                    array_in_use_a[i] = array_in_use_a[i + 1];
                 }
-                int ind_to_delete2 = (int)max_value_index(B)[1];
-                for (int i = ind_to_delete2; i < B.Length - 1; i++)
+                int ind_to_delete2 = (int)max_value_index(arrau_in_use_b)[1];
+                for (int i = ind_to_delete2; i < arrau_in_use_b.Length - 1; i++)
                 {
-                    B[i] = B[i + 1];
+                    arrau_in_use_b[i] = arrau_in_use_b[i + 1];
                 }
-                Array.Resize(ref A, 13);
-                for (int i = 6, j = 0; i < A.Length; i++, j++)
+                Array.Resize(ref array_in_use_a, 13);
+                for (int i = 6, j = 0; i < array_in_use_a.Length; i++, j++)
                 {
-                    A[i] = B[j];
+                    array_in_use_a[i] = arrau_in_use_b[j];
                 }
-                array_in_use_a = A;
-            }
+
+            }//fixed
             static void for_2_10(double[,] matrix, ref int m, ref int n, int index_column, out double[,] matrix_)
             {
                 m -= 1;
@@ -273,7 +274,7 @@ namespace _5th_Lab
                 }
                 matrix_in_use2 = matrix_in_use;
             }
-            task_3_6();
+            task_2_23();
 
             static void task_1_1()
             {
@@ -319,7 +320,11 @@ namespace _5th_Lab
                 bool res_2b = double.TryParse(Console.ReadLine(), out b_2);
                 Console.WriteLine("enter c for 2 triangle:");
                 bool res_2c = double.TryParse(Console.ReadLine(), out c_2);
-
+                if  (!(a_1 < b_1+c_1 && a_2 < b_2+c_2&& b_1< a_1+c_1 && b_2<a_2+c_2&&c_1<a_1 + b_1 && c_2 < a_2 + b_2))
+                {
+                    Console.WriteLine("input error");
+                    return;
+                }
 
 
                 if (!(res_1b & res_1a & res_1c & res_2a & res_2b & res_2c))
@@ -332,9 +337,9 @@ namespace _5th_Lab
                     Console.WriteLine("input error");
                     return;
                 }
-                for_1_2(a_1, b_1, c_1, out s1);
+                 s1 =for_1_2(a_1, b_1, c_1);
                 Console.WriteLine($"s1= {s1}");
-                for_1_2(a_2, b_2, c_2, out s2);
+                s2 = for_1_2(a_2, b_2, c_2);
                 Console.WriteLine($"s2= {s2}");
                 if (s1 > s2)
                 {
@@ -349,7 +354,7 @@ namespace _5th_Lab
                     Console.WriteLine("s2 = s1");
                 }
 
-            }
+            }//fixed
 
 
             static void task_2_6()
@@ -369,7 +374,7 @@ namespace _5th_Lab
                     return;
                 }
 
-                for_2_6(array_in_use_a, array_in_use_b, out array_in_use_a);
+                for_2_6(ref array_in_use_a,ref array_in_use_b);
 
                 foreach (double elem in array_in_use_a)
                 {
@@ -377,7 +382,7 @@ namespace _5th_Lab
                 }
 
 
-            }
+            }//fixed
             static void task_2_10()
             {
                 bool flag = false;
@@ -440,12 +445,13 @@ namespace _5th_Lab
                 bool flag = false;
                 int n;
                 int m;
+                Console.WriteLine("both matrix have to contain at least 5 elements: minimal size is 3/2 or 2/3(n+m>=5):");
                 Console.WriteLine("enter n:");
                 bool res = int.TryParse(Console.ReadLine(), out n);
                 Console.WriteLine("enter m:");
                 bool res2 = int.TryParse(Console.ReadLine(), out m);
 
-                if (!(res & n > 0 & m > 0 & res2)) return;
+                if (!(res & n > 0 & m > 0 & res2&n+m>=5)) return;
                 Console.WriteLine("enter matrix data:");
 
                 double[,] matrix_in_use = double_matrix(n, m, ref flag);
@@ -482,7 +488,7 @@ namespace _5th_Lab
                 Console.WriteLine("enter m:");
                 bool res21 = int.TryParse(Console.ReadLine(), out m);
 
-                if (!(res1 & n > 0 & m > 0 & res21)) return;
+                if (!(res1 & n > 0 & m > 0 & res21&n+m>=5)) return;
                 Console.WriteLine("enter matrix data:");
 
                 double[,] matrix_in_use1 = double_matrix(n, m, ref flag);
@@ -514,7 +520,7 @@ namespace _5th_Lab
 
 
 
-            }
+            }//fixed
 
 
             static void task_3_2()
@@ -599,3 +605,4 @@ namespace _5th_Lab
         }
     }
 }
+
