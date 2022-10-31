@@ -157,7 +157,7 @@ namespace _5th_Lab
                 double p = (a + b + c) / 2;
                 double s = Math.Sqrt(p * (p - a) * (p - b) * (p - c));
                 return s;
-            }//fixed
+            }
             static void for_2_6(ref double[] array_in_use_a, ref double[] arrau_in_use_b)
             {
                 int ind_to_delete = (int)max_value_index(array_in_use_a)[1];
@@ -176,7 +176,7 @@ namespace _5th_Lab
                     array_in_use_a[i] = arrau_in_use_b[j];
                 }
 
-            }//fixed
+            }
             static void for_2_10(double[,] matrix, ref int m, ref int n, int index_column, out double[,] matrix_)
             {
                 m -= 1;
@@ -204,37 +204,37 @@ namespace _5th_Lab
 
                         if (matrix_in_use[i, k] == maximus[0] & if_1 == 0)
                         {
-                            matrix_in_use[i, k] *= 2;
+                            matrix_in_use[i, k] = matrix_in_use[i, k] >= 0 ? matrix_in_use[i,k] * 2 : matrix_in_use[i,k] / 2;
 
                             if_1++;
                         }
                         else if (matrix_in_use[i, k] == maximus[1] & if_2 == 0)
                         {
-                            matrix_in_use[i, k] *= 2;
+                            matrix_in_use[i, k] = matrix_in_use[i, k] >= 0 ? matrix_in_use[i, k] * 2 : matrix_in_use[i, k] / 2;
 
                             if_2++;
                         }
                         else if (matrix_in_use[i, k] == maximus[2] & if_3 == 0)
                         {
-                            matrix_in_use[i, k] *= 2;
+                            matrix_in_use[i, k] = matrix_in_use[i, k] >= 0 ? matrix_in_use[i, k] * 2 : matrix_in_use[i, k] / 2;
 
                             if_3++;
                         }
                         else if (matrix_in_use[i, k] == maximus[3] & if_4 == 0)
                         {
-                            matrix_in_use[i, k] *= 2;
+                            matrix_in_use[i, k] = matrix_in_use[i, k] >= 0 ? matrix_in_use[i, k] * 2 : matrix_in_use[i, k] / 2;
 
                             if_4++;
                         }
                         else if (matrix_in_use[i, k] == maximus[4] & if_5 == 0)
                         {
-                            matrix_in_use[i, k] *= 2;
+                            matrix_in_use[i, k] = matrix_in_use[i, k] >= 0 ? matrix_in_use[i, k] * 2 : matrix_in_use[i, k] / 2;
 
                             if_5++;
                         }
                         else
                         {
-                            matrix_in_use[i, k] /= 2;
+                            matrix_in_use[i, k] = matrix_in_use[i, k] >= 0 ? matrix_in_use[i, k] /2 : matrix_in_use[i, k] * 2;
                         }
                     }
                 }
@@ -274,7 +274,16 @@ namespace _5th_Lab
                 }
                 matrix_in_use2 = matrix_in_use;
             }
-            task_2_23();
+            static bool chek_triangle(double a_1,double a_2,double b_1, double c_1, double c_2, double b_2)
+            {
+                if (!(a_1 < b_1 + c_1 && a_2 < b_2 + c_2 && b_1 < a_1 + c_1 && b_2 < a_2 + c_2 && c_1 < a_1 + b_1 && c_2 < a_2 + b_2))
+                {
+                    Console.WriteLine("input error");
+                    return false;
+                }
+                return true;
+            }//fixed
+            task_1_2();
 
             static void task_1_1()
             {
@@ -320,14 +329,10 @@ namespace _5th_Lab
                 bool res_2b = double.TryParse(Console.ReadLine(), out b_2);
                 Console.WriteLine("enter c for 2 triangle:");
                 bool res_2c = double.TryParse(Console.ReadLine(), out c_2);
-                if  (!(a_1 < b_1+c_1 && a_2 < b_2+c_2&& b_1< a_1+c_1 && b_2<a_2+c_2&&c_1<a_1 + b_1 && c_2 < a_2 + b_2))
-                {
-                    Console.WriteLine("input error");
-                    return;
-                }
 
 
-                if (!(res_1b & res_1a & res_1c & res_2a & res_2b & res_2c))
+
+                if (!(res_1b & res_1a & res_1c & res_2a & res_2b & res_2c & chek_triangle(a_1, a_2, b_1, c_1, c_2, b_2)))
                 {
                     Console.WriteLine("input error");
                     return;
@@ -354,7 +359,7 @@ namespace _5th_Lab
                     Console.WriteLine("s2 = s1");
                 }
 
-            }//fixed
+            }
 
 
             static void task_2_6()
@@ -382,7 +387,7 @@ namespace _5th_Lab
                 }
 
 
-            }//fixed
+            }
             static void task_2_10()
             {
                 bool flag = false;
@@ -605,4 +610,3 @@ namespace _5th_Lab
         }
     }
 }
-
