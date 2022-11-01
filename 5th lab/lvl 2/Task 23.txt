@@ -1,0 +1,177 @@
+using System;
+using System.Data;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
+using System.Security;
+using System.Security.Cryptography;
+
+class Programm
+{
+    static List<int> maxi(List<List<int>> matrix, List<int> max1)
+    {
+        int maxim = matrix[0][0];
+        for(int i = 0; i < matrix.Count; i++)
+        {
+            for(int j = 0; j < matrix[i].Count; j++)
+            {
+                if (matrix[i][j] > maxim && max1.Contains(matrix[i][j]) == false)
+                {
+                    maxim = matrix[i][j];
+                }
+            }
+        }
+        max1.Add(maxim);
+        //Console.WriteLine(" Array");
+        return max1;
+    }
+    static void matrix(int n, int m, out List<List<int>> matrix)
+    {
+        string[] row;
+        matrix = new List<List<int>>();
+        Console.WriteLine(" Enter elements for matrix");
+        for (int i = 0; i < m; i++)
+        {
+            matrix.Add(new List<int>());
+            while (true)
+            {
+                row = Console.ReadLine().Split(" ");
+                if (row.Length != n)
+                {
+                    Console.WriteLine(" Enter the correct data");
+                    continue;
+                }
+                break;
+            }
+            for (int j = 0; j < n; j++)
+            {
+                int x;
+                int.TryParse(row[j], out x);
+                matrix[i].Add(x);
+            }
+        }
+    }
+    static void exit(List<List<int>> matrix)
+    {
+        for(int i = 0; i < matrix.Count; i++)
+        {
+            for(int j = 0; j < matrix[i].Count; j++)
+            {
+                Console.Write(matrix[i][j] + " ");
+            }
+            Console.WriteLine();
+        }
+        Console.WriteLine();
+    }
+    static List<List<int>> method(List<List<int>> matrix, List<int> mas)
+    {
+        for(int i = 0; i < matrix.Count; i++)
+        {
+            for(int j = 0; j < matrix[i].Count; j++)
+            {
+                if (mas.Contains(matrix[i][j]))
+                {
+                    matrix[i][j] = matrix[i][j] * 2;
+                }
+                else
+                {
+                    matrix[i][j] = matrix[i][j] / 2;
+                }
+            }
+        }
+
+        return matrix;
+    }
+    static void Main()
+    {
+        int n, m;
+        List<List<int>> A = new List<List<int>>();
+        Console.WriteLine(" Enter the amount row");
+        while (true)
+        {
+            if(!int.TryParse(Console.ReadLine(), out m))
+            {
+                Console.WriteLine(" Incorrect data");
+                return;
+            }
+            if (m < 0)
+            {
+                Console.WriteLine(" Matrix size must be positive");
+                return;
+            }
+            break;
+        }
+
+        Console.WriteLine(" Enter the amount collums");
+        while (true)
+        {
+            if (!int.TryParse(Console.ReadLine(), out n))
+            {
+                Console.WriteLine(" Incorrect data");
+                return;
+            }
+            if (n < 0)
+            {
+                Console.WriteLine(" Matrix size must be positive");
+                return;
+            }
+            break;
+        }
+        Console.WriteLine(" Enter the matrix A");
+        matrix(n, m, out A);
+
+        
+        int n1, m1;
+        List<List<int>> B = new List<List<int>>();
+        Console.WriteLine(" Enter the amount row for second matrix");
+        while (true)
+        {
+            if (!int.TryParse(Console.ReadLine(), out m1))
+            {
+                Console.WriteLine(" Incorrect data");
+                return;
+            }
+            if (m1 < 0)
+            {
+                Console.WriteLine(" Matrix size must be positive");
+                return;
+            }
+            break;
+        }
+
+        Console.WriteLine(" Enter the amount collums for stcond matrix");
+        while (true)
+        {
+            if (!int.TryParse(Console.ReadLine(), out n1))
+            {
+                Console.WriteLine(" Incorrect data");
+                return;
+            }
+            if (n1 < 0)
+            {
+                Console.WriteLine(" Matrix size must be positive");
+                return;
+            }
+            break;
+        }
+        Console.WriteLine(" Enter the matrix B");
+        matrix(n1, m1, out B);
+        
+        List<int> max1 = new List<int>();
+        List<int> max2 = new List<int>();
+
+        for(int i = 0; i < 5; i++)
+        {
+            maxi(A, max1);
+            maxi(B, max2);
+        }
+
+        A = method(A, max1);
+        B = method(B, max2);
+
+        Console.WriteLine(" Matrix A");
+        exit(A);
+
+        Console.WriteLine(" Matrix B");
+        exit(B);
+    }
+}

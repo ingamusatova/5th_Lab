@@ -1,0 +1,119 @@
+using System;
+using System.Data;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
+using System.Runtime.CompilerServices;
+using System.Security;
+using System.Security.Cryptography;
+
+class Programm
+{
+    static void matrix(int m, int n, out List<List<int>> matrix)
+    {
+        string[] row;
+        matrix = new List<List<int>>();
+        Console.WriteLine(" Enter the matrix");
+        for (int i = 0; i < m; i++)
+        {
+            matrix.Add(new List<int>());
+            while (true)
+            {
+                row = Console.ReadLine().Split(" ");
+                if (row.Length != n)
+                {
+                    Console.WriteLine(" Incorrect data");
+                    continue;
+                }
+                break;
+            }
+            for (int l = 0; l < n; l++)
+            {
+                int x;
+                int.TryParse(row[l], out x);
+                matrix[i].Add(x);
+            }
+        }
+    }
+    static void exit(List<List<int>> matrix)
+    {
+        Console.WriteLine(" New matrix");
+        for (int i = 0; i < matrix.Count; i++)
+        {
+            for (int j = 0; j < matrix[i].Count; j++)
+            {
+                Console.Write(matrix[i][j] + " ");
+            }
+            Console.WriteLine();
+        }
+        Console.WriteLine();
+    }
+    delegate List<int> f(List<int> i);
+    static List<int> f0 (List<int> x)
+    {
+        List<int> dd = new List<int>();
+        dd = x;
+        dd.Sort();
+        return dd;
+    }
+    static List<int> f1(List<int> x)
+    {
+        List<int> dd = new List<int>();
+        dd = x;
+        dd.Sort();
+        dd.Reverse();
+        return dd;
+    }
+
+    static void Main()
+    {
+        int n, m;
+        List<List<int>> A = new List<List<int>>();
+        Console.WriteLine(" Enter the amount row");
+        while (true)
+        {
+            if (!int.TryParse(Console.ReadLine(), out m))
+            {
+                Console.WriteLine(" Incorrect data");
+                return;
+            }
+            if (m < 0)
+            {
+                Console.WriteLine(" Matrix size must be positive");
+                return;
+            }
+            break;
+        }
+
+        Console.WriteLine(" Enter the amount collums");
+        while (true)
+        {
+            if (!int.TryParse(Console.ReadLine(), out n))
+            {
+                Console.WriteLine(" Incorrect data");
+                return;
+            }
+            if (n < 0)
+            {
+                Console.WriteLine(" Matrix size must be positive");
+                return;
+            }
+            break;
+        }
+        Console.WriteLine(" Enter the matrix A");
+        matrix(n, m, out A);
+
+        for(int i = 0; i < m; i++)
+        {
+            if (i % 2 == 0)
+            {
+                A[i] = f0(A[i]);
+            }
+            else
+            {
+                A[i] = f1(A[i]);
+            }
+        }
+
+        exit(A);
+    }
+}

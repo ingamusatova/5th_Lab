@@ -1,0 +1,87 @@
+using System;
+using System.Data;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
+using System.Security;
+using System.Security.Cryptography;
+
+class Programm
+{
+    delegate double  fi(double i);
+    static double f1(double x)
+    {
+        double s = 1;
+        for (int i = 1; i < 100000; i++)
+        {
+            double per = Math.Cos(i * x * 0.0175) / factorial(i);
+            if (Math.Abs(per) > 0.0001) //159
+            {
+                s = s + per;
+            }
+            else
+            {
+                break;
+            }
+        }
+        return s;
+    }
+    static double f2(double x)
+    {
+        double s = 0;
+        for (int i = 1; i < 10000; i++)
+        {
+            double per = Math.Pow(-1, i) * (Math.Cos(i * x * 0.0175) / (i * i));
+            if (Math.Abs(per) > 0.0001) //159
+            {
+                s = s + per;
+            }
+            else
+            {
+                break;
+            }
+        }
+        return s;
+    }
+    static double y1(double x)
+    {
+        double y = 0;
+        y = Math.Pow(Math.E, Math.Cos(x * 0.0175)) * Math.Cos(Math.Sin(x * 0.0175));
+        return y;
+    }
+    static double y2(double x)
+    {
+        double y = 0;
+        y = ((x * x) - (Math.Pow(Math.PI, 2) / 3)) / (4);
+        return y;
+    }
+    static double factorial(double x)
+    {
+        double fact = 1;
+        for(double i = 1; i <= x; i++)
+        {
+            fact = fact * i;
+        }
+        return fact;
+    }
+
+    static void Main()
+    {
+        for (double x = 0.1; x <= 1; x += 0.1)
+        {
+            double s1 = f1(x);
+            double z1 = y1(x);
+            double xxx = z1 - s1;
+            Console.WriteLine("Первая сумма: " + s1 + "   " + "Точность: " + xxx);
+        }
+
+        Console.WriteLine();
+
+        for (double x = (Math.PI / 5); x <= Math.PI; x += (Math.PI / 25))
+        {
+            double s2 = f2(x);
+            double z2 = y2(x);
+            double xxx1 = z2 - s2;
+            Console.WriteLine("Вторая сумма: " + s2 + "   " + "Точность: " + xxx1);
+        }
+    }
+}

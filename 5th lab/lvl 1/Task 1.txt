@@ -1,0 +1,47 @@
+using System;
+using System.Data;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
+using System.Security;
+using System.Security.Cryptography;
+
+class Programm
+{
+    static int factorial(int n)
+    {
+        if(n < 0)
+        {
+            Console.WriteLine(" Incorrect format");
+            return 1;
+        }
+
+        if(n == 1 || n == 0)
+        {
+            return 1;
+        }
+
+        int fakt = 1;
+        for(int i = 1; i < n; i++)
+        {
+            fakt *= i;
+        }
+
+        return fakt;
+    }
+    static int amount(int n, int k)
+    {
+        return factorial(n) / factorial(k) * factorial(n - k);
+    }
+    static void Main()
+    {
+        int n1 = 8, n2 = 10, n3 = 11;
+        int k = 5;
+        int c1 = amount(n1, k);
+        int c2 = amount(n2, k);
+        int c3 = amount(n3, k);
+
+        Console.WriteLine(" First amount:" + " " + c1);
+        Console.WriteLine(" Second amount:" + " " + c2);
+        Console.WriteLine(" Third amount:" + " " + c3);
+    }
+}
