@@ -9,6 +9,11 @@ class Programm
 {
     static double area(double a, double b, double c)
     {
+        if (a + b < c || a + c < b || b + c < a)
+        {
+            Console.WriteLine(" It's not a triangle");
+            return 0;
+        }
         double p = (a + b + c) / 2;
         return Math.Sqrt(p * (p - a) * (p - b) * (p - c));
     }
@@ -18,19 +23,19 @@ class Programm
         Console.WriteLine(" Enter the side 'a' for S1");
         while (true)
         {
-            if(!double.TryParse(Console.ReadLine(), out a))
+            if (!double.TryParse(Console.ReadLine(), out a))
             {
                 Console.WriteLine(" Incorrect format");
                 continue;
             }
-            if(a < 0)
+            if (a < 0)
             {
                 Console.WriteLine(" Side must be positive");
                 continue;
             }
             break;
         }
-        
+
         Console.WriteLine(" Enter the side 'b' for S1");
         while (true)
         {
