@@ -7,12 +7,10 @@ using System.Security.Cryptography;
 
 class Programm
 {
-    static List<List<double>> Remove_Colums(List<List<double>> matrix, int n)
+    static List<double> Remove_Colums(List<double> matrix, int n)
     {
-        for(int i = 0; i < matrix.Count; i++)
-        {
-            matrix[i].RemoveAt(n);
-        }
+
+        matrix.RemoveAt(n);
         return matrix;
     }
     static void Main()
@@ -24,7 +22,7 @@ class Programm
         Console.WriteLine(" Enter the square matrix size");
         while (true)
         {
-            if(!int.TryParse(Console.ReadLine(), out n))
+            if (!int.TryParse(Console.ReadLine(), out n))
             {
                 Console.WriteLine(" Incorrect data");
                 return;
@@ -38,7 +36,7 @@ class Programm
         }
 
         Console.WriteLine(" Enter elements for matrix");
-        for(int i = 0; i < n; i++)
+        for (int i = 0; i < n; i++)
         {
             matrix.Add(new List<double>());
             while (true)
@@ -49,9 +47,9 @@ class Programm
                     Console.WriteLine(" Enter the correct data");
                     continue;
                 }
-                break ;
+                break;
             }
-            for(int j = 0; j < n; j++)
+            for (int j = 0; j < n; j++)
             {
                 double x;
                 double.TryParse(row[j], out x);
@@ -61,23 +59,23 @@ class Programm
 
         List<double> list = new List<double>();
 
-        double max = matrix[0][0], min = matrix[0][0];
-        int ind_max = 0, ind_min = 0;
+        double max = matrix[0][0], min = matrix[0][1];
+        int ind_max = 0, ind_min = 1;
         for (int i = 0; i < n; i++)
         {
-            for (int j = i; j < n; j++)
+            for (int j = i + 1; j < n; j++)
             {
-               if(min > matrix[i][j])
+                if (min > matrix[i][j])
                 {
                     min = matrix[i][j];
                     ind_min = j;
-                } 
+                }
             }
         }
 
         for (int i = 0; i < n; i++)
         {
-            for (int j = 0; j < i + 1; j++)
+            for (int j = 0; j < i; j++)
             {
                 if (max < matrix[i][j])
                 {
@@ -88,19 +86,23 @@ class Programm
         }
         if (ind_max != ind_min)
         {
-            matrix = Remove_Colums(matrix, ind_min);
-            matrix = Remove_Colums(matrix, ind_max);
+            for (int i = 0; i < n; i++)
+            {
+                matrix[i] = Remove_Colums(matrix[i], ind_min);
+                matrix[i] = Remove_Colums(matrix[i], ind_max);
+            }
         }
 
         if (ind_max == ind_min)
         {
-            matrix = Remove_Colums(matrix, ind_min);
+            for (int i = 0; i < n; i++)  
+            matrix[i] = Remove_Colums(matrix[i], ind_max);
         }
 
         Console.WriteLine(" Matrix");
-        for(int i = 0; i < matrix.Count; i++)
+        for (int i = 0; i < matrix.Count; i++)
         {
-            for(int j = 0; j < matrix[i].Count; j++)
+            for (int j = 0; j < matrix[i].Count; j++)
             {
                 Console.Write(matrix[i][j] + " ");
             }
