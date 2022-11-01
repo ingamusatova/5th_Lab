@@ -7,10 +7,10 @@ using System.Security.Cryptography;
 
 class Programm
 {
-    static void Remove(List<double> A, out List<double> B)
+    static List<double> Remove(List<double> A)
     {
         A.Remove(A.Max());
-        B = A;
+        return A;
     }
     static void Main()
     {
@@ -50,16 +50,16 @@ class Programm
             }
         }
 
-        Remove(A, out A);
-        Remove(B, out B);
+        A = Remove(A);
+        B = Remove(B);
 
-        for(int i = 0; i < B.Count; i++)
+        for (int i = 0; i < B.Count; i++)
         {
             A.Add(B[i]);
         }
 
         Console.WriteLine(" Array");
-        for(int i = 0; i < A.Count; i++)
+        for (int i = 0; i < A.Count; i++)
         {
             Console.Write(A[i] + " ");
         }
