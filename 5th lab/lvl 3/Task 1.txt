@@ -7,40 +7,27 @@ using System.Security.Cryptography;
 
 class Programm
 {
-    delegate double  fi(double i);
-    static double f1(double x)
+    delegate double elem(double x, double i);
+    static double elem1(double x, double i)
     {
-        double s = 1;
-        for (int i = 1; i < 100000; i++)
-        {
-            double per = Math.Cos(i * x * 0.0175) / factorial(i);
-            if (Math.Abs(per) > 0.0001) //159
-            {
-                s = s + per;
-            }
-            else
-            {
-                break;
-            }
-        }
-        return s;
+        return Math.Cos(i * x * 0.0175) / factorial(i); 
     }
-    static double f2(double x)
+    static double elem2(double x, double i)
     {
-        double s = 0;
-        for (int i = 1; i < 10000; i++)
+        return Math.Pow(-1, i) * (Math.Cos(i * x * 0.0175) / (i * i));
+    }
+    static double sum(elem f, double x)
+    {
+        double sum = 0;
+        for(int i = 1; i > 0; i++)
         {
-            double per = Math.Pow(-1, i) * (Math.Cos(i * x * 0.0175) / (i * i));
-            if (Math.Abs(per) > 0.0001) //159
+            if(Math.Abs(f(x, i)) < 0.0001)
             {
-                s = s + per;
+                return sum;
             }
-            else
-            {
-                break;
-            }
+            sum += f(x, i);
         }
-        return s;
+        return 0;
     }
     static double y1(double x)
     {
@@ -57,7 +44,7 @@ class Programm
     static double factorial(double x)
     {
         double fact = 1;
-        for(double i = 1; i <= x; i++)
+        for (double i = 1; i <= x; i++)
         {
             fact = fact * i;
         }
@@ -68,20 +55,18 @@ class Programm
     {
         for (double x = 0.1; x <= 1; x += 0.1)
         {
-            double s1 = f1(x);
-            double z1 = y1(x);
-            double xxx = z1 - s1;
-            Console.WriteLine("Первая сумма: " + s1 + "   " + "Точность: " + xxx);
+            double s = sum(elem1, x);
+            double y0 = y1(x);
+            Console.WriteLine(s + "    " + y0);
         }
 
         Console.WriteLine();
 
         for (double x = (Math.PI / 5); x <= Math.PI; x += (Math.PI / 25))
         {
-            double s2 = f2(x);
-            double z2 = y2(x);
-            double xxx1 = z2 - s2;
-            Console.WriteLine("Вторая сумма: " + s2 + "   " + "Точность: " + xxx1);
+            double s = sum(elem2, x);
+            double y0 = y2(x);
+            Console.WriteLine(s + "    " + y0);
         }
     }
 }
