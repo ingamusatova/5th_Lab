@@ -1,0 +1,723 @@
+using System;
+
+namespace Лаба5
+{
+    class Program
+    {
+        #region olo
+        public delegate double[] SortDelegate(double[] arr, int i);
+        public static double [] SORT(double [] arr, int i)
+        {
+            Array.Sort(arr);
+            if (i % 2 != 0)
+            {
+                Array.Reverse(arr);
+            }
+            return arr;
+        }
+        public delegate int[] DiagDelegate(double[,] arr, int n, int m);
+        public static int []  PIK(double[,] arr, int n, int m)
+        {
+            int stolbDiag = 0;
+            int stolbStrok = 0;
+            double maxDiag = double.MinValue;
+            double maxStrok = double.MinValue;
+
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < m; j++)
+                {
+                    if (arr[0,j] > maxStrok)
+                    {
+                        maxStrok = arr[0, j];
+                        stolbStrok = j;
+                    }
+                    if (arr[i, i] > maxDiag)
+                    {
+                        maxDiag = arr[i, i];
+                        stolbDiag = i;
+                    }
+                }
+            }
+            int[] mass = new int[2];
+            mass[0] = stolbDiag;
+            mass[1] = stolbStrok;
+            return mass;
+        }
+        #endregion
+
+        static void Main(string[] args)
+        {
+            #region Task1L1
+            static void L1N1()
+            {
+                static int Fact(int m)
+                {
+                    int fact = 1;
+                    for (int i = 2; i <= m; i++)
+                    {
+                        fact *= i;
+                    }
+                    return fact;
+                }
+                static int Var( int n, int k = 5)
+                {
+                    int c = 0;
+                    c = (Fact(n)) / (Fact(k)*Fact(n - k));
+                    return c;
+                }
+
+                int chislo = 0;
+                Console.WriteLine("Введите одну из 3х опций:");
+                Console.WriteLine("\t1)8\n\t2)10\n\t3)11");
+                bool norm = int.TryParse(Console.ReadLine(), out chislo);
+                if (!norm)
+                {
+                    Console.WriteLine("Вы ввели что-то не так");
+                }
+                switch (chislo)
+                {
+                    case (1):
+                        Console.WriteLine($"C = {Var(8)}");
+                        break;
+                    case (2):
+                        Console.WriteLine($"C = {Var(10)}");
+                        break;
+                    case (3):
+                        Console.WriteLine($"C = {Var(11)}");
+                        break;
+                    default:
+                        Console.WriteLine("Вы вышли за предел");
+                        break;
+                }
+            }
+            #endregion
+            #region Task2L1
+            static void L1N2()
+            {
+                static double S(double [] mass)
+                {
+                    double a = mass[0];
+                    double b = mass[1];
+                    double c = mass[2];
+                    double S = 0;
+                    double p = (a + b + c) / 2;
+                    
+                    S = Math.Sqrt(p * (p - a) * (p - b) * (p - c));
+                    
+                    return S;
+                }
+
+
+                int chislo = 0;
+                double[] mass1 = new double[3];
+                double[] mass2 = new double[3];
+
+                Console.WriteLine($"Введите стороны треугольника 1");
+                string s = Console.ReadLine();
+                string[] c = s.Split(' ');
+                for (int j = 0; j < 3; j++)
+                {
+                    bool norm = double.TryParse(c[j], out mass1[j]);
+                    if (!norm)
+                    {
+                        Console.WriteLine("Вы ввели что-то не так");
+                    }
+                }
+                Console.WriteLine($"Введите стороны треугольника 2");
+                string s2 = Console.ReadLine();
+                string[] c2 = s2.Split(' ');
+                for (int j = 0; j < 3; j++)
+                {
+                    bool normik = double.TryParse(c2[j], out mass2[j]);
+                    if (!normik)
+                    {
+                        Console.WriteLine("Вы ввели что-то не так");
+                    }
+                }
+                Console.WriteLine(S(mass2));
+                Console.WriteLine(S(mass1));
+                double[] mass;
+                mass = mass1;
+                if (S(mass1) < S(mass2))
+                {
+                    mass = mass2;
+                }
+                if (S(mass1) == S(mass2))
+                {
+                    Console.WriteLine("Площадь одинакова");
+                    return;
+                }
+                
+                Console.WriteLine($"Больший треугольник со сторонами:");
+                for (int i = 0; i < 3; i++)
+                {
+                    Console.Write($"{mass[i]} ");
+                }
+
+            }
+            #endregion
+            #region Task6L2
+            static void L2N6()
+            {
+                static double [] Udal(double[] mass)
+                {
+                    
+                    double max = mass[0];
+                    int posit = 0;
+                    
+                    for (int i = 0; i < mass.Length; i++)
+                    {
+                        if (mass[i] > max)
+                        {
+                            max = mass[i];
+                            posit = i;
+                        }
+                    }
+                    
+                    for (int i = posit; i < mass.Length - 1; i++)
+                    {
+                        mass[i] = mass[i + 1];
+                    }
+                    return mass; 
+                }
+
+
+                int n = 7;
+                int m = 8;
+
+
+                
+
+                double[] a = new double[n + m - 2];
+                Console.WriteLine($"Введите {n} значений массива через пробел ");
+                string s = Console.ReadLine();
+                string[] c = s.Split(' ');
+                for (int i = 0; i < n; i++)
+                {
+                    
+                    bool norm = double.TryParse(c[i], out a[i]);
+                    if (!norm)
+                    {
+                        Console.WriteLine("Вы ввели что-то не так");
+                    }
+
+                }
+                double[] b = new double[m];
+                Console.WriteLine($"Введите {m} значений массива через пробел ");
+                string sb = Console.ReadLine();
+                string[] cb = sb.Split(' ');
+                for (int i = 0; i < m; i++)
+                {
+                    if ((cb.Length < m) || (cb.Length > m))
+                    {
+                        Console.WriteLine($"Длина массива не может быть меньше или больше {m} ");
+                        break;
+                    }
+                    bool norm = double.TryParse(cb[i], out b[i]);
+                    if (!norm)
+                    {
+                        Console.WriteLine("Вы ввели что-то не так");
+                    }
+
+                }
+                Udal(a);
+                Udal(b);
+                int count = 0;
+                for (int i = n - 1; i < n + m - 2; i++)
+                {
+                    a[i] = b[count];
+                    count += 1;
+                }
+                Console.WriteLine();
+                for (int i = 0; i < a.Length; i++)
+                {
+                    Console.Write($"{a[i]} ");
+                }
+
+
+            }
+            #endregion
+            #region Task10L2
+            static void L2N10()
+            {
+                static double[,] Udal(double [,] arr, int pos, int n, int m, int count)
+                {
+                    
+                    for (int i = 0; i < n; i++)
+                    {
+                        for (int j = 0; j < m - count; j++)
+                        {
+                            if (j == pos)
+                            {
+                                arr[i, j] = arr[i, j + 1];
+                            }
+                        }
+                    }
+
+                    return arr;
+                }
+
+
+                int n;
+                Console.WriteLine("Введите кол-во элементов стороны матрицы");
+                bool normul = int.TryParse(Console.ReadLine(), out n);
+                if (n < 2)
+                {
+                    Console.WriteLine("Слишком мало");
+                    return;
+                }
+                if (!normul)
+                {
+                    Console.WriteLine("Вы ввели что-то не то");
+                    return;
+                }
+                int m = n;
+
+                double[,] a = new double[n, m];
+
+
+                Console.WriteLine($"Введите значения матрицы через пробел {n}x{m} ");
+                for (int i = 0; i < n; i++)
+                {
+
+                    string s = Console.ReadLine();
+                    string[] c = s.Split(' ');
+                    for (int j = 0; j < m; j++)
+                    {
+
+                        if ((c.Length < m) || (c.Length > m))
+                        {
+                            Console.WriteLine($"Длина массива не может быть меньше или больше {m} ");
+                            break;
+                        }
+
+                        bool norm = double.TryParse(c[j], out a[i, j]);
+                        if (!norm)
+                        {
+                            Console.WriteLine("Вы ввели что-то не так");
+                        }
+                    }
+
+                }
+                double max = double.MinValue;
+                double min = double.MaxValue;
+                int posmax = 0;
+                int posmin = 0;
+                for (int i = 0; i < n; i++)
+                {
+                    for (int j = 0; j < m; j++)
+                    {
+                        if (j <= i)
+                        {
+                            if (a[i,j] > max)
+                            {
+                                max = a[i, j];
+                                posmax = j;
+                            }
+                        }
+                        if (i < j)
+                        {
+                            if (a[i, j] < min)
+                            {
+                                min = a[i, j];
+                                posmin = j;
+                            }
+                        }
+                    }
+                }
+                int count = 1;
+                Udal(a,posmax, n,m, count);
+                count += 1;
+                Udal(a, posmin, n, m, count);
+                Console.WriteLine();
+
+                for (int i = 0; i < n; i++)
+                {
+                    for (int j = 0; j < m - 2; j++)
+                    {
+                        Console.Write($"{a[i,j]} ");
+                    }
+                    Console.WriteLine();
+                }
+
+            }
+            #endregion
+            #region Task23L2
+            static void L2N23()
+            {
+
+                static double [,] MAX(double[,] arr, int n, int m)
+                {
+                    
+                    double[] vse = new double[n * m];
+                    int count = 0;
+                    
+                    for (int i = 0; i < n; i++)
+                    {
+                        for (int j = 0; j < m; j++)
+                        {
+                            vse[count] = arr[i, j];
+                            count += 1;
+                        }
+                    }
+
+                    Array.Sort(vse);
+                    Array.Reverse(vse);
+                    int nol = 0;
+                    int odin = 0;
+                    int dva = 0;
+                    int tri = 0;
+                    int chet = 0;
+
+                    for (int i = 0; i < n; i++)
+                    {
+                        for (int j = 0; j < m; j++)
+                        {
+                            if (arr[i,j] == vse[0] & nol == 0)
+                            {
+                                arr[i, j] *= 2;
+                                nol = 1;
+                            }
+                            else if (arr[i, j] == vse[1] & odin == 0)
+                            {
+                                arr[i, j] *= 2;
+                                odin = 1;
+                            }
+                            else if (arr[i, j] == vse[2] & dva == 0)
+                            {
+                                arr[i, j] *= 2;
+                                dva = 1;
+                            }
+                            else if (arr[i, j] == vse[3] & tri == 0)
+                            {
+                                arr[i, j] *= 2;
+                                tri = 1;
+                            }
+                            else if (arr[i, j] == vse[4] & chet == 0)
+                            {
+                                arr[i, j] *= 2;
+                                chet = 1;
+                            }
+                            else
+                            {
+                                arr[i, j] /= 2;
+                            }  
+                        }
+                    }
+                    return arr;
+                }
+
+                Console.WriteLine("Матрица1");
+                #region Matrix1
+                int n;
+                int m;
+                Console.WriteLine("Введите кол-во элементов стороны матрицы");
+                bool normul = int.TryParse(Console.ReadLine(), out n);
+                Console.WriteLine("Введите кол-во элементов стороны матрицы");
+                bool normulik = int.TryParse(Console.ReadLine(), out m);
+                if ((n < 3) || (m < 3))
+                {
+                    Console.WriteLine("Слишком мало");
+                    return;
+                }
+                if (!normul || !normulik)
+                {
+                    Console.WriteLine("Вы ввели что-то не то");
+                    return;
+                }
+                
+
+                double[,] a = new double[n, m];
+
+
+                Console.WriteLine($"Введите значения матрицы через пробел {n}x{m} ");
+                for (int i = 0; i < n; i++)
+                {
+
+                    string s = Console.ReadLine();
+                    string[] c = s.Split(' ');
+                    for (int j = 0; j < m; j++)
+                    {
+
+                        if ((c.Length < m) || (c.Length > m))
+                        {
+                            Console.WriteLine($"Длина массива не может быть меньше или больше {m} ");
+                            break;
+                        }
+
+                        bool norm = double.TryParse(c[j], out a[i, j]);
+                        if (!norm)
+                        {
+                            Console.WriteLine("Вы ввели что-то не так");
+                        }
+                    }
+
+                }
+                #endregion
+
+                Console.WriteLine("Матрица2");
+                #region Matrix2
+                
+                int nb;
+                int mb;
+                Console.WriteLine("Введите кол-во элементов стороны матрицы");
+                bool normulb = int.TryParse(Console.ReadLine(), out nb);
+                Console.WriteLine("Введите кол-во элементов стороны матрицы");
+                bool normulikb = int.TryParse(Console.ReadLine(), out mb);
+                if ((nb < 3) || (mb < 3))
+                {
+                    Console.WriteLine("Слишком мало");
+                    return;
+                }
+                if (!normulb || !normulikb)
+                {
+                    Console.WriteLine("Вы ввели что-то не то");
+                    return;
+                }
+
+
+                double[,] b = new double[nb, mb];
+
+
+                Console.WriteLine($"Введите значения матрицы через пробел {nb}x{mb} ");
+                for (int i = 0; i < nb; i++)
+                {
+
+                    string s = Console.ReadLine();
+                    string[] c = s.Split(' ');
+                    for (int j = 0; j < mb; j++)
+                    {
+
+                        if ((c.Length < mb) || (c.Length > mb))
+                        {
+                            Console.WriteLine($"Длина массива не может быть меньше или больше {mb} ");
+                            break;
+                        }
+
+                        bool norm = double.TryParse(c[j], out b[i, j]);
+                        if (!norm)
+                        {
+                            Console.WriteLine("Вы ввели что-то не так");
+                        }
+                    }
+
+                }
+                
+                #endregion
+
+                MAX(a, n,m);
+                MAX(b, nb, mb);
+                Console.WriteLine("Матрица1");
+
+
+                for (int i = 0; i < n; i++)
+                {
+                    for (int j = 0; j < m; j++)
+                    {
+                        Console.Write($"{a[i, j]} ");
+                    }
+                    Console.WriteLine();
+                }
+                Console.WriteLine();
+                
+                
+                Console.WriteLine("Матрица2");
+                for (int i = 0; i < nb; i++)
+                {
+                    for (int j = 0; j < mb; j++)
+                    {
+                        Console.Write($"{b[i, j]} ");
+                    }
+                    Console.WriteLine();
+                }
+                Console.WriteLine();
+                
+
+            }
+            #endregion
+            #region Task2L3
+            
+            static void L3N2()
+            {
+                SortDelegate Opana = new(SORT);
+                static double [,] STRIK (double [,] arr, int n, int m)
+                {
+                    for (int i = 0; i < n; i++)
+                    {
+                        double[] a = new double[m]; 
+                        for (int j = 0; j < m; j++)
+                        {
+                            a[j] =arr[i, j];
+                        }
+                        SORT(a, i);
+                        
+                        for (int k = 0; k < m; k++)
+                        {
+                            arr[i, k] = a[k];
+                        }
+                    }
+
+
+                    return arr;
+                }
+
+                
+                #region Matrix1
+                int n;
+                int m;
+                Console.WriteLine("Введите кол-во элементов стороны матрицы");
+                bool normul = int.TryParse(Console.ReadLine(), out n);
+                Console.WriteLine("Введите кол-во элементов стороны матрицы");
+                bool normulik = int.TryParse(Console.ReadLine(), out m);
+                if ((n < 3) || (m < 3))
+                {
+                    Console.WriteLine("Слишком мало");
+                    return;
+                }
+                if (!normul || !normulik)
+                {
+                    Console.WriteLine("Вы ввели что-то не то");
+                    return;
+                }
+
+
+                double[,] a = new double[n, m];
+
+
+                Console.WriteLine($"Введите значения матрицы через пробел {n}x{m} ");
+                for (int i = 0; i < n; i++)
+                {
+
+                    string s = Console.ReadLine();
+                    string[] c = s.Split(' ');
+                    for (int j = 0; j < m; j++)
+                    {
+
+                        if ((c.Length < m) || (c.Length > m))
+                        {
+                            Console.WriteLine($"Длина массива не может быть меньше или больше {m} ");
+                            break;
+                        }
+
+                        bool norm = double.TryParse(c[j], out a[i, j]);
+                        if (!norm)
+                        {
+                            Console.WriteLine("Вы ввели что-то не так");
+                        }
+                    }
+
+                }
+
+                #endregion
+
+                STRIK(a, n, m);
+
+                for (int i = 0; i < n; i++)
+                {
+                    for (int j = 0; j < m; j++)
+                    {
+                        Console.Write($"{a[i, j]} ");
+                    }
+                    Console.WriteLine();
+                }
+                Console.WriteLine();
+
+
+            }
+            #endregion
+            #region Task6L3
+
+            static void L3N6()
+            {
+                DiagDelegate POP = new(PIK);
+                static double[,] SWitch(double[,] arr, int n, int m, int [] puk)
+                {
+                    int indexD = puk[0];
+                    int indexS = puk[1];
+                    for (int i = 0; i < n; i++)
+                    {
+                        (arr[i, indexD], arr[i, indexS]) = (arr[i, indexS], arr[i, indexD]);
+                    }
+                    
+
+                    return arr;
+                }
+
+
+                #region Matrix1
+                int n;
+                
+                Console.WriteLine("Введите кол-во элементов стороны матрицы");
+                bool normul = int.TryParse(Console.ReadLine(), out n);
+                int m = n;
+                
+                if (n != 3)
+                {
+                    Console.WriteLine("Слишком мало");
+                    return;
+                }
+                if (!normul)
+                {
+                    Console.WriteLine("Вы ввели что-то не то");
+                    return;
+                }
+
+
+                double[,] a = new double[n, m];
+
+
+                Console.WriteLine($"Введите значения матрицы через пробел {n}x{m} ");
+                for (int i = 0; i < n; i++)
+                {
+
+                    string s = Console.ReadLine();
+                    string[] c = s.Split(' ');
+                    for (int j = 0; j < m; j++)
+                    {
+
+                        if ((c.Length < m) || (c.Length > m))
+                        {
+                            Console.WriteLine($"Длина массива не может быть меньше или больше {m} ");
+                            break;
+                        }
+
+                        bool norm = double.TryParse(c[j], out a[i, j]);
+                        if (!norm)
+                        {
+                            Console.WriteLine("Вы ввели что-то не так");
+                        }
+                    }
+
+                }
+
+                #endregion
+                int[] pip = new int[2];
+                pip = PIK(a, n,m);
+                SWitch(a, n, m, pip);
+
+                for (int i = 0; i < n; i++)
+                {
+                    for (int j = 0; j < m; j++)
+                    {
+                        Console.Write($"{a[i, j]} ");
+                    }
+                    Console.WriteLine();
+                }
+                Console.WriteLine();
+
+
+            }
+            #endregion
+
+
+            //L1N1();
+            //L1N2();
+            //L2N6();
+            //L2N10();
+            //L2N23();
+            //L3N2();
+            //L3N6();
+        }
+    }
+}
