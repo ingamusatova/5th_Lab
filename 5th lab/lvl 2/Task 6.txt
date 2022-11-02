@@ -1,0 +1,67 @@
+using System;
+using System.Data;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
+using System.Security;
+using System.Security.Cryptography;
+
+class Programm
+{
+    static List<double> Remove(List<double> A)
+    {
+        A.Remove(A.Max());
+        return A;
+    }
+    static void Main()
+    {
+        int n1 = 7, n2 = 8;
+        var A = new List<double>();
+        var B = new List<double>();
+
+        double x;
+
+        Console.WriteLine(" Enter elemets for first array");
+        for (int i = 0; i < n1; i++)
+        {
+            while (true)
+            {
+                if (!double.TryParse(Console.ReadLine(), out x))
+                {
+                    Console.WriteLine(" Incorrect data");
+                    continue;
+                }
+                A.Add(x);
+                break;
+            }
+        }
+
+        Console.WriteLine(" Enter elemets for second array");
+        for (int i = 0; i < n2; i++)
+        {
+            while (true)
+            {
+                if (!double.TryParse(Console.ReadLine(), out x))
+                {
+                    Console.WriteLine(" Incorrect data");
+                    continue;
+                }
+                B.Add(x);
+                break;
+            }
+        }
+
+        A = Remove(A);
+        B = Remove(B);
+
+        for (int i = 0; i < B.Count; i++)
+        {
+            A.Add(B[i]);
+        }
+
+        Console.WriteLine(" Array");
+        for (int i = 0; i < A.Count; i++)
+        {
+            Console.Write(A[i] + " ");
+        }
+    }
+}

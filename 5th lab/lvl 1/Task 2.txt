@@ -1,0 +1,134 @@
+using System;
+using System.Data;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
+using System.Security;
+using System.Security.Cryptography;
+
+class Programm
+{
+    static double area(double a, double b, double c)
+    {
+        if (a + b < c || a + c < b || b + c < a)
+        {
+            Console.WriteLine(" It's not a triangle");
+            return 0;
+        }
+        double p = (a + b + c) / 2;
+        return Math.Sqrt(p * (p - a) * (p - b) * (p - c));
+    }
+    static void Main()
+    {
+        double a, b, c;
+        Console.WriteLine(" Enter the side 'a' for S1");
+        while (true)
+        {
+            if (!double.TryParse(Console.ReadLine(), out a))
+            {
+                Console.WriteLine(" Incorrect format");
+                continue;
+            }
+            if (a < 0)
+            {
+                Console.WriteLine(" Side must be positive");
+                continue;
+            }
+            break;
+        }
+
+        Console.WriteLine(" Enter the side 'b' for S1");
+        while (true)
+        {
+            if (!double.TryParse(Console.ReadLine(), out b))
+            {
+                Console.WriteLine(" Incorrect format");
+                continue;
+            }
+            if (b < 0)
+            {
+                Console.WriteLine(" Side must be positive");
+                continue;
+            }
+            break;
+        }
+
+        Console.WriteLine(" Enter the side 'c' for S1");
+        while (true)
+        {
+            if (!double.TryParse(Console.ReadLine(), out c))
+            {
+                Console.WriteLine(" Incorrect format");
+                continue;
+            }
+            if (c < 0)
+            {
+                Console.WriteLine(" Side must be positive");
+                continue;
+            }
+            break;
+        }
+
+        double s1 = area(a, b, c);
+
+        double a1, b1, c1;
+        Console.WriteLine(" Enter the side 'a' for S2");
+        while (true)
+        {
+            if (!double.TryParse(Console.ReadLine(), out a1))
+            {
+                Console.WriteLine(" Incorrect format");
+                continue;
+            }
+            if (a1 < 0)
+            {
+                Console.WriteLine(" Side must be positive");
+                continue;
+            }
+            break;
+        }
+
+        Console.WriteLine(" Enter the side 'b' for S2");
+        while (true)
+        {
+            if (!double.TryParse(Console.ReadLine(), out b1))
+            {
+                Console.WriteLine(" Incorrect format");
+                continue;
+            }
+            if (b1 < 0)
+            {
+                Console.WriteLine(" Side must be positive");
+                continue;
+            }
+            break;
+        }
+
+        Console.WriteLine(" Enter the side 'c' for S2");
+        while (true)
+        {
+            if (!double.TryParse(Console.ReadLine(), out c1))
+            {
+                Console.WriteLine(" Incorrect format");
+                continue;
+            }
+            if (c1 < 0)
+            {
+                Console.WriteLine(" Side must be positive");
+                continue;
+            }
+            break;
+        }
+
+        double s2 = area(a1, b1, c1);
+
+        if (s2 < s1)
+        {
+            Console.WriteLine("S1:" + " " + s1);
+        }
+
+        if (s2 > s1)
+        {
+            Console.WriteLine("S2:" + " " + s2);
+        }
+    }
+}
