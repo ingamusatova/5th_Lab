@@ -65,7 +65,7 @@ namespace LaboratoryL2N23
             }
             return Tuple.Create(matrix, max5, index_i, index_j);
         }
-        static info[] sort_info(info[] max5, int n) //Sorting info[] structure by numbers so we can do fast insert in future
+        static void sort_info(info[] max5, int n) //Sorting info[] structure by numbers so we can do fast insert in future
         {
             for (int i = 0; i < n; i++)
             {
@@ -81,9 +81,8 @@ namespace LaboratoryL2N23
                     }
                 }
             }
-            return max5;
         }
-        static Tuple<double[,], info[]> fill_matrix(info[] max5, double[,] matrix, int index_i, int index_j)
+        static void fill_matrix(info[] max5, double[,] matrix, int index_i, int index_j)
         //Heavy algorithm for sure
         {
             for (int i = index_i; i < matrix.GetLength(0); i++)
@@ -97,7 +96,7 @@ namespace LaboratoryL2N23
                         max5[0].x = matrix[i,j];
                         max5[0].i = i;
                         max5[0].j = j;
-                        for (int ii = 1; ii < 5; ii++) //3rd for but really fast (O(n=5) ~ Ω(1))
+                        for (int ii = 1; ii < 5; ii++) //3rd for, but really fast (O(n=5) ~ Ω(1))
                         {
                             if (max5[ii - 1].x > max5[ii].x)
                             {
@@ -114,9 +113,8 @@ namespace LaboratoryL2N23
                 }
                 index_j = 0;
             }
-            return Tuple.Create(matrix, max5);
         }
-        static info[] sort_info_index(info[] max5) //Sorting info[] by i and j index for condition in line 160
+        static void sort_info_index(info[] max5) //Sorting info[] by i and j index for condition in line 160
         {
             for (int i = 0; i < 5; i++)
             {
@@ -138,7 +136,6 @@ namespace LaboratoryL2N23
                     }
                 }
             }
-            return max5;
         }
         static void printMatrix(double[,] matrix, info[] max, int n) //Literally
         {
@@ -157,18 +154,31 @@ namespace LaboratoryL2N23
             {
                 for (int j = 0; j < matrix.GetLength(1); j++)
                 {
-                    if (max[counter].i == i && max[counter].j == j)
+                    if (max[counter%5].i == i && max[counter%5].j == j)
                     {
-                        Console.Write($"{matrix[i,j] * 2} ");
-                        counter++;
-                        if (counter == 5)
+                        if (matrix[i,j] >= 0)
                         {
-                            counter = 0;
+                            Console.Write($"{matrix[i,j] * 2} ");
+                            counter++;
+                        }
+                        else 
+                        //For negative numbers (-4 -> -2)
+                        {
+                            Console.Write($"{matrix[i,j] / 2} ");
+                            counter++;
                         }
                     }
                     else
                     {
-                        Console.Write($"{matrix[i,j] / 2} ");
+                        if (matrix[i,j] >= 0)
+                        {
+                            Console.Write($"{matrix[i,j] / 2} ");
+                        }
+                        else
+                        //For negative numbers (-4 -> -8)
+                        {
+                            Console.Write($"{matrix[i,j] * 2} ");
+                        }
                     }
                 }
                 Console.WriteLine();
@@ -188,11 +198,12 @@ namespace LaboratoryL2N23
             double[,] matrix_1 = new double[n_1,m_1];
             info[] max5_1 = new info[5];
             int index_i, index_j;
-
+            
+            //Function mess
             (matrix_1, max5_1, index_i, index_j) = first_five_fill(max5_1, matrix_1, n_1, m_1);
-            max5_1 = sort_info(max5_1, 5);
-            (matrix_1, max5_1) = fill_matrix(max5_1, matrix_1, index_i, index_j);
-            max5_1 = sort_info_index(max5_1);
+            sort_info(max5_1, 5);
+            fill_matrix(max5_1, matrix_1, index_i, index_j);
+            sort_info_index(max5_1);
             
             //Second matrix
             int n_2, m_2;
@@ -202,10 +213,10 @@ namespace LaboratoryL2N23
             info[] max5_2 = new info[5];
             int index_i2, index_j2;
             
-            (matrix_2, max5_2, index_i2, index_j2) = first_five_fill(max5_1, matrix_1, n_1, m_1);
-            max5_2 = sort_info(max5_2, 5);
-            (matrix_2, max5_2) = fill_matrix(max5_2, matrix_2, index_i2, index_j2);
-            max5_2 = sort_info_index(max5_2);
+            (matrix_2, max5_2, index_i2, index_j2) = first_five_fill(max5_1, matrix_2, n_2, m_2);
+            sort_info(max5_2, 5);
+            fill_matrix(max5_2, matrix_2, index_i2, index_j2);
+            sort_info_index(max5_2);
 
             //Answer output
             print(matrix_1, max5_1, matrix_2, max5_2);
