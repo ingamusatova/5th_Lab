@@ -2,7 +2,7 @@ using System;
 
 namespace _5th_Lab
 {
-    class Program
+    class Theory
     {
         #region How to use Delegate. Example 1.
         delegate int DExample(int[] arr); // create a delegate with type: return int value, input: 1st param: int[]
