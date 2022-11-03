@@ -1,11 +1,12 @@
 using System;
+using System.Drawing;
 
 namespace _5th_Lab
 {
-    class Theory
+    class Program
     {
         #region How to use Delegate. Example 1.
-        delegate int DExample(int[] arr); // create a delegate with type: return int value, input: 1st param: int[]
+        delegate int LinkUsing(int[] arr); // create a delegate with type: return int value, input: 1st param: int[]
         static int GetLength(int[] arr) // create a 1st method with same params as ddelegate has
         {
             return arr.Length;
@@ -17,7 +18,7 @@ namespace _5th_Lab
                 sum += element;
             return sum;
         }
-        static int Calculate(DExample func, int[] arr, int count)
+        static int Calculate(LinkUsing func, int[] arr, int count)
         {
             int total = 0;
             for (int i = 0; i < count; i++)
@@ -29,7 +30,7 @@ namespace _5th_Lab
         #endregion
 
         #region How to use Delegate. Example 2.
-        delegate void DelegateExample(int[] arr); // create a delegate with type: return void (!!!), input: 1st param: int[]
+        delegate void SequenceUsing(int[] arr); // create a delegate with type: return void (!!!), input: 1st param: int[]
         static void Say(int[] arr) // create a 1st method with same params as ddelegate has
         {
             Console.WriteLine($"It is a {arr.GetType().ToString()}");
@@ -49,7 +50,7 @@ namespace _5th_Lab
                 part[k] = arr[i];
                 k++;
             }
-            DelegateExample severalWorks = Say; // if we call the severalWorks after that, it would call Say(int[] arr);
+            SequenceUsing severalWorks = Say; // if we call the severalWorks after that, it would call Say(int[] arr);
             severalWorks += Read; // if we call the severalWorks after that, it would call Say(int[] arr) and next Read(int[] arr);
             try
             {
@@ -64,6 +65,26 @@ namespace _5th_Lab
              */
         }
         #endregion
+        #region How to use Delegate. Example 3.
+        delegate double ChooseUsage(int[,] matrix, int row); // create a delegate with type: return double value, input: 2 param: int[,], int
+        static double GetAverageInTheRow(int[,] matrix, int row)
+        {
+            double avg = 0;
+            int columns = matrix.GetLength(1);
+            for (int i = 0; i < columns; i++)
+                avg += matrix[row, i] / columns;
+            return avg;
+        }
+        static double GetAverageInTheColumn(int[,] matrix, int column)
+        {
+            double avg = 0;
+            int rows = matrix.GetLength(0);
+            for (int i = 0; i < rows; i++)
+                avg += matrix[i, column] / rows;
+            return avg;
+        }
+        #endregion
+
         static int PolymorphMethod() { return 0; }
         static int PolymorphMethod(int number) { return number; }
         static int PolymorphMethod(ref int number) { return number; }   // either with modificator ref - you send a link to your variable
@@ -87,7 +108,25 @@ namespace _5th_Lab
 
         static void Main(string[] args)
         {
+
+            Console.WriteLine("Delegate example 1");
+            int[] array = new int[5] { 1, 0, 2, 0, 5 };
+            Calculate(GetLength, array, 3);
+            Calculate(GetSum, array, 3);
+
+            Console.WriteLine("Delegate example 2");
+
             Analyze(new int[5] { 1, 2, 3, 4, 5 }, 2, 4);
+
+            Console.WriteLine("Delegate example 3");
+
+            ChooseUsage select;
+            if (int.TryParse(Console.ReadLine(), out int sample))
+                select = GetAverageInTheRow;
+            else
+                select = GetAverageInTheColumn;
+            Console.WriteLine($"Average = {select(new int[2, 3] { { 1, 2, 0 }, { 11, 3, 9 } }, 1)}");
+
             return;
             #region OOP principles
 
