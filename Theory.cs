@@ -1,132 +1,374 @@
-﻿using System;
 
-namespace _5th_Lab
+namespace lab5
 {
-    class Program
+    internal class Program
     {
-        static int PolymorphMethod() { return 0; }
-        static int PolymorphMethod(int number) { return number; }
-        static int PolymorphMethod(ref int number) { return number; }   // either with modificator ref - you send a link to your variable
-    //    static int PolymorphMethod(out int number) { return number; } // or out - you get additional variale (use if you need >1 variable to return. But tuple is better)
-        static int PolymorphMethod(double anotherNumber) { return (int)anotherNumber; }
-        static int PolymorphMethod<T>(T yourType) { return yourType.GetHashCode(); } // general type
-
-        //     static T PolymorphMethod<T>(T yourType) { return number; } - cannot create since there is method with same input params
-        static double PolymorphMethod(int count, double[] array) 
+        #region Task3.2()
+        delegate double[] Matrix(double[] a);
+        Matrix Increasing = chet;
+        Matrix Decreasing = nechet;
+        static double[] nechet(double[] a)
         {
-            var sum = 0.0;
-            foreach(double value in array)
-            {
-                sum += value;
-            }
-            return sum + count;
+            Array.Sort(a);
+            Array.Reverse(a);
+            return a;
         }
-
-        static bool Compare(int left, int right) => left > right; // => it is lambda operator the same as { return }
-        static bool Compare(double left, double right) => left > right;
-
-        static void Main(string[] args)
+        static double[] chet(double[] a)
         {
-            #region OOP principles
-
-            /* You operation mith moduls. Modul can work with data he get or keep inside. 
-             * Moduls of higher lvl hould not know about lower ones.
-             * So your code will be safe and logical.
-             * 
-             * 
-             * What are you need?
-             * 
-             * Abstraction - noone shuld know HOW another modul (class / method) works.
-             * You have to provide input value and get the output.
-             * User interface shouldn't affect on the system's work.
-             * Also realization should not change the pattern (abstract scheme)
-             * 
-             * Encapsulation - do not provide more than asked.
-             * Another class or method shouldn't know about any field or method in your object (class, structure and so on) except you provide to it.
-             * Group your data in a single object. One object (entity) should know and do only that things that incuded or were gotten outside.
-             * 
-             * Inheritance - Inheritance is the method of acquiring features of the existing class into the new class with additional properties or methods.
-             * Also it is allow us to reach better incapsulation (up-cast).
-             * Inheritance can be from 1 to many (classes / interfaces) or from many to one (interfaces only). 
-             * So we can create an object (entity) with such properties we need and agregate in with another objects that have the same property.
-             * 
-             * Polymorphism - the most essential concept which allow any object or method has more than one name associated with it. And it allow your code be more flexible.
-             * Difference can be in the type it use, parameters it get.
-             * 
-             * In that lab you will have an acquaintance with polymorphism
-             * 
-             */
-
-            Console.WriteLine(PolymorphMethod());
-
-            Console.WriteLine(PolymorphMethod(10));
-
-            Console.WriteLine(PolymorphMethod(2.56));
-
-            Console.WriteLine(PolymorphMethod("Abracadabra")); // general type will be called, because no another method that suit to this type
-
-            Console.WriteLine(PolymorphMethod(5, new []{ 0.1223, 1.2, 8.9, -1.5 }));
-
-            #endregion
-
-            #region DRY - don't repeat yourself
-
-            /* Very simple advice :)
-             * You already did it, using cycle, for example instead maing calculation on each line
-             * 
-             * If you see that in your program is repeat, make a separate method and call it when it needs.
-             */
-
-            int numerator = 1, denominator = 1;
-
-
-            double sum = 0, average = 0;
-
-            if (numerator > denominator)
+            Array.Sort(a);
+            return a;
+        }
+        #endregion
+        #region Task3_3
+        delegate double[] vector(double[] a);
+        vector less = lesss;
+        vector more = moreee;
+        static double[] lesss(double[] a)
+        {
+            for (int i = a.Length - 1; i >= 0; i -= 2)
             {
-                Console.WriteLine(true);
-            }    
-            else
-            {
-                Console.WriteLine(false);
+                double temp = a[i];
+                a[i] = a[i - 1];
+                a[i - 1] = temp;
             }
-
-            if (sum > average)
+            return a;
+        }
+        static double[] moreee(double[] a)
+        {
+            for(int i = 0; i < a.Length; i+=2)
             {
-                Console.WriteLine(true);
+                double temp = a[i];
+                a[i] = a[i + 1];
+                a[i + 1] = temp;
             }
-            else
+            return a;
+
+        }
+        
+        #endregion
+    static void Main(string[] args)
+        {
+            task3_3();
+            static void print(double[,] a, int n, int m)
             {
-                Console.WriteLine(false);
+                for (int i = 0; i < n; i++)
+                {
+                    for (int j = 0; j < m; j++)
+                    {
+                        Console.Write(a[i, j]);
+                        Console.Write(" ");
+                    }
+                    Console.WriteLine();
+                }
             }
+            static int solution1_1(int n, int k)
+            {
+                int denominator = 1, denominator1 = 1, numerator = 1;
+                for (int i = 2; i <= n; i++)
+                    numerator *= i;
+                for (int i = 2; i <= n - k; i++)
+                    denominator1 *= i;
+                for (int i = 2; i <= k; i++)
+                    denominator *= i;
+                return (numerator / (denominator * denominator1));
+            }
+            static void task1_1()
+            {
+                Console.WriteLine(solution1_1(8, 5));
+                Console.WriteLine(solution1_1(10, 5));
+                Console.WriteLine(solution1_1(11, 5));
+            }
+            static double solution1_2(double a, double b, double c)
+            {
+                double p = (a + b + c) / 2;
+                return Math.Sqrt(p * (p - a) * (p - b) * (p - c));
+            }
+            static void task1_2()
+            {
+                double a1 = 3, b1 = 4, c1 = 5;
+                double a2 = 6, b2 = 7, c2 = 8;
+                if (a1 + b1 > c1 && a1 + c1 > b1 && b1 + c1 > a1)
+                {
+                    if (a2 + b2 > c2 && a2 + c2 > b2 && b2 + c2 > a2)
+                    {
+                        double square1 = solution1_2(a1, b1, c1);
+                        double square2 = solution1_2(a2, b2, c2);
+                        if (square1 > square2)
+                            Console.WriteLine($"The first triangle has bigger square {square1}");
+                        else
+                            Console.WriteLine($"The second triangle has bigger square {square2}");
+                    }
+                    else
+                    {
+                        Console.WriteLine("There is no such triangle");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("There is no such triangle");
+                }
+            }
+            static int[] sol2_6(int[] a, int index)
+            {
+                for (int i = a.Length - 1; i >= index; i--)
+                {
+                    a[i] = a[i - 1];
+                }
+                Array.Resize(ref a, a.Length - 1);
+                return a;
+            }
+            static void task2_6()
+            {
+                int[] a = new int[7] { 1, 2, 3, 4, 5, 6, 7 };
+                int[] b = new int[8] { 8, 9, 10, 11, 12, 13, 14, 15 };
+                int max1 = 0, index1 = 0;
+                int max2 = 0, index2 = 0;
+                for (int i = 0; i < a.Length; i++)
+                {
+                    if (a[i] > max1)
+                    {
+                        max1 = a[i];
+                        index1 = i;
+                    }
+                }
+                a = sol2_6(a, index1);
+                for (int i = 0; i < b.Length; i++)
+                {
+                    if (b[i] > max2)
+                    {
+                        max2 = b[i];
+                        index2 = i;
+                    }
+                }
+                int p = 0;
+                b = sol2_6(b, index2);
+                Array.Resize(ref a, a.Length + b.Length);
+                for (int i = a.Length - b.Length; i < a.Length; i++)
+                {
+                    a[i] = b[p];
+                    p++;
+                }
+                foreach (int i in a)
+                    Console.WriteLine(i);
+            }
+            static double[,] sol2_10(double[,] a, int index)
+            {
+                for (int i = 0; i < a.GetLength(0); i++)
+                {
+                    if (index != a.GetLength(1) - 1)
+                    {
+                        for (int j = index; j < a.GetLength(1) - 1; j++)
+                        {
+                            a[i, j] = a[i, j + 1];
+                        }
+                    }
+                    else break;
+                }
+                double[,] b = new double[a.GetLength(0), a.GetLength(1) - 1];
+                for (int i = 0; i < b.GetLength(0); i++)
+                    for (int j = 0; j < b.GetLength(1); j++)
+                        b[i, j] = a[i, j];
+                return b;
+            }
+            static void task2_10()
+            {
+                double[,] a = new double [4, 4] {{1,2,3,4},
+                                         {4,5,6,7},
+                                         {5,6,7,8},
+                                         {6,7,8,9}};
+                double max = -100000;
+                int indexj1 = 0;
+                for (int i = 0; i < a.GetLength(0); i++)
+                {
+                    for (int j = 0; j <= i; j++)
+                    {
+                        if (a[i, j] > max)
+                        {
+                            max = a[i, j];
+                            indexj1 = j;
+                        }
+                    }
+                }
+                double min = 100000;
+                int indexj2 = 0;
+                for (int i = 0; i < a.GetLength(0); i++)
+                {
+                    for (int j = a.GetLength(1) - 1; j > i; j--)
+                    {
+                        if (a[i, j] < min)
+                        {
+                            min = a[i, j];
+                            indexj2 = j;
+                        }
+                    }
+                }
+                a = sol2_10(a, indexj1);
+                if (indexj1 != indexj2)
+                {
+                    a = sol2_10(a, indexj2);
+                }
+                print(a, a.GetLength(0), a.GetLength(1));
+            }
+            static double[,] sol2_23(double[,] c, double[] max)
+            {
+                int p = 0;
+                for (int i = c.GetLength(0) - 1; i >= 0; i--)
+                {
+                    for (int j = c.GetLength(1) - 1; j >= 0; j--)
+                    {
+                        if (!max.Contains(c[i, j])) 
+                        {
+                            c[i, j] = c[i, j] / 2;
+                        }
+                        else if(p < 5)
+                        {
+                            c[i, j] = c[i, j] * 2;
+                            p++;
+                        }
+                    }
+                }
+                return c;
+            }
+            static void task2_23()
+            {
+                double[,] a = new double[4, 4] {{1,2,3,4},
+                                         {4,5,6,7},
+                                         {5,6,7,8},
+                                         {6,7,8,9}};
+                double[,] b = new double[4, 4] {{1,8,3,4},
+                                         {4,1,6,8},
+                                         {5,3,7,3},
+                                         {2,7,2,9}};
 
-            // Carry out the logic (DRY + Incapsilation + Polymorphism in such small example)) - look in the head of program
-            Compare(numerator, denominator);
-            Compare(sum, average);
-
-            #endregion
-
-            #region SOLID principles
-
-            /* single responsibility, open–closed, Liskov substitution, interface segregation и dependency inversion
-             * 
-             * S - Each class should keep everithing he need for work inside itself.
-             * O - Your program should be open for extentions but closed for changes. It is very difficlt to reach it, actually.
-             * L - Heirs should be able to use father's metods.
-             * I - Separate your program to interfaces and provide only what need in particular cases.
-             * D - One object shouldn't to talk another at the same level what to do. Use actions instead.
-             */
-
-            // We will work with SOLID closely at 7-8 & 10th labs.
-
-            #endregion
-            
-            #region Signature
-            /* Signature is a linguistic concept separate from the concept of syntax, which is also often related to attributes of computer programming languages.
-             * In c# for methods (and delegates) it includes full name (namespace, class(es), method name) and type, modificator (ref/out) and order of input parameters.
-             */
-             
-            #endregion
+                double[,] copya = a.Clone() as double[,];
+                double[,] copyb = b.Clone() as double[,];
+                double[] amax = new double[5];
+                double[] bmax = new double[5];
+                double max = -10000;
+                int p = 0;
+                int index1 = 0,index2 = 0;
+                for (int h = 0; h < 5; h++)
+                {
+                    for (int i = 0; i < a.GetLength(0); i++)
+                    {
+                        for (int j = 0; j < a.GetLength(1); j++)
+                        {
+                            if (a[i, j] > max)
+                            {
+                                max = a[i, j];
+                                index1 = i;
+                                index2 = j;
+                            }
+                        }
+                    }
+                    amax[p] = max;
+                    max = -10000;
+                    a[index1, index2] = 0;
+                    p++;
+                }
+                a = sol2_23(copya, amax);
+                //foreach (int i in amax)
+                //    Console.WriteLine(i);
+                p = 0;
+                for (int h = 0; h < 5; h++)
+                {
+                    for (int i = 0; i < b.GetLength(0); i++)
+                    {
+                        for (int j = 0; j < b.GetLength(1); j++)
+                        {
+                            if (b[i, j] > max)
+                            {
+                                max = b[i, j];
+                                index1 = i;
+                                index2 = j;
+                            }
+                        }
+                    }
+                    bmax[p] = max;
+                    max = -10000;
+                    b[index1, index2] = 0;
+                    p++;
+                }
+                b = sol2_23(copyb, bmax);
+                print(a, a.GetLength(0), a.GetLength(1));
+                Console.WriteLine();
+                print(b, b.GetLength(0), b.GetLength(1));
+                //foreach (int i in bmax)
+                //    Console.WriteLine(i);
+            }
+            static double[,] sol3_2(double[,] a)
+            {
+                for (int i = 0;i < a.GetLength(0);i++)
+                {
+                    if (i % 2 == 0)
+                    {
+                        double[] temp = new double[a.GetLength(1)];
+                        for(int j = 0; j < a.GetLength(0); j++)
+                            temp[j] = a[i,j];
+                        Program Pr = new Program();
+                        temp = Pr.Increasing(temp);
+                        for (int j = 0; j < a.GetLength(0); j++)
+                            a[i, j] = temp[j];
+                    }
+                    else
+                    {
+                        double[] temp = new double[a.GetLength(1)];
+                        for (int j = 0; j < a.GetLength(0); j++)
+                            temp[j] = a[i, j];
+                        Program Pr = new Program();
+                        temp = Pr.Decreasing(temp);
+                        for (int j = 0; j < a.GetLength(0); j++)
+                            a[i, j] = temp[j];
+                    }
+                }
+                return a;
+            }
+            static void task3_2()
+            {
+                double[,] a = new double[4, 4] { {1,5,3,2},
+                                                 {1,5,3,7},
+                                                 {5,2,4,9},
+                                                 {3,7,9,8}};
+                a = sol3_2(a);
+                print(a, a.GetLength(0), a.GetLength(1));
+            }
+            static double sol3_3(double[] a)
+            {
+                double s = 0;
+                for (int i = 0; i < a.Length; i++)
+                {
+                    if (i % 2 == 1)
+                    {
+                        s += a[i];
+                    }
+                }
+                return s;
+                
+            }
+            static void task3_3()
+            {
+                double[] a = new double[10] { 2, -5, -1, -8, 9, -7, -2, 7, -5, -9 };
+                int count = 1;
+                double s = 0;
+                for (int i = 0;i < a.Length;i++)
+                {
+                    s += a[i];
+                    count++;
+                }
+                double sr = s / count;
+                if (a[0] > sr)
+                {
+                    Program Pr = new Program();
+                    a = Pr.more(a);
+                }
+                else
+                {
+                    Program Pr = new Program();
+                    a = Pr.less(a);
+                }
+                var sum = sol3_3(a);
+                Console.WriteLine(sum);
+            }
         }
     }
 }
