@@ -4,15 +4,14 @@ namespace Lab5
     {
         #region Task3_2
         delegate double[] Raw_Poryad(double[] Ar);
-        Raw_Poryad Ybiv = GnomeSort;
-        Raw_Poryad Vosrast = InsertSort;
-        static double[] GnomeSort(double[] Ar)
+
+        static double[] Ybiv(double[] Ar)
         {
             int Index = 0;
             int Len = Ar.Length;
             while (Index < Len)
             {
-                if (Index == 0)    //Index == 0 ? Index++:continue;     - DOESN'T WORK!
+                if (Index == 0)
                     Index++;
                 if (Ar[Index] <= Ar[Index - 1])
                     Index++;
@@ -23,11 +22,12 @@ namespace Lab5
                     Ar[Index - 1] = temp;
                     Index--;
                 }
-                
+
             }
             return Ar;
         }
-        static double[] InsertSort(double[] Ar)
+
+        static double[] Vosrast(double[] Ar)
         {
             for (int i = 1; i < Ar.Length; i++)
             {
@@ -48,8 +48,7 @@ namespace Lab5
 
         #region Task3_6
         delegate int Max(double[,] Ar);
-        Max Diag= MaxDiag;
-        Max Perv= MaxPerv;
+
         static int MaxDiag(double[,] Ar)
         {
             int iMax = 0;
@@ -191,7 +190,7 @@ namespace Lab5
                     Console.WriteLine(x);
             }
 
-            static double[,] Sol2_10(double[,] Ar, int k, int l)
+            static double[,] Sol2_10(double[,] Ar, int k, int l) //k=2 l=3
             {
                 if (k != l)
                 {
@@ -199,11 +198,11 @@ namespace Lab5
                     for (int i = 0; i != Ar.GetLength(0); i++)
                     {
                         int count = 0;
-                        for (int j = 0; j != Ar.GetLength(0); j++)
+                        for (int j =0; j != Ar.GetLength(0); j++)
                         {
-                            if (k != j & l != j)
+                            if (j!=k & l!=j)
                             {
-                                ArRes[i, j] = Ar[i, count];
+                                ArRes[i, count] = Ar[i, j];
                                 count++;
                             }
                         }
@@ -220,7 +219,7 @@ namespace Lab5
                         {
                             if (k != j)
                             {
-                                ArRes[i, j] = Ar[i, count];
+                                ArRes[i, count] = Ar[i, j];
                                 count++;
                             }
                         }
@@ -228,11 +227,11 @@ namespace Lab5
                     return ArRes;
                 }
 
-            }  //Maybe there are some CLEVER & FASTER ways to delete column | raw?
+            }  
             static void Task2_10()
             {
-                double[,] Ar = new double[4, 4] { { 10,-12, 2, 3},
-                                                  { 5.1, 6, -3.1,-100},
+                double[,] Ar = new double[4, 4] { { 10,-12, 2, 3}, 
+                                                  { 5.1, 6, -3.1,-10},
                                                   { 9,10, 13, 10 },
                                                   { -10,13, 14, 15}};
 
@@ -263,7 +262,7 @@ namespace Lab5
                         }
                     }
                 }
-                //Console.WriteLine($"{iMax}   {jMax}  {Max}   {iMin}   {jMin}   {Min}");
+                
                 Ar = Sol2_10(Ar, jMin, jMax);
                 Print(Ar, Ar.GetLength(0), Ar.GetLength(1));
             }
@@ -321,6 +320,7 @@ namespace Lab5
                                                   { -1,0,-12,-124} };
                 for (int i = 0; i != Ar.GetLength(0); i++)
                 {
+                    Raw_Poryad select;
                     if (i % 2 == 0)
                     {
                         double[] temp = new double[Ar.GetLength(1)];
@@ -329,8 +329,8 @@ namespace Lab5
                             temp[j] = Ar[i, j];
                         }
 
-                        Program Pr = new Program();
-                        temp = Pr.Vosrast(temp);
+                        select = Vosrast;
+                        temp = select(temp);
 
                         for (int j = 0; j != Ar.GetLength(1); j++)
                         {
@@ -345,8 +345,8 @@ namespace Lab5
                         {
                             temp[j] = Ar[i, j];
                         }
-                        Program Pr = new Program();
-                        temp = Pr.Ybiv(temp);
+                        select = Ybiv;
+                        temp = select(temp);
                         for (int j = 0; j != Ar.GetLength(1); j++)
                         {
                             Ar[i, j] = temp[j];
@@ -357,7 +357,11 @@ namespace Lab5
                 Print(Ar, Ar.GetLength(0), Ar.GetLength(1));
             }
 
-            static double[,] Change(double[,] Ar,int k,int j)
+            static int UsingDelegate(Max func, double[,] Ar)
+            {
+                return func(Ar);
+            }
+            static double[,] Change(double[,] Ar, int k, int j)
             {
                 for (int i = 0; i != Ar.GetLength(0); i++)
                 {
@@ -374,14 +378,15 @@ namespace Lab5
                                                   { 9, -10, 11, 12 },
                                                   { -13, -14, -15, -1 }};
                 Program pr = new Program();
-                int k = pr.Diag(Ar);
-                int j = pr.Perv(Ar);
+                int k = UsingDelegate(MaxDiag, Ar);
+                int j = UsingDelegate(MaxPerv, Ar);
 
                 Ar = Change(Ar, k, j);
                 Print(Ar, Ar.GetLength(0), Ar.GetLength(1));
             }
 
-            Task3_6();
+
+            Task2_10();
         }
     }
 }
