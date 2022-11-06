@@ -40,6 +40,9 @@ namespace _5th_Lab
                 case 2:
                     Console.WriteLine("Result: t1 < t2");
                     break;
+                default:
+                    Console.WriteLine("Entered values is incorrect!");
+                    break;
             }
 
             Console.WriteLine();
@@ -65,6 +68,12 @@ namespace _5th_Lab
             for (int i = 0; i < secondArray.Length; i++)
                 Console.Write($"{secondArray[i]} ");
             Console.WriteLine();
+
+            int firstMaxIndex = ArrayMaxIndex(firstArray);
+            int secondMaxIndex = ArrayMaxIndex(secondArray);
+
+            firstArray = ArrayRemoveAt(firstArray, firstMaxIndex);
+            secondArray = ArrayRemoveAt(secondArray, secondMaxIndex);
 
             firstArray = ArrayUnite(firstArray, secondArray);
 
@@ -101,10 +110,9 @@ namespace _5th_Lab
 
             matrix = new int[,]
             {
-                { 0, 4, 5, 1 },
-                { 3, 6, 8, 2 },
-                { 5, 0, 12, 11 },
-                { 4, 3, 7, 5 }
+                { 0, -2, -4 },
+                { -6, -8, -10 },
+                { -12, -14, -16 }
             };
 
             int[,] matrix2 = new int[,]
@@ -207,8 +215,23 @@ namespace _5th_Lab
             return combination;
         }
 
+
+        static bool TriangleExists((int a, int b, int c) t)
+        {
+            if (t.a >= t.b + t.c)
+                return false;
+            if (t.b >= t.a + t.c)
+                return false;
+            if (t.c >= t.b + t.c)
+                return false;
+            return true;
+        }
+
         static int CompareTriangles((int a, int b, int c) t1, (int a, int b, int c) t2)
         {
+            if (!TriangleExists(t1) || !TriangleExists(t2))
+                return -1;
+
             bool hasNegativeValues = t1.a < 0 ||
                 t1.b < 0 ||
                 t1.c < 0 ||
@@ -251,13 +274,7 @@ namespace _5th_Lab
 
         static int[] ArrayUnite(int[] firstArray, int[] secondArray)
         {
-            int[] newArray = new int[firstArray.Length + secondArray.Length - 2];
-
-            int firstMaxIndex = ArrayMaxIndex(firstArray);
-            int secondMaxIndex = ArrayMaxIndex(secondArray);
-
-            firstArray = ArrayRemoveAt(firstArray, firstMaxIndex);
-            secondArray = ArrayRemoveAt(secondArray, secondMaxIndex);
+            int[] newArray = new int[firstArray.Length + secondArray.Length];
 
             int newIndex = 0;
 
@@ -384,7 +401,11 @@ namespace _5th_Lab
             {
                 for (int j = 0; j < columns; j++)
                 {
-                    matrix[i, j] *= 2;
+                    if (matrix[i, j] >= 0)
+                        matrix[i, j] *= 2;
+                    else
+                        matrix[i, j] /= 2;
+
                     elementChangedCount++;
 
                     if (elementChangedCount == 5)
@@ -415,7 +436,12 @@ namespace _5th_Lab
                     j = nextJ;
 
                 for (; j < columns; j++)
-                    matrix[i, j] /= 2;
+                {
+                    if (matrix[i, j] >= 0)
+                        matrix[i, j] /= 2;
+                    else
+                        matrix[i, j] *= 2;
+                }
             }
         }
 
