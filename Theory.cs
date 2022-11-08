@@ -1,12 +1,16 @@
 
+using System;
+
 namespace lab5
 {
     internal class Program
     {
-        #region Task3.2()
+
         delegate double[] Matrix(double[] a);
         Matrix Increasing = chet;
         Matrix Decreasing = nechet;
+        Matrix less = lesss;
+        Matrix more = moreee;
         static double[] nechet(double[] a)
         {
             Array.Sort(a);
@@ -18,11 +22,6 @@ namespace lab5
             Array.Sort(a);
             return a;
         }
-        #endregion
-        #region Task3_3
-        delegate double[] vector(double[] a);
-        vector less = lesss;
-        vector more = moreee;
         static double[] lesss(double[] a)
         {
             for (int i = a.Length - 1; i >= 0; i -= 2)
@@ -35,20 +34,17 @@ namespace lab5
         }
         static double[] moreee(double[] a)
         {
-            for(int i = 0; i < a.Length; i+=2)
+            for (int i = 0; i < a.Length; i += 2)
             {
                 double temp = a[i];
                 a[i] = a[i + 1];
                 a[i + 1] = temp;
             }
             return a;
-
         }
-        
-        #endregion
-    static void Main(string[] args)
+        static void Main(string[] args)
         {
-            task3_3();
+            task2_23();
             static void print(double[,] a, int n, int m)
             {
                 for (int i = 0; i < n; i++)
@@ -63,14 +59,12 @@ namespace lab5
             }
             static int solution1_1(int n, int k)
             {
-                int denominator = 1, denominator1 = 1, numerator = 1;
+                int denominator = 1, numerator = 1;
                 for (int i = 2; i <= n; i++)
                     numerator *= i;
                 for (int i = 2; i <= n - k; i++)
-                    denominator1 *= i;
-                for (int i = 2; i <= k; i++)
                     denominator *= i;
-                return (numerator / (denominator * denominator1));
+                return (numerator / denominator);
             }
             static void task1_1()
             {
@@ -172,7 +166,7 @@ namespace lab5
             }
             static void task2_10()
             {
-                double[,] a = new double [4, 4] {{1,2,3,4},
+                double[,] a = new double[4, 4] {{1,2,3,4},
                                          {4,5,6,7},
                                          {5,6,7,8},
                                          {6,7,8,9}};
@@ -209,104 +203,92 @@ namespace lab5
                 }
                 print(a, a.GetLength(0), a.GetLength(1));
             }
-            static double[,] sol2_23(double[,] c, double[] max)
+            static double[,] sol2_23(double[,] a, double[] max, int[] index_i, int[] index_j)
             {
-                int p = 0;
-                for (int i = c.GetLength(0) - 1; i >= 0; i--)
+                for (int i = 0; i < max.Length; i++)
                 {
-                    for (int j = c.GetLength(1) - 1; j >= 0; j--)
+                    if (max[i] > 0)
+                        max[i] *= 2;
+                    else
+                        max[i] /= 2;
+                }
+                for (int i = 0; i < a.GetLength(0); i++)
+                {
+                    for (int j = 0; j < a.GetLength(1); j++)
                     {
-                        if (!max.Contains(c[i, j])) 
-                        {
-                            c[i, j] = c[i, j] / 2;
-                        }
-                        else if(p < 5)
-                        {
-                            c[i, j] = c[i, j] * 2;
-                            p++;
-                        }
+                        if (a[i, j] > 0)
+                            a[i, j] /= 2;
+                        else
+                            a[i, j] *= 2;
                     }
                 }
-                return c;
+                for (int i = 0; i < 5; i++)
+                {
+                    a[index_i[i], index_j[i]] = max[i];
+                }
+                return a;
             }
             static void task2_23()
             {
-                double[,] a = new double[4, 4] {{1,2,3,4},
-                                         {4,5,6,7},
-                                         {5,6,7,8},
-                                         {6,7,8,9}};
-                double[,] b = new double[4, 4] {{1,8,3,4},
-                                         {4,1,6,8},
-                                         {5,3,7,3},
-                                         {2,7,2,9}};
-
-                double[,] copya = a.Clone() as double[,];
-                double[,] copyb = b.Clone() as double[,];
-                double[] amax = new double[5];
-                double[] bmax = new double[5];
-                double max = -10000;
-                int p = 0;
-                int index1 = 0,index2 = 0;
-                for (int h = 0; h < 5; h++)
+                double[,] a = new double[4, 4] { {-1,-2,-3,-4},
+                                                 {-4,-5,-6,-7},
+                                                 {5,-6,-7,-8},
+                                                 {6,-7,8,-9}};
+                double[] max = new double[5];
+                int[] index_i = new int[5];
+                int[] index_j = new int[5];
+                for (int i = 0; i < 5; i++)
+                {
+                    max[i] = -10000;
+                }
+                index_i[0] = 0;
+                index_j[0] = 0;
+                for (int c = 0; c < 5; c++)
                 {
                     for (int i = 0; i < a.GetLength(0); i++)
                     {
                         for (int j = 0; j < a.GetLength(1); j++)
                         {
-                            if (a[i, j] > max)
+                            if (a[i, j] > max[c])
                             {
-                                max = a[i, j];
-                                index1 = i;
-                                index2 = j;
+                                bool f = true;
+                                for (int d = 0; d < c; d++)
+                                {
+                                    if (index_i[d] == i && index_j[d] == j)
+                                    {
+                                        f = false;
+                                        break;
+                                    }
+                                }
+                                if (f)
+                                {
+                                    max[c] = a[i, j];
+                                    index_i[c] = i;
+                                    index_j[c] = j;
+                                }
                             }
                         }
                     }
-                    amax[p] = max;
-                    max = -10000;
-                    a[index1, index2] = 0;
-                    p++;
                 }
-                a = sol2_23(copya, amax);
-                //foreach (int i in amax)
-                //    Console.WriteLine(i);
-                p = 0;
-                for (int h = 0; h < 5; h++)
+                for (int i = 0; i < 5; i++)
                 {
-                    for (int i = 0; i < b.GetLength(0); i++)
-                    {
-                        for (int j = 0; j < b.GetLength(1); j++)
-                        {
-                            if (b[i, j] > max)
-                            {
-                                max = b[i, j];
-                                index1 = i;
-                                index2 = j;
-                            }
-                        }
-                    }
-                    bmax[p] = max;
-                    max = -10000;
-                    b[index1, index2] = 0;
-                    p++;
+                    Console.WriteLine($"{max[i]}, {index_i[i]}, {index_j[i]}");
                 }
-                b = sol2_23(copyb, bmax);
-                print(a, a.GetLength(0), a.GetLength(1));
                 Console.WriteLine();
-                print(b, b.GetLength(0), b.GetLength(1));
-                //foreach (int i in bmax)
-                //    Console.WriteLine(i);
+                a = sol2_23(a, max, index_i, index_j);
+                print(a, a.GetLength(0), a.GetLength(1));
             }
+
             static double[,] sol3_2(double[,] a)
             {
-                for (int i = 0;i < a.GetLength(0);i++)
+                for (int i = 0; i < a.GetLength(0); i++)
                 {
                     if (i % 2 == 0)
                     {
                         double[] temp = new double[a.GetLength(1)];
-                        for(int j = 0; j < a.GetLength(0); j++)
-                            temp[j] = a[i,j];
-                        Program Pr = new Program();
-                        temp = Pr.Increasing(temp);
+                        for (int j = 0; j < a.GetLength(0); j++)
+                            temp[j] = a[i, j];
+                        temp = chet(temp);
                         for (int j = 0; j < a.GetLength(0); j++)
                             a[i, j] = temp[j];
                     }
@@ -315,8 +297,7 @@ namespace lab5
                         double[] temp = new double[a.GetLength(1)];
                         for (int j = 0; j < a.GetLength(0); j++)
                             temp[j] = a[i, j];
-                        Program Pr = new Program();
-                        temp = Pr.Decreasing(temp);
+                        temp = nechet(temp);
                         for (int j = 0; j < a.GetLength(0); j++)
                             a[i, j] = temp[j];
                     }
@@ -330,7 +311,15 @@ namespace lab5
                                                  {5,2,4,9},
                                                  {3,7,9,8}};
                 a = sol3_2(a);
-                print(a, a.GetLength(0), a.GetLength(1));
+                for (int i = 0; i < a.GetLength(0); i++)
+                {
+                    for (int j = 0; j < a.GetLength(1); j++)
+                    {
+                        Console.Write(a[i, j]);
+                        Console.Write(' ');
+                    }
+                    Console.WriteLine();
+                }
             }
             static double sol3_3(double[] a)
             {
@@ -343,14 +332,14 @@ namespace lab5
                     }
                 }
                 return s;
-                
+
             }
             static void task3_3()
             {
                 double[] a = new double[10] { 2, -5, -1, -8, 9, -7, -2, 7, -5, -9 };
                 int count = 1;
                 double s = 0;
-                for (int i = 0;i < a.Length;i++)
+                for (int i = 0; i < a.Length; i++)
                 {
                     s += a[i];
                     count++;
@@ -358,13 +347,11 @@ namespace lab5
                 double sr = s / count;
                 if (a[0] > sr)
                 {
-                    Program Pr = new Program();
-                    a = Pr.more(a);
+                    a = moreee(a);
                 }
                 else
                 {
-                    Program Pr = new Program();
-                    a = Pr.less(a);
+                    a = lesss(a);
                 }
                 var sum = sol3_3(a);
                 Console.WriteLine(sum);
