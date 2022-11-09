@@ -4,17 +4,19 @@ namespace LaboratoryL3N2
 {
     class Program
     {
-        public delegate double[] sorting(double[] line);
-        public static double[] ascending(double[] line)
+        public delegate void sorting(double[] line);
+        public static void ascending(double[] line)
         {
             Array.Sort(line);
-            return line;
         }
-        public static double[] descending(double[] line)
+        public static void descending(double[] line)
         {
             Array.Sort(line);
             Array.Reverse(line);
-            return line;
+        }
+        static void sort_method(sorting method, double[] line)
+        {
+            method(line);
         }
         static void print(double[] line)
         {
@@ -59,8 +61,7 @@ namespace LaboratoryL3N2
                 }
             }
             
-            sorting asc = ascending;
-            sorting desc = descending;
+
             double[] line = new double[m];
             for (int i = 0; i < n; i++)
             {
@@ -70,11 +71,11 @@ namespace LaboratoryL3N2
                 }
                 if (i % 2  == 0)
                 {
-                    asc(line);
+                    sort_method(ascending, line);
                 }
                 else
                 {
-                    desc(line);
+                    sort_method(descending, line);
                 }
                 print(line);
             }

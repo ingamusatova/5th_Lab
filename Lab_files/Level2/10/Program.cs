@@ -26,16 +26,36 @@ namespace LaboratoryL2N10
             }
             return n;
         }
-        static void PrintWithoutColumns(double[,] array, int index1, int index2)
+        static double[,] RemoveColumns(double[,] array, int index1, int index2)
         {
-            for (int i = 0; i < array.GetLength(0); i++)
+            int height = array.GetLength(0), width = array.GetLength(1) - 2;
+            if (index1 == index2)
             {
-                for (int j = 0; j < array.GetLength(0); j++)
+                width++;
+            }
+            double[,] final_matrix = new double[height, width];
+
+            for (int i = 0; i < height; i++)
+            {
+                int index_j = 0;
+                for (int j = 0; j < array.GetLength(1); j++)
                 {
                     if ((j == index1) || (j == index2))
                     {
                         continue;
                     }
+                    final_matrix[i,index_j] = array[i,j];
+                    index_j++;
+                }
+            }
+            return final_matrix;
+        }
+        static void print(double[,] array)
+        {
+            for (int i = 0; i < array.GetLength(0); i++)
+            {
+                for (int j = 0; j < array.GetLength(1); j++)
+                {
                     Console.Write($"{array[i,j]} ");
                 }
                 Console.WriteLine();
@@ -74,8 +94,9 @@ namespace LaboratoryL2N10
                 }
             }
 
+            array = RemoveColumns(array, index_upper, index_under);
             
-            PrintWithoutColumns(array, index_under, index_upper);
+            print(array);
         }
     }
 }

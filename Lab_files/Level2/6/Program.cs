@@ -30,15 +30,18 @@ namespace LaboratoryL2N6
             }
             return n;
         }
-        static void Print(double[] array1, double[] array2)
+        static void fill(double[] array1, double[] array2)
+        {
+            for (int i = 6; i < 13; i++)
+            {
+                array1[i] = array2[i-6];
+            }
+        }
+        static void Print(double[] array1)
         {
             for (int i = 0; i < array1.Length; i++)
             {
                 Console.Write($"{array1[i]} ");
-            }
-            for (int i = 0; i < array2.Length; i++)
-            {
-                Console.Write($"{array2[i]} ");
             }
         }
         static void Main(string[] args)
@@ -72,7 +75,10 @@ namespace LaboratoryL2N6
             array_A = Remove(array_A, index_A);
             array_B = Remove(array_B, index_B);
             
-            Print(array_A, array_B);
+            Array.Resize(ref array_A, 13);
+            fill(array_A, array_B);
+
+            Print(array_A);
         }
     }
 }

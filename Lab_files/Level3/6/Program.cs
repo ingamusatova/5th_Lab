@@ -4,24 +4,36 @@ namespace LaboratoryL3N6
 {
     class Program
     {
-        public delegate Tuple<double, int> max_element(double x, int i, int j, int index, double maxim);
-        public static Tuple<double, int> diagonal(double x, int i, int j, int index, double maxim)
+        public delegate int max_element(double[,] matrix);
+        static int diagonal(double[,] matrix)
         {
-            if (i == j && maxim < x) 
+            double maxim = -100000000000;
+            int index = 0;
+
+            for (int i = 0; i < matrix.GetLength(0); i++)
             {
-                maxim = x;
-                index = j;
+                if (matrix[i, i] > maxim)
+                {
+                    maxim = matrix[i, i];
+                    index = i;
+                }
             }
-            return Tuple.Create(maxim, index);
+            return index;
         }
-        public static Tuple<double, int> row(double x, int i, int j, int index, double maxim)
+        static int row(double[,] matrix)
         {
-            if (i == 0 && maxim < x) 
+            double maxim = -100000000000;
+            int index = 0;
+
+            for (int i = 0; i < matrix.GetLength(1); i++)
             {
-                maxim = x;
-                index = j;
+                if (matrix[0, i] > maxim)
+                {
+                    maxim = matrix[i, i];
+                    index = i;
+                }
             }
-            return Tuple.Create(maxim, index);
+            return index;
         }
         static int input_int() //Int input for size
         {
@@ -45,20 +57,17 @@ namespace LaboratoryL3N6
             }
             return n;
         }
-        static int max(int a, int b)
+        
+        static void swap(max_element for_row, max_element for_diagonal, double[,] matrix)
         {
-            if (a >= b)
+            int index_diagonal = for_diagonal(matrix);
+            int index_row = for_row(matrix);
+            for (int i = 0; i < matrix.GetLength(0); i++)
             {
-                return a;
+                double temp = matrix[i, index_diagonal];
+                matrix[i, index_diagonal] = matrix[i, index_row];
+                matrix[i, index_row] = temp;
             }
-            return b;
-        }
-
-        static void swap(double[,] matrix, int i, int a, int b)
-        {
-            double temp = matrix[i,a];
-            matrix[i,a] = matrix[i,b];
-            matrix[i,b] = temp;
         }
         static void print(double[,] matrix)
         {
@@ -75,12 +84,6 @@ namespace LaboratoryL3N6
         {
             int n = input_int();
             int m = input_int();
-           
-            max_element r = row;
-            max_element d = diagonal;
-
-            double max_first_row = -1000000000000, max_diagonal = -10000000000;
-            int index_row = 0, index_diagonal = 0;
             double[,] matrix = new double[n,m];
 
             for (int i = 0; i < n; i++)
@@ -88,29 +91,14 @@ namespace LaboratoryL3N6
                 for (int j = 0; j < m; j++)
                 {
                     matrix[i,j] = input(i,j);
-                    (max_diagonal, index_diagonal) = d(matrix[i,j], i, j, index_diagonal, max_diagonal);
-                    (max_first_row, index_row) = r(matrix[i,j], i, j, index_row, max_first_row);
                 }
             }
             
             Console.WriteLine("Matrix before manipulation");
             print(matrix);
 
-            int index_last = max(index_diagonal, index_row);
-            int index_first = index_diagonal+ index_row - index_last;
-
-            for (int i = 0; i < n; i++)
-            {
-                for (int j = 0; j < m; j++)
-                {
-                    if (j == index_last)
-                    {
-                        swap(matrix, i, index_last, index_first);
-                    }
-                }
-            }
-
             Console.WriteLine("Matrix after manipulation");
+            swap(row, diagonal, matrix);
             print(matrix);
         }
     }

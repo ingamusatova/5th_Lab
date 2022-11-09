@@ -43,78 +43,56 @@ namespace LaboratoryL2N23
             }
             return n;
         }
-        static Tuple<double[,], info[], int, int> first_five_fill(info[] max5, double[,] matrix, int n, int m)
-        //First five elements of the matrix (They are also max by default, thats why im calling info[] structure)
+        static void fill_matrix(double[,] matrix, double[] array, int n, int m)
         {
-            int counter = 0, index_i = 0,  index_j = 0;
-            while (counter != 5)
-            {
-                matrix[index_i,index_j] = input(index_i,index_j);
-                
-                max5[counter].x = matrix[index_i,index_j]; 
-                max5[counter].i = index_i;
-                max5[counter].j = index_j;
-
-                index_j++;
-                if ((index_j % m) == 0)
-                {
-                    index_j = 0;
-                    index_i++;
-                }
-                counter++;
-            }
-            return Tuple.Create(matrix, max5, index_i, index_j);
-        }
-        static void sort_info(info[] max5, int n) //Sorting info[] structure by numbers so we can do fast insert in future
-        {
+            int k = 0;
             for (int i = 0; i < n; i++)
             {
-                double minim = max5[i].x;
-                for (int j = i + 1; j < n; j++)
-                {
-                    if (minim > max5[j].x)
-                    {
-                        minim = max5[j].x;
-                        info temp = max5[i];
-                        max5[i] = max5[j];
-                        max5[j] = temp;
-                    }
-                }
-            }
-        }
-        static void fill_matrix(info[] max5, double[,] matrix, int index_i, int index_j)
-        //Heavy algorithm for sure
-        {
-            for (int i = index_i; i < matrix.GetLength(0); i++)
-            {
-                for (int j = index_j; j < matrix.GetLength(1); j++) //Iterating through every cell in matrix
-                //Notice, that im starting from index_j and index_i variables, cuz it is the last spot from first_five_fill function
+                for (int j = 0; j < m; j++)
                 {
                     matrix[i,j] = input(i,j);
-                    if (matrix[i,j] > max5[0].x)
-                    {
-                        max5[0].x = matrix[i,j];
-                        max5[0].i = i;
-                        max5[0].j = j;
-                        for (int ii = 1; ii < 5; ii++) //3rd for, but really fast (O(n=5) ~ Ω(1))
-                        {
-                            if (max5[ii - 1].x > max5[ii].x)
-                            {
-                                info tmp = max5[ii];
-                                max5[ii] = max5[ii - 1];
-                                max5[ii - 1] = tmp;
-                            }
-                            else
-                            {
-                                break;
-                            }
-                        }
-                    }
+                    array[k] = matrix[i,j];
+                    k++;
                 }
-                index_j = 0;
             }
         }
-        static void sort_info_index(info[] max5) //Sorting info[] by i and j index for condition in line 160
+        static void fill_info(info[] max_5, double[] array, int n, int m)
+        {
+            int k = 0;
+            int size = n*m;
+            int[] index = new int[n*m];
+            for (int i = 0; i < size; i++)
+            {
+                index[i] = i;
+            }
+
+            for (int i = 0; i < size; i++)
+            {
+                double maxim = array[i];
+                int temp_index = index[i];
+                for (int j = i+1; j < size; j++)
+                {
+                    if (array[j] > maxim)
+                    {
+                        maxim = array[j];
+                        array[j] = array[i];
+                        array[i] = maxim;
+                        temp_index = index[j];
+                        index[j] = index[i];
+                        index[i] = temp_index;
+                    }
+                }
+                max_5[k].x = maxim;
+                max_5[k].i = temp_index / m;
+                max_5[k].j = temp_index % m;
+                k++;
+                if (k == 5)
+                {
+                    break;
+                }
+            }
+        }
+        static void sort_info_index(info[] max5)
         {
             for (int i = 0; i < 5; i++)
             {
@@ -197,26 +175,28 @@ namespace LaboratoryL2N23
 
             double[,] matrix_1 = new double[n_1,m_1];
             info[] max5_1 = new info[5];
-            int index_i, index_j;
+            double[] array_1 = new double[n_1 * m_1];
+            
             
             //Function mess
-            (matrix_1, max5_1, index_i, index_j) = first_five_fill(max5_1, matrix_1, n_1, m_1);
-            sort_info(max5_1, 5);
-            fill_matrix(max5_1, matrix_1, index_i, index_j);
+            fill_matrix(matrix_1, array_1, n_1, m_1);
+            fill_info(max5_1, array_1, n_1, m_1);
             sort_info_index(max5_1);
+
             
             //Second matrix
             int n_2, m_2;
             (n_2, m_2) = get_nm();
 
-            double[,] matrix_2 = new double[n_1,m_1];
+            double[,] matrix_2 = new double[n_2, m_2];
             info[] max5_2 = new info[5];
-            int index_i2, index_j2;
-            
-            (matrix_2, max5_2, index_i2, index_j2) = first_five_fill(max5_1, matrix_2, n_2, m_2);
-            sort_info(max5_2, 5);
-            fill_matrix(max5_2, matrix_2, index_i2, index_j2);
+            double[] array_2 = new double[n_2 * m_2];
+
+            //Functions
+            fill_matrix(matrix_2, array_2, n_2, m_2);
+            fill_info(max5_2, array_2, n_2, m_2);
             sort_info_index(max5_2);
+
 
             //Answer output
             print(matrix_1, max5_1, matrix_2, max5_2);
