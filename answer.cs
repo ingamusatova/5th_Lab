@@ -167,7 +167,7 @@ namespace _5_Lab {
 
             static void task_1_2() {
 
-                static (double, double, double) getMultipleDouble() { //Fix error returns
+                static (double, double, double) getMultipleDouble() {
                     string[] strNums = Console.ReadLine().Trim().Split();
 
                     if (strNums.Length != 3) {
@@ -200,10 +200,12 @@ namespace _5_Lab {
                     }
                     
                     double maxElem = Math.Max(t.Item1, Math.Max(t.Item2, t.Item3));
-                    if (t.Item1 + t.Item2 + t.Item3 - maxElem <= maxElem) {
+                    double suma = t.Item1 + t.Item2 + t.Item3;
+                    if (suma - maxElem <= maxElem) {
                         Console.WriteLine("Triangle isn`t correct.");
                         return false;
                     }
+
                     return true;
                 }
 
@@ -219,7 +221,9 @@ namespace _5_Lab {
                     return;
                 }
 
-                if (squareByGeron(t1) >= squareByGeron(t2)) {
+                if (squareByGeron(t1) == squareByGeron(t2)) {
+                    Console.WriteLine("Triangles are equal");
+                } else if (squareByGeron(t1) > squareByGeron(t2)) {
                     Console.WriteLine("The first trianle is larger");
                 } else {
                     Console.WriteLine("The second trianle is larger");
@@ -230,12 +234,13 @@ namespace _5_Lab {
             // Level 2 -----------------------
 
             static void task_2_6() {
-                static void deleteInd(ref double[] nums, int ind) {
+                static void deleteInd(double[] nums, int ind, out double[] _array) {
                     for (int i = ind + 1; i < nums.Length; i++) {
                         nums[i - 1] = nums[i];
                     }
 
                     Array.Resize(ref nums, nums.Length - 1);
+                    _array = nums;
                 }
 
                 static double findMaxElem(double[] nums) {
@@ -248,19 +253,21 @@ namespace _5_Lab {
                     return maxElem;
                 }
 
-                static void deleteMaxElems(ref double[] nums) {
+                static void deleteMaxElems(double[] nums, out double[] _array) {
                     double maxElem = findMaxElem(nums);
 
                     int curInd = 0;
 
                     while (curInd != nums.Length) {
                         if (nums[curInd] == maxElem) {
-                            deleteInd(ref nums, curInd);
+                            deleteInd(nums, curInd, out nums);
                             curInd--;
                         }
 
                         curInd++;
-                    }                 
+                    }
+
+                    _array = nums;
                 }
 
 
@@ -271,8 +278,8 @@ namespace _5_Lab {
                     return;
                 }
 
-                deleteMaxElems(ref a);
-                deleteMaxElems(ref b);
+                deleteMaxElems(a, out a);
+                deleteMaxElems(b, out b);
 
                 Array.Resize(ref a, a.Length + b.Length);
                 for (int i = b.Length - 1; i >= 0; i--) {
@@ -283,7 +290,7 @@ namespace _5_Lab {
             }
 
             static void task_2_10() {
-                static void deleteCol(ref double[,] matrix, int ind) {
+                static void deleteCol(double[,] matrix, int ind, out double[,] _matrix) {
                     double[,] result = new double[matrix.GetLength(0), matrix.GetLength(1) - 1];
 
                     for (int i = 0; i < matrix.GetLength(0); i++) {
@@ -297,27 +304,25 @@ namespace _5_Lab {
                         }
                     }
 
-                    matrix = result;
+                    _matrix = result;
                 }
 
 
                 double[,] matrix = getUnknownMatrix();
 
-                int maxInd = 0;
-                double maxElem = 0;
-                for (int i = 0; i < matrix.GetLength(0); i++) {
-                    for (int j = i + 1; j < matrix.GetLength(1); j++) {
-                        if (matrix[i, j] > maxElem) {
-                            maxElem = matrix[i, j];
-                            maxInd = j;
-                        }
-                    }
+                if (matrix == null) {
+                    return;
                 }
 
-                int minInd = 0;
-                double minElem = matrix[1, 0];
+                if (matrix.GetLength(0) != matrix.GetLength(1)) {
+                    Console.WriteLine("Matrix should be square");
+                    return;
+                }
+
+                int minInd = 1;
+                double minElem = matrix[0, 1];
                 for (int i = 0; i < matrix.GetLength(0); i++) {
-                    for (int j = 0; j < i; j++) {
+                    for (int j = i + 1; j < matrix.GetLength(1); j++) {
                         if (matrix[i, j] < minElem) {
                             minElem = matrix[i, j];
                             minInd = j;
@@ -325,11 +330,24 @@ namespace _5_Lab {
                     }
                 }
 
-                Console.WriteLine(maxElem);
-                Console.WriteLine(minElem);
 
-                deleteCol(ref matrix, Math.Max(maxInd, minInd));
-                deleteCol(ref matrix, Math.Min(maxInd, minInd));
+                int maxInd = 0;
+                double maxElem = 0;
+                for (int i = 0; i < matrix.GetLength(0); i++) {
+                    for (int j = 0; j <= i; j++) {
+                        if (matrix[i, j] > maxElem) {
+                            maxElem = matrix[i, j];
+                            maxInd = j;
+                        }
+                    }
+                }
+
+                if (maxInd == minInd) {
+                    deleteCol(matrix, maxInd, out matrix);
+                } else {
+                    deleteCol(matrix, Math.Max(maxInd, minInd), out matrix);
+                    deleteCol(matrix, Math.Min(maxInd, minInd), out matrix);
+                }
 
                 Console.WriteLine("Task 2.10 answer: ");
                 printMatrix(matrix);
@@ -359,7 +377,7 @@ namespace _5_Lab {
                     return new double?[5] { nums[0], nums[1], nums[2], nums[3], nums[4] };
                 }
 
-                static void updateMatrix(ref double[,] matrix) {
+                static void updateMatrix(double[,] matrix, out double[,] _matrix) {
                     double?[] nums = get5Maxs(matrix);
                     bool flag = true;
 
@@ -381,21 +399,33 @@ namespace _5_Lab {
                             }
                         }
                     }
+
+                    _matrix = matrix;
                 }
 
                 Console.WriteLine("Task 2.23 answer:");
 
 
                 double[,] matrix = getUnknownMatrix();
+
+                if (matrix == null) {
+                    return;
+                }
+
                 Console.WriteLine("For 1st matrix:");
-                updateMatrix(ref matrix);
+                updateMatrix(matrix, out matrix);
                 printMatrix(matrix);
 
                 Console.WriteLine();
 
                 matrix = getUnknownMatrix();
+
+                if (matrix == null) {
+                    return;
+                }
+
                 Console.WriteLine("For 2nd matrix:");
-                updateMatrix(ref matrix);
+                updateMatrix(matrix, out matrix);
                 printMatrix(matrix);
 
             }
@@ -417,6 +447,16 @@ namespace _5_Lab {
 
 
                 double[,] matrix = getUnknownMatrix();
+
+                if (matrix == null) {
+                    return;
+                }
+
+                if (matrix.GetLength(0) != matrix.GetLength(1)) {
+                    Console.WriteLine("Matrix should be square");
+                    return;
+                }
+
                 Console.WriteLine("Task 3.4 answer:");
 
 
