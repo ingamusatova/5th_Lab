@@ -114,29 +114,32 @@ namespace _4th_Lab
                     for (i = 1; i <= k; i++)
                         f *= i;
                 }
-                double c5, c10, vern5, vern10, verk5, verk10, vernk5, vernk10;
+                static void variants(int n,int k,out double  c)
+                {
+                    fact(n, out double vern);
+                    fact(k, out double  verk);
+                    fact(n - k, out double vernk);
+                    c = vern / verk / vernk;
+                }
                 int n5 = 8, n10 = 11, k5 = 5, k10 = 10;
-                fact(n5, out vern5);
-                fact(n10, out vern10);
-                fact(k5, out verk5);
-                fact(k10, out verk10);
-                fact(n5 - k5, out vernk5);
-                fact(n10 - k10, out vernk10);
-                c5 = vern5 / verk5 / vernk5;
-                c10 = vern10 / verk10 / vernk10;
+                variants(n5, k5, out double c5);
+                variants(n10, k10, out double c10);
                 Console.WriteLine($"Number of variants for 5 members team is  {c5}");
                 Console.WriteLine($"Number of variants for 10 members team is  {c10}");
             }
             #endregion
             #region Task2
             {
-                static void P(double a, double b, double c, out double p)
+                static double P(double a, double b, double c)
                 {
-                    p= (a + b + c) / 2;
+                    double p=0;
+                    if(a>0 && b>0 && c>0 && a+b>c && a+c>b && b+c>a)
+                        p = (a + b + c) / 2;
+                    return p;
                 }
-                static void S(double a, double b, double c,double p,out double s)
+                static void S(double a, double b, double c,out double s)
                 {
-                    P(a, b, c, out p);
+                    double p=P(a, b, c);
                     s = Math.Sqrt(p * (p - a) * (p - b) * (p - c));
                 }
                 double a1, b1, c1, s1,a2,b2,c2,s2,p2,p1;
@@ -152,22 +155,14 @@ namespace _4th_Lab
                 double.TryParse(Console.ReadLine(), out b2);
                 Console.WriteLine("Enter c2");
                 double.TryParse(Console.ReadLine(), out c2);
-                if((a1>0)&&(b1>0)&&(c1>0)&&(a2>0)&&(b2>0)&&(c2>0))
-                {
-                    if ((a1 + b1 > c1) && (a2 + b2 > c2) && (a1 + c1 > b1) && (a2 + c2 > b2) && (b1 + c1 > a1) && (b2 + c2 > a2))
-                    {
-                        P(a1, b1, c1, out p1);
-                        P(a2, b2, c2, out p2);
-                        S(a2, b2, c2, p2, out s2);
-                        S(a1, b1, c1, p1, out s1);
-                        if (s1 > s2)
-                            Console.WriteLine($"1 bigger {s1 - s2}");
-                        else if (s2 > s1)
-                            Console.WriteLine($"2 bigger {s2 - s1}");
-                        else
-                            Console.WriteLine("same square");
-                    }
-                }
+                S(a2, b2, c2, out s2);
+                S(a1, b1, c1,out s1);
+                if (s1 > s2)
+                    Console.WriteLine($"1 bigger {s1 - s2}");
+                else if (s2 > s1)
+                    Console.WriteLine($"2 bigger {s2 - s1}");
+                else
+                    Console.WriteLine("same square");
             }
             #endregion
             #region Task6
@@ -242,103 +237,112 @@ namespace _4th_Lab
                 int n;
                 Console.WriteLine("Enter n of matrix");
                 int.TryParse(Console.ReadLine(), out n);
-                double[,] a = new double[n, n];
-                for(int i=0;i<n;i++)
+                if (n > 1)
                 {
-                    for(int j=0;j<n;j++)
+                    double[,] a = new double[n, n];
+                    for (int i = 0; i < n; i++)
                     {
-                        Console.WriteLine($"Enter y {i} : x {j} : ");
-                        double el;
-                        double.TryParse(Console.ReadLine(), out el);
-                        a[i, j] = el;
+                        for (int j = 0; j < n; j++)
+                        {
+                            Console.WriteLine($"Enter y {i} : x {j} : ");
+                            double el;
+                            double.TryParse(Console.ReadLine(), out el);
+                            a[i, j] = el;
+                        }
                     }
-                }
-                for(int i=0;i<n;i++)
-                {
-                    for(int j=0;j<n;j++)
+                    for (int i = 0; i < n; i++)
                     {
-                        Console.Write(a[i, j] + "\t");
+                        for (int j = 0; j < n; j++)
+                        {
+                            Console.Write(a[i, j] + "\t");
+                        }
+                        Console.WriteLine();
                     }
                     Console.WriteLine();
-                }
-                Console.WriteLine();
-                int xmx = 0;
-                double mx = a[0, 0];
-                for(int i=0;i<n;i++)
-                {
-                    for(int j=0;j<=i;j++)
-                    {
-                        if (a[i,j]>mx)
-                        {
-                            mx = a[i, j];
-                            xmx = j;
-                        }
-                    }
-                }
-                int xmn = 0;
-                double mn = a[0, 1];
-                for (int i = 0; i < n; i++)
-                {
-                    for (int j = i+1; j <n; j++)
-                    {
-                        if (a[i, j] > mx)
-                        {
-                            mn = a[i, j];
-                            xmn = j;
-                        }
-                    }
-                }
-                static void hel(double[,]x,int y,int k)
-                {
-                    for(int i=0;i<y;i++)
-                        for(int j=k;j<y-1;j++)
-                        {
-                            x[i, j] = x[i, j + 1];
-                        }
-                }
-
-                if (xmn!=xmx)
-                {
-                    hel(a, n, xmn);
-                    hel(a, n, xmx);
-                    double[,] b = new double[n, n - 2];
+                    int xmx = 0;
+                    double mx = a[0, 0];
                     for (int i = 0; i < n; i++)
                     {
-                        for (int j = 0; j < n - 2; j++)
+                        for (int j = 0; j <= i; j++)
                         {
-                            b[i, j] = a[i, j];
+                            if (a[i, j] > mx)
+                            {
+                                mx = a[i, j];
+                                xmx = j;
+                            }
                         }
                     }
+                    Console.WriteLine(mx);
+                    Console.WriteLine();
+                    Console.WriteLine(xmx);
+                    Console.WriteLine();
+                    int xmn = 1;
+                    double mn = a[0, 1];
                     for (int i = 0; i < n; i++)
                     {
-                        for (int j = 0; j < n-2; j++)
+                        for (int j = i + 1; j < n; j++)
                         {
-                            Console.Write(a[i, j] + "\t");
+                            if (a[i, j] > mx)
+                            {
+                                mn = a[i, j];
+                                xmn = j;
+                            }
                         }
-                        Console.WriteLine();
+                    }
+                    Console.WriteLine(mn);
+                    Console.WriteLine();
+                    Console.WriteLine(xmn);
+                    Console.WriteLine("New matrix is");
+                    static void hel(double[,] x, int y, int k)
+                    {
+                        for (int i = 0; i < y; i++)
+                            for (int j = k; j < y - 1; j++)
+                            {
+                                x[i, j] = x[i, j + 1];
+                            }
+                    }
+                    if (xmn != xmx)
+                    {
+                        hel(a, n, xmn);
+                        hel(a, n, xmx);
+                        double[,] b = new double[n, n - 2];
+                        for (int i = 0; i < n; i++)
+                        {
+                            for (int j = 0; j < n - 2; j++)
+                            {
+                                b[i, j] = a[i, j];
+                            }
+                        }
+                        for (int i = 0; i < n; i++)
+                        {
+                            for (int j = 0; j < n - 2; j++)
+                            {
+                                Console.Write(a[i, j] + "\t");
+                            }
+                            Console.WriteLine();
+                        }
+                    }
+                    else if (xmx == xmn)
+                    {
+                        hel(a, n, xmn);
+                        double[,] b = new double[n, n - 1];
+                        for (int i = 0; i < n; i++)
+                        {
+                            for (int j = 0; j < n - 1; j++)
+                            {
+                                b[i, j] = a[i, j];
+                            }
+                        }
+                        for (int i = 0; i < n; i++)
+                        {
+                            for (int j = 0; j < n - 1; j++)
+                            {
+                                Console.Write(a[i, j] + "\t");
+                            }
+                            Console.WriteLine();
+                        }
                     }
                 }
-                else
-                {
-                    hel(a, n, xmn);
-                    double[,] b = new double[n, n - 1];
-                    for (int i = 0; i < n ; i++)
-                    {
-                        for(int j=0;j<n-1;j++)
-                        {
-                            b[i, j] = a[i, j];
-                        }
-                    }
-                    for (int i = 0; i < n; i++)
-                    {
-                        for (int j = 0; j < n-1; j++)
-                        {
-                            Console.Write(a[i, j] + "\t");
-                        }
-                        Console.WriteLine();
-                    }
-                }
-
             }
             #endregion
             #region Task23
@@ -524,8 +528,7 @@ namespace _4th_Lab
                 Console.WriteLine("Enter size of Matrix");
                 int.TryParse(Console.ReadLine(), out n);
                 double[,] a = new double[n, n];
-                double[] verhiy = new double[(n * (n + 1)) / 2];
-                double[] nizhniy = new double[(n * (n + 1)) / 2];
+                double[] tip = new double[(n * (n + 1)) / 2];
                 for (int i = 0; i < n; i++)
                 {
                     for (int j = 0; j < n; j++)
@@ -546,23 +549,33 @@ namespace _4th_Lab
                     Console.WriteLine();
                 }
                 Console.WriteLine();
-                sender verh = sendsverh;
-                sender niz = sendsniz;
-                verhiy = verh(a, n);
-                nizhniy = niz(a, n);
-                double smv, smn;
-                summary(verhiy, out smv);
-                summary(nizhniy, out smn);
-                Console.WriteLine(smv);
-                Console.WriteLine();
-                Console.WriteLine(smn);
-                static void summary(double[] x, out double sm)
+                int button;
+                Console.WriteLine("Choose which treangle of matrix u need. If verh, press 1. If niz, press 2");
+                int.TryParse(Console.ReadLine(), out button);
+                double summ;
+                if (button == 1 || button == 2)
                 {
-                    sm = 0;
+                    sender verh_or_niz;
+                    if (button == 1)
+                    {
+                        verh_or_niz = sendsverh;
+                    }
+                    else
+                    {
+                        verh_or_niz = sendsniz;
+                    }
+                    tip = verh_or_niz(a, n);
+                    summ = summary(tip);
+                    Console.WriteLine(summ);
+                }
+                static double summary(double[] x)
+                {
+                    double sm = 0;
                     for (int i = 0; i < x.Length; i++)
                     {
                         sm += x[i] * x[i];
                     }
+                    return sm;
                 }
             }
             #endregion
@@ -612,19 +625,10 @@ namespace _4th_Lab
                 {
                     row_1[i] = a[0, i];
                 }
-                foreach (double r in row_1)
-                    Console.Write("{0:} ", r);
-                Console.WriteLine();
-                foreach (double r in diag)
-                    Console.Write("{0:} ", r);
-                Console.WriteLine();
-                searcher diagonal_ind = diagonal;
-                searcher row_ind = line_1;
-                int ind1 = diagonal_ind(diag);
-                int ind2 = row_ind(row_1);
-                Console.WriteLine(ind2);
-                Console.WriteLine();
-                Console.WriteLine(ind1);
+                searcher ussing = diagonal;
+                int ind1 = ussing(diag);
+                ussing = line_1;
+                int ind2 = ussing(row_1);
                 change(a, n, ind1, ind2, out a);
                 Console.WriteLine("New matrix A");
                 for (int i = 0; i < n; i++)
@@ -676,10 +680,10 @@ namespace _4th_Lab
                     Console.WriteLine();
                 }
                 Console.WriteLine();
-                find_extrem minf = minfinder;
-                find_extrem maxf = maxfinder;
-                int indmin = minf(a, y, x);
-                int indmax = maxf(a, y, x);
+                find_extrem extrem = minfinder;
+                int indmin = extrem(a, y, x);
+                extrem = maxfinder;
+                int indmax = extrem(a, y, x);
                 del(a, y, x, indmin, indmax, out a);
                 if (indmin != indmax)
                 {
