@@ -1,4 +1,3 @@
-
 using System;
 
 namespace lab5
@@ -6,11 +5,8 @@ namespace lab5
     internal class Program
     {
 
-        delegate double[] Matrix(double[] a);
-        Matrix Increasing = chet;
-        Matrix Decreasing = nechet;
-        Matrix less = lesss;
-        Matrix more = moreee;
+        delegate double[] Work(double[] a);
+
         static double[] nechet(double[] a)
         {
             Array.Sort(a);
@@ -57,20 +53,23 @@ namespace lab5
                     Console.WriteLine();
                 }
             }
-            static int solution1_1(int n, int k)
+            static int solution1_1(int n)
             {
-                int denominator = 1, numerator = 1;
+                int f = 1;
                 for (int i = 2; i <= n; i++)
-                    numerator *= i;
-                for (int i = 2; i <= n - k; i++)
-                    denominator *= i;
-                return (numerator / denominator);
+                {
+                    f *= i;
+                }
+                return f;
             }
             static void task1_1()
             {
-                Console.WriteLine(solution1_1(8, 5));
-                Console.WriteLine(solution1_1(10, 5));
-                Console.WriteLine(solution1_1(11, 5));
+                int s = solution1_1(8) / (solution1_1(5) * solution1_1(8-5));
+                int s1 = solution1_1(10) / (solution1_1(5) * solution1_1(10 - 5));
+                int s2 = solution1_1(11) / (solution1_1(5) * solution1_1(11 - 5));
+                Console.WriteLine(s);
+                Console.WriteLine(s1);
+                Console.WriteLine(s2);
             }
             static double solution1_2(double a, double b, double c)
             {
@@ -203,7 +202,7 @@ namespace lab5
                 }
                 print(a, a.GetLength(0), a.GetLength(1));
             }
-            static double[,] sol2_23(double[,] a, double[] max, int[] index_i, int[] index_j)
+            static void sol2_23(ref double[,] a, ref double[] max, ref int[] index_i, ref int[] index_j)
             {
                 for (int i = 0; i < max.Length; i++)
                 {
@@ -226,7 +225,7 @@ namespace lab5
                 {
                     a[index_i[i], index_j[i]] = max[i];
                 }
-                return a;
+                return ;
             }
             static void task2_23()
             {
@@ -275,12 +274,14 @@ namespace lab5
                     Console.WriteLine($"{max[i]}, {index_i[i]}, {index_j[i]}");
                 }
                 Console.WriteLine();
-                a = sol2_23(a, max, index_i, index_j);
+                sol2_23(ref a,ref max,ref index_i,ref index_j);
                 print(a, a.GetLength(0), a.GetLength(1));
             }
 
             static double[,] sol3_2(double[,] a)
             {
+                Work chet1 = new(chet);
+                Work nechet1 = new(nechet);
                 for (int i = 0; i < a.GetLength(0); i++)
                 {
                     if (i % 2 == 0)
@@ -288,7 +289,7 @@ namespace lab5
                         double[] temp = new double[a.GetLength(1)];
                         for (int j = 0; j < a.GetLength(0); j++)
                             temp[j] = a[i, j];
-                        temp = chet(temp);
+                        temp = chet1(temp);
                         for (int j = 0; j < a.GetLength(0); j++)
                             a[i, j] = temp[j];
                     }
@@ -297,7 +298,7 @@ namespace lab5
                         double[] temp = new double[a.GetLength(1)];
                         for (int j = 0; j < a.GetLength(0); j++)
                             temp[j] = a[i, j];
-                        temp = nechet(temp);
+                        temp = nechet1(temp);
                         for (int j = 0; j < a.GetLength(0); j++)
                             a[i, j] = temp[j];
                     }
@@ -336,6 +337,8 @@ namespace lab5
             }
             static void task3_3()
             {
+                Work less = new(lesss);
+                Work more = new(moreee);
                 double[] a = new double[10] { 2, -5, -1, -8, 9, -7, -2, 7, -5, -9 };
                 int count = 1;
                 double s = 0;
@@ -347,11 +350,11 @@ namespace lab5
                 double sr = s / count;
                 if (a[0] > sr)
                 {
-                    a = moreee(a);
+                    a = more(a);
                 }
                 else
                 {
-                    a = lesss(a);
+                    a = less(a);
                 }
                 var sum = sol3_3(a);
                 Console.WriteLine(sum);
