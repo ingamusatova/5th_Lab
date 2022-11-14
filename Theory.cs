@@ -202,86 +202,51 @@ namespace lab5
                 }
                 print(a, a.GetLength(0), a.GetLength(1));
             }
-            static void sol2_23(ref double[,] a, ref double[] max, ref int[] index_i, ref int[] index_j)
+            static double[] sol2_23(double[] a, int[] aIndex)
             {
-                for (int i = 0; i < max.Length; i++)
+                int k = 0;
+                for (int i = 0; i != a.Length; i++)
                 {
-                    if (max[i] > 0)
-                        max[i] *= 2;
-                    else
-                        max[i] /= 2;
-                }
-                for (int i = 0; i < a.GetLength(0); i++)
-                {
-                    for (int j = 0; j < a.GetLength(1); j++)
+                    if (aIndex[k] == i)
                     {
-                        if (a[i, j] > 0)
-                            a[i, j] /= 2;
-                        else
-                            a[i, j] *= 2;
+                        a[i] = a[i] * 2;
+                        k++;
                     }
+                    else a[i] = a[i] / 2;
+
                 }
-                for (int i = 0; i < 5; i++)
-                {
-                    a[index_i[i], index_j[i]] = max[i];
-                }
-                return ;
+                return a;
             }
             static void task2_23()
             {
-                double[,] a = new double[4, 4] { {-1,-2,-3,-4},
-                                                 {-4,-5,-6,-7},
-                                                 {5,-6,-7,-8},
-                                                 {6,-7,8,-9}};
-                double[] max = new double[5];
-                int[] index_i = new int[5];
-                int[] index_j = new int[5];
-                for (int i = 0; i < 5; i++)
+                double[] a = new double[10] { 234, -123.12, 0.2, -34.4, 40, -7, 69, 9, -13, 243 }; 
+                double[] aNotSorted = new double[10];
+                Array.Copy(a, aNotSorted, a.Length);
+                Array.Sort(a);
+                Array.Reverse(a);
+                Array.Resize(ref a, 5);
+                int[] aIndex = new int[5];
+                for (int j = 0; j != aIndex.Length; j++)
                 {
-                    max[i] = -10000;
-                }
-                index_i[0] = 0;
-                index_j[0] = 0;
-                for (int c = 0; c < 5; c++)
-                {
-                    for (int i = 0; i < a.GetLength(0); i++)
+                    for (int i = 0; i != aNotSorted.Length; i++)
                     {
-                        for (int j = 0; j < a.GetLength(1); j++)
+                        if (a[j] == aNotSorted[i])
                         {
-                            if (a[i, j] > max[c])
-                            {
-                                bool f = true;
-                                for (int d = 0; d < c; d++)
-                                {
-                                    if (index_i[d] == i && index_j[d] == j)
-                                    {
-                                        f = false;
-                                        break;
-                                    }
-                                }
-                                if (f)
-                                {
-                                    max[c] = a[i, j];
-                                    index_i[c] = i;
-                                    index_j[c] = j;
-                                }
-                            }
+                            aIndex[j] = i;
+                            break;
                         }
                     }
                 }
-                for (int i = 0; i < 5; i++)
-                {
-                    Console.WriteLine($"{max[i]}, {index_i[i]}, {index_j[i]}");
-                }
-                Console.WriteLine();
-                sol2_23(ref a,ref max,ref index_i,ref index_j);
-                print(a, a.GetLength(0), a.GetLength(1));
-            }
+                Array.Sort(aIndex);
 
+                aNotSorted = sol2_23(aNotSorted, aIndex);
+                foreach (double x in aNotSorted)
+                    Console.WriteLine(x);
+
+            }
             static double[,] sol3_2(double[,] a)
             {
-                Work chet1 = new(chet);
-                Work nechet1 = new(nechet);
+                Work howToWork;
                 for (int i = 0; i < a.GetLength(0); i++)
                 {
                     if (i % 2 == 0)
@@ -289,7 +254,7 @@ namespace lab5
                         double[] temp = new double[a.GetLength(1)];
                         for (int j = 0; j < a.GetLength(0); j++)
                             temp[j] = a[i, j];
-                        temp = chet1(temp);
+                        howToWork = chet;
                         for (int j = 0; j < a.GetLength(0); j++)
                             a[i, j] = temp[j];
                     }
@@ -298,7 +263,8 @@ namespace lab5
                         double[] temp = new double[a.GetLength(1)];
                         for (int j = 0; j < a.GetLength(0); j++)
                             temp[j] = a[i, j];
-                        temp = nechet1(temp);
+                        howToWork=nechet;
+                        temp = howToWork(temp);
                         for (int j = 0; j < a.GetLength(0); j++)
                             a[i, j] = temp[j];
                     }
@@ -337,8 +303,8 @@ namespace lab5
             }
             static void task3_3()
             {
-                Work less = new(lesss);
-                Work more = new(moreee);
+                Work howToWork2;
+ 
                 double[] a = new double[10] { 2, -5, -1, -8, 9, -7, -2, 7, -5, -9 };
                 int count = 1;
                 double s = 0;
@@ -350,12 +316,13 @@ namespace lab5
                 double sr = s / count;
                 if (a[0] > sr)
                 {
-                    a = more(a);
+                    howToWork2 = moreee;
                 }
                 else
                 {
-                    a = less(a);
+                    howToWork2 = lesss;
                 }
+                a = howToWork2(a);
                 var sum = sol3_3(a);
                 Console.WriteLine(sum);
             }
