@@ -306,7 +306,14 @@ namespace _5th_Lab
             {
                 Smax = 2;
             }
-            Console.WriteLine($"the triangle with larger area is triangle {Smax}");
+            if (S2 != S1)
+            {
+                Console.WriteLine($"the triangle with larger area is triangle {Smax}");
+            }
+            else
+            {
+                Console.WriteLine("there is no larger area");
+            }
             Console.WriteLine();
 
             #endregion
