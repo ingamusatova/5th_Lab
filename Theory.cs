@@ -282,7 +282,7 @@ namespace _4th_Lab
                     {
                         for (int j = i + 1; j < n; j++)
                         {
-                            if (a[i, j] > mx)
+                            if (a[i, j] < mn)
                             {
                                 mn = a[i, j];
                                 xmn = j;
