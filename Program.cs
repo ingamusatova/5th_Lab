@@ -229,15 +229,17 @@ namespace TaskForLab5
                     }
                 }
             }
+            int count = 0;
             if (ans.Length > 5)
             {
                 for (int i = 0; i < a.GetLength(0); i++)
                 {
                     for (int j = 0; j < a.GetLength(1); j++)
                     {
-                        if (a[i, j] == ans[0] || a[i, j] == ans[1] || a[i, j] == ans[2] || a[i, j] == ans[3] || a[i, j] == ans[4])
+                        if ((a[i, j] == ans[0] || a[i, j] == ans[1] || a[i, j] == ans[2] || a[i, j] == ans[3] || a[i, j] == ans[4]) && (count < 5))
                         {
                             a[i, j] *= 2;
+                            count++;
                         }
                         else
                         {
