@@ -138,23 +138,11 @@ namespace TaskForLab5
         static int[,] DellMinAndMax(int[,] a, int ind)
         {
             int n = a.GetLength(0), m = a.GetLength(1);
-            int[,] ans = new int[n, m - 1];
-
-            for (int i = 0; i < n; ++i)
-            {
-                int step = 0;
-                for (int j = 0; j < m; ++j)
-                {
-                    if (j == ind)
-                    {
-                        continue;
-                    }
-
-                    ans[i, step] = a[i, j];
-                    step++;
-                }
-            }
-            return ans;
+            m -= 1;
+            for (int i = 0; i < n; i++)
+                for (int j = ind; j < m; j++)
+                    a[i, j] = a[i, j + 1];
+            return a;
         }
         static void Task2_10()
         {
@@ -175,35 +163,37 @@ namespace TaskForLab5
                 Console.WriteLine();
             }
             Console.WriteLine();
-            int aMax = array[0, 0], aMin = array[0, 0];
+            int aMax = array[1, 0], aMin = array[0, 1];
             int jMax = 0, jMin = 0;
             for (int i = 0; i < array.GetLength(0); i++)
             {
-                for (int j = 1; j < array.GetLength(1); j++)
+                for (int j = 0; j < array.GetLength(1); j++)
                 {
-                    if (aMax > array[i, j] && (i < j || i == j))
+                    if (aMax < array[i, j] && ((i > j) || (i == j)))
                     {
                         aMax = array[i, j];
                         jMax = j;
                     }
-                    if (aMin < array[i, j] && (i > j))
+                    if (aMin > array[i, j] && (i < j))
                     {
                         aMin = array[i, j];
                         jMin = j;
                     }
                 }
             }
+
+            Console.WriteLine("{0:d} {1:d}", aMin, aMax);
             if (jMax == jMin)
             {
                 DellMinAndMax(array, jMin); count += 1;
             }
             else if (jMin > jMax)
             {
-                DellMinAndMax(array, jMax); DellMinAndMax(array, jMin); count += 2; ;
+                DellMinAndMax(array, jMax); DellMinAndMax(array, jMin - 1); count += 2; ;
             }
             else
             {
-                DellMinAndMax(array, jMin); DellMinAndMax(array, jMax); count += 2;
+                DellMinAndMax(array, jMin); DellMinAndMax(array, jMax - 1); count += 2;
             }
             for (int i = 0; i < n; i++)
             {
@@ -229,8 +219,16 @@ namespace TaskForLab5
                     k++;
                 }
             }
-            Array.Sort(ans);
-            Array.Reverse(ans);
+            for (int i = 0; i < ans.Length; i++)
+            {
+                for (int j = 0; j < ans.Length - 1; j++)
+                {
+                    if (ans[j] < ans[j + 1])
+                    {
+                        int p = ans[j]; ans[j] = ans[j + 1]; ans[j + 1] = p;
+                    }
+                }
+            }
             if (ans.Length > 5)
             {
                 for (int i = 0; i < a.GetLength(0); i++)
@@ -239,11 +237,12 @@ namespace TaskForLab5
                     {
                         if (a[i, j] == ans[0] || a[i, j] == ans[1] || a[i, j] == ans[2] || a[i, j] == ans[3] || a[i, j] == ans[4])
                         {
-                            if (a[i, j] > 0) a[i, j] *= 2;
-                            else a[i, j] /= 2;
+                            a[i, j] *= 2;
                         }
-                        else if (a[i, j] > 0) a[i, j] /= 2;
-                        else a[i, j] *= 2;
+                        else
+                        {
+                            a[i, j] /= 2;
+                        }
                     }
                 }
             }
@@ -269,10 +268,10 @@ namespace TaskForLab5
             int[,] arr = new int[n, m];
             for (int i = 0; i < n; i++)
                 for (int j = 0; j < m; j++)
-                    arr[i, j] = random.Next(50);
+                    arr[i, j] = random.Next(-10, 10);
             for (int i = 0; i < n; i++)
             {
-                for (int j = 0; j < n; j++)
+                for (int j = 0; j < m; j++)
                 {
                     Console.Write(arr[i, j] + "\t");
                 }
@@ -282,7 +281,7 @@ namespace TaskForLab5
             FixdMatrix(arr);
             for (int i = 0; i < n; i++)
             {
-                for (int j = 0; j < n; j++)
+                for (int j = 0; j < m; j++)
                 {
                     Console.Write(arr[i, j] + "\t");
                 }
@@ -363,23 +362,7 @@ namespace TaskForLab5
         #endregion
 
         #region Task3_6
-        static int[,] Fisting(int[,] a)
-        {
-            int ii = GlavDiag(a), jj = Diag(a);
-            if (ii == jj)
-            {
-                return a;
-            }
-            else
-            {
-                for (int i = 0; i < a.GetLength(0); i++)
-                {
-                    int p = a[i, ii]; a[i, ii] = a[i, jj]; a[i, jj] = p;
-                }
-                return a;
-            }
-        }
-        delegate int MaxElement();
+        delegate int MaxElement(int[,] a);
         static int GlavDiag(int[,] a)
         {
             int aMax = 0, jMax = 0;
@@ -407,6 +390,21 @@ namespace TaskForLab5
             }
             return jMax;
         }
+        static void Fisting(int[,] a, MaxElement f1, MaxElement f2)
+        {
+            int ii = f1(a), jj = f2(a);
+            if (ii == jj)
+            {
+                Console.WriteLine("Матрица не изменилась");
+            }
+            else
+            {
+                for (int i = 0; i < a.GetLength(0); i++)
+                {
+                    int p = a[i, ii]; a[i, ii] = a[i, jj]; a[i, jj] = p;
+                }
+            }
+        }
         static void Task3_6()
         {
             Console.WriteLine("TASK#3_6");
@@ -426,7 +424,7 @@ namespace TaskForLab5
                 Console.WriteLine();
             }
             Console.WriteLine();
-            Fisting(B);
+            Fisting(B, GlavDiag, Diag);
             for (int i = 0; i < n; i++)
             {
                 for (int j = 0; j < n; j++)
