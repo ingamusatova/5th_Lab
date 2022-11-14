@@ -113,11 +113,25 @@ namespace _5th_Lab
                 }
                 if (l)
                 {
-                    c[i] = c[i] * 2;
+                    if (c[i] > 0)
+                    {
+                        c[i] = c[i] * 2;
+                    }
+                    else
+                    {
+                        c[i] = c[i] / 2.0;
+                    }
                 }
                 else
                 {
-                    c[i] = c[i] / 2.0;
+                    if (c[i] > 0)
+                    {
+                        c[i] = c[i] / 2.0;
+                    }
+                    else
+                    {
+                        c[i] = c[i] * 2;
+                    }
                 }
             }
             k = 0;
@@ -129,8 +143,6 @@ namespace _5th_Lab
                     k++;
                 }
             }
-
-
         }
 
         #endregion
@@ -232,15 +244,62 @@ namespace _5th_Lab
 
             #region 5.1.2 Main
 
-            double a1 = 10, a2 = 11, b1 = 8, b2 = 5, c1 = 17, c2 = 15, S1, S2, Smax;
-            Random r = new Random();
-            Console.WriteLine("a, b, c for the first triangle:");
-            Console.WriteLine($"{a1} {b1} {c1}");
-            Console.WriteLine("a, b, c for the second triangle");
-            Console.WriteLine($"{a2} {b2} {c2}");
-            S1 = Striangle(a1, b1, c1);
+            double S1, S2, Smax;
+            double[] A_A = new double[3];
+            double[] B_B = new double[3];
+            Console.WriteLine("enter a, b, c for the first triangle:");
+            for (int i= 0;i< 3; i++)
+            {
+                double.TryParse(Console.ReadLine(), out A_A[i]);
+                while (A_A[i] <= 0)
+                {
+                    Console.WriteLine("sides must be positive! try another side");
+                    double.TryParse(Console.ReadLine(), out A_A[i]);
+                }
+            }
+            Array.Sort(A_A);
+            while (A_A[2] >= A_A[0] + A_A[1] || A_A[0]<= A_A[2] - A_A[1])
+            {
+                Console.WriteLine("impossible triangle! try other a, b and c");
+                for (int i = 0; i < 3; i++)
+                {
+                    double.TryParse(Console.ReadLine(), out A_A[i]);
+                    while (A_A[i] <= 0)
+                    {
+                        Console.WriteLine("sides must be positive! try another side");
+                        double.TryParse(Console.ReadLine(), out A_A[i]);
+                    }
+                }
+                Array.Sort(A_A);
+            }
+            Console.WriteLine("enter a, b, c for the second triangle");
+            for (int i = 0; i < 3; i++)
+            {
+                double.TryParse(Console.ReadLine(), out B_B[i]);
+                while (B_B[i] <= 0)
+                {
+                    Console.WriteLine("sides must be positive! try another side");
+                    double.TryParse(Console.ReadLine(), out B_B[i]);
+                }
+            }
+            Array.Sort(B_B);
+            while (B_B[2] >= B_B[0] + B_B[1] || B_B[0] <= B_B[2] - B_B[1])
+            {
+                Console.WriteLine("impossible triangle! try other a, b and c");
+                for (int i = 0; i < 3; i++)
+                {
+                    double.TryParse(Console.ReadLine(), out B_B[i]);
+                    while (B_B[i] <= 0)
+                    {
+                        Console.WriteLine("sides must be positive! try another side");
+                        double.TryParse(Console.ReadLine(), out B_B[i]);
+                    }
+                }
+                Array.Sort(B_B);
+            }
+            S1 = Striangle(A_A[0], A_A[1], A_A[2]);
             Console.WriteLine($"area 1: {S1}");
-            S2 = Striangle(a2, b2, c2);
+            S2 = Striangle(B_B[0], B_B[1], B_B[2]);
             Console.WriteLine($"area 2: {S2}");
             Smax = 1;
             if (S2 > S1)
@@ -323,7 +382,7 @@ namespace _5th_Lab
                         min_w = AA[i, j];
                         jmin = j;
                     }
-                    if (j < i && AA[i, j] > max_w)
+                    if (j <= i && AA[i, j] > max_w)
                     {
                         max_w = AA[i, j];
                         jmax = j;
@@ -334,7 +393,7 @@ namespace _5th_Lab
             if (jmax != jmin)
             {
                 Delvert(AA, n_w - 1, jmax);
-                k_w++;
+                k_w = 2;
             }
             Console.WriteLine("new matrix:");
             for (int i = 0; i < n_w; i++)
@@ -352,9 +411,9 @@ namespace _5th_Lab
             #region 5.2.23 Main
 
             const int n_e = 3;
-            double[,] AAA = new double[n_e, n_e] { { 1, 3, 2 },
-                                                   { 5, 4, 8 },
-                                                   { 7, 2, 9 } };
+            double[,] AAA = new double[n_e, n_e] { { -1, -3, 2 },
+                                                   { -5, -4, 8 },
+                                                   { -7, -2, 9 } };
 
             double[,] BBB = new double[n_e, n_e] { { 6, 5, 1 },
                                                    { 2, 3, 2 },
@@ -397,11 +456,6 @@ namespace _5th_Lab
                 }
                 Console.WriteLine();
             }
-
-
-
-
-
 
             #endregion
 
