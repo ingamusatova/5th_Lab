@@ -83,11 +83,24 @@ namespace lab4q
                 {
                     if (list.Contains(x1[i, j]))
                     {
-                        x2[i, j] = x1[i, j] * 2;
-                        l = list.IndexOf(x1[i, j]);
-                        list.RemoveAt(l);
+                        if (x1[i, j] < 0)
+                        {
+                            x2[i, j] = x1[i, j] / 2;
+                            l = list.IndexOf(x1[i, j]);
+                            list.RemoveAt(l);
+                        }
+                        else
+                        {
+                            x2[i, j] = x1[i, j] * 2;
+                            l = list.IndexOf(x1[i, j]);
+                            list.RemoveAt(l);
+                        }
                     }
-                    else x2[i, j] = x1[i, j]/2;
+                    else
+                    {
+                        if (x1[i, j] < 0) x2[i, j] = x1[i, j] * 2;
+                        else x2[i, j] = x1[i, j] / 2;
+                    }
                 }
             }
         }
@@ -184,14 +197,19 @@ namespace lab4q
             if ((a + b > c && a + c > b && b + c > a) && (A + B > C && A + C > B && B + C > A))
             {
                 double s1, s2;
-                double p;
-                p = Geron(a, b, c);
-                s1 = Math.Sqrt(p * (p - a) * (p - b) * (p - c));
-                p = Geron(A, B, C);
-                s2 = Math.Sqrt(p * (p - A) * (p - B) * (p - C));
-                if (s1 > s2) Console.WriteLine("square of first tringle more than second tringle");
-                else if (s1 == s2) Console.WriteLine("square is same");
-                else Console.WriteLine("square of second tringle more than first trignle ");
+                double p1,p2;
+                p1 = Geron(a, b, c);
+                p2 = Geron(A, B, C);
+
+                if (p1 > 0 && p2 > 0)
+                {
+                    s1 = Math.Sqrt(p1 * (p1 - a) * (p1 - b) * (p1 - c));
+                    s2 = Math.Sqrt(p2 * (p2 - A) * (p2 - B) * (p2 - C));
+                    if (s1 > s2) Console.WriteLine("square of first tringle more than second tringle");
+                    else if (s1 == s2) Console.WriteLine("square is same");
+                    else Console.WriteLine("square of second tringle more than first trignle ");
+                }
+                else Console.WriteLine("Impossible");
             }
             else Console.WriteLine("Not correct sides");
         }
@@ -273,8 +291,15 @@ namespace lab4q
                     }
                 }
             }
-            DeleteColomn(mas, minj, out mas);
-            DeleteColomn(mas, maxj, out mas);
+            if (maxj == minj)
+            {
+                DeleteColomn(mas, minj, out mas);
+            }
+            else
+            {
+                DeleteColomn(mas, minj, out mas);
+                DeleteColomn(mas, maxj, out mas);
+            }
             Console.WriteLine("Answer");
             for (int i = 0; i < n; i++)
             {
@@ -392,9 +417,9 @@ namespace lab4q
         static void Main(string[] args)
         {
             Level1_1();
-             Level1_2();
-             Level2_6();
-            Level2_10();
+            Level1_2();
+           Level2_6();
+           Level2_10();
             Level2_23();
             Level3_1();
             Level3_2();
