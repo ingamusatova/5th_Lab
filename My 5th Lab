@@ -122,7 +122,7 @@ namespace Lab_5
             int k6 = 0;
             for (int i = a.Length - b.Length; i < a.Length; i++)
             {
-                a[i] = b[k];
+                a[i] = b[k6];
                 k6++;
             }
             Console.WriteLine();
@@ -161,9 +161,17 @@ namespace Lab_5
             }
             int ind_biggest = findBiggestElem(a10);
             int ind_smallest = findSmallestElem(a10);
-            removeMatrixColumn(ref a10, ind_biggest);
-            removeMatrixColumn(ref a10, ind_smallest);
-            outputIndentedMatrix(a10, 2);
+            if (ind_biggest != ind_smallest)
+            {
+                removeMatrixColumn(ref a10, ind_biggest);
+                removeMatrixColumn(ref a10, ind_smallest);
+                outputIndentedMatrix(a10, 2);
+            }
+            else
+            {
+                removeMatrixColumn(ref a10, ind_biggest);
+                outputIndentedMatrix(a10, 1);
+            }
 
 
             static int findBiggestElem(int[,] matrix)
@@ -432,14 +440,14 @@ namespace Lab_5
         #region Level 3 Number 6
         public static class MatrixBiggestElementIndexFinder
         {
-            public static int InMatrixRow(int[,] matrix, int row)
+            public static int InMatrixRow(int[,] matrix)
             {
-                int biggest_element = matrix[row, 0], biggest_element_index = 0;
+                int biggest_element = matrix[0, 0], biggest_element_index = 0;
                 for (int i = 0; i < matrix.GetLength(1); i++)
                 {
-                    if (matrix[row, i] > biggest_element)
+                    if (matrix[0, i] > biggest_element)
                     {
-                        biggest_element = matrix[row, i];
+                        biggest_element = matrix[0, i];
                         biggest_element_index = i;
                     }
                 }
@@ -459,9 +467,9 @@ namespace Lab_5
                 return biggest_element_index;
             }
         }
-        delegate int MatrixRowElementFinder(int[,] matrix, int row);
+
         delegate int MatrixElementFinder(int[,] matrix);
-        static MatrixRowElementFinder row_biggest_index = MatrixBiggestElementIndexFinder.InMatrixRow;
+        static MatrixElementFinder row_biggest_index = MatrixBiggestElementIndexFinder.InMatrixRow;
         static MatrixElementFinder main_diagonal_biggest_index = MatrixBiggestElementIndexFinder.OnMainDiagonal;
 
         static void Main6(string[] args)
@@ -479,15 +487,15 @@ namespace Lab_5
                 }
                 Console.WriteLine();
             }
-            swapColumnsBiggestOnMainDiagonalBiggestFirstRow(ref a_6);
+            SwapColumnsBiggestOnMainDiagonalBiggestFirstRow(ref a_6);
             Console.WriteLine("Output:");
-            outputMatrix6(a_6);
+            OutputMatrix6(a_6);
         }
-        static void swapColumnsBiggestOnMainDiagonalBiggestFirstRow(ref int[,] matrix)
+        static void SwapColumnsBiggestOnMainDiagonalBiggestFirstRow(ref int[,] matrix)
         {
-            swapMatrixColumns(ref matrix, row_biggest_index(matrix, 0), main_diagonal_biggest_index(matrix));
+            SwapMatrixColumns(ref matrix, row_biggest_index(matrix), main_diagonal_biggest_index(matrix));
         }
-        static void swapMatrixColumns(ref int[,] matrix, int column_1, int column_2)
+        static void SwapMatrixColumns(ref int[,] matrix, int column_1, int column_2)
         {
             for (int i = 0; i < matrix.GetLength(0); i++)
             {
@@ -496,7 +504,7 @@ namespace Lab_5
                 matrix[i, column_2] = temp;
             }
         }
-        static void outputMatrix6(int[,] matrix)
+        static void OutputMatrix6(int[,] matrix)
         {
             Console.WriteLine("This is your matrix");
             for (int i = 0; i < matrix.GetLength(0); i++)
