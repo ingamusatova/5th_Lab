@@ -75,6 +75,7 @@ namespace _5th_Lab
         static void Transformmatrix(double[,] a, int n)
         {
             const int h = 5;
+            int count = 0;
             bool l = false;
             double[] b = new double[n * n];
             double[] c = new double[n * n];
@@ -88,30 +89,21 @@ namespace _5th_Lab
                     k++;
                 }
             }
-            k = 0;
-            double[] d = new double[h];
             Array.Sort(b);
             Array.Reverse(b);
-            d[0] = b[0];
-            for (int i = 1; i < h; i++)
-            {
-                if (b[i] != d[k])
-                {
-                    k++;
-                    d[k] = b[i];
-                }
-            }
             for (int i = 0; i < c.Length; i++)
             {
                 l = false;
-                for (int j = 0; j <= k; j++)
+                for (int j = 0; j < h; j++)
                 {
-                    if (c[i] == d[j])
+                    if (c[i] == b[j])
                     {
                         l = !l;
+                        b[j] = b[0] + 1;
+                        break;
                     }
                 }
-                if (l)
+                if (l && count<=5)
                 {
                     if (c[i] > 0)
                     {
@@ -418,13 +410,13 @@ namespace _5th_Lab
             #region 5.2.23 Main
 
             const int n_e = 3;
-            double[,] AAA = new double[n_e, n_e] { { -1, -3, 2 },
-                                                   { -5, -4, 8 },
+            double[,] AAA = new double[n_e, n_e] { { -1, -1, 2 },
+                                                   { -1, -4, 8 },
                                                    { -7, -2, 9 } };
 
-            double[,] BBB = new double[n_e, n_e] { { 6, 5, 1 },
-                                                   { 2, 3, 2 },
-                                                   { 1, 7, 4 } };
+            double[,] BBB = new double[n_e, n_e] { { 6, 5, 3 },
+                                                   { 2, 3, 3 },
+                                                   { 1, 3, 4 } };
             Console.WriteLine("matrix AAA:");
             for (int i = 0; i < n_e; i++)
             {
