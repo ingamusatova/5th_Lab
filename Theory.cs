@@ -75,7 +75,6 @@ namespace _5th_Lab
         static void Transformmatrix(double[,] a, int n)
         {
             const int h = 5;
-            int count = 0;
             bool l = false;
             double[] b = new double[n * n];
             double[] c = new double[n * n];
@@ -103,7 +102,7 @@ namespace _5th_Lab
                         break;
                     }
                 }
-                if (l && count<=5)
+                if (l)
                 {
                     if (c[i] > 0)
                     {
