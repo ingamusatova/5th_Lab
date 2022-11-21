@@ -18,14 +18,14 @@ namespace Lab_5
                 Console.WriteLine(ERROR);
                 return;
             }
-            int c = fact(n) / (fact(k) * fact(n - k));
+            int c = fact(n) / (fact(k) * fact(Math.Abs(n-k)));
             Console.WriteLine(c+"\n");
         #endregion
 
             #region Task_1_2
             Console.WriteLine("Task 1.2");
-            double a = 1, b = 1, cc =1; 
-            if (a<=0 || b<=0 || cc<=0 || (a >= b + cc) || (b >= a + cc) || (c >= a + cc))
+            double a = 3, b = 4, cc = 5; 
+            if (a<=0 || b<=0 || cc<=0 || (a >= b + cc) || (b >= a + cc) || (cc >= a + b))
             {
                 Console.WriteLine(ERROR);
                 return;
@@ -99,7 +99,7 @@ namespace Lab_5
             #region Task_2_23
             Console.WriteLine("Task 2.23");
             random = new Random();
-            n = 4; m = 3;
+            n = 3; m = 2;
             M = new int[n, m];
             for (int i = 0; i < n; i++)
             {
@@ -112,7 +112,7 @@ namespace Lab_5
             }
             Console.WriteLine();
             random = new Random();
-            int nn = 5, mm = 3;
+            int nn = 2, mm = 3;
             int[,] N = new int[nn, mm];
             for (int i = 0; i < nn; i++)
             {
@@ -342,12 +342,14 @@ namespace Lab_5
                     {
                         if ((a[i, j] == ans[0] || a[i, j] == ans[1] || a[i, j] == ans[2] || a[i, j] == ans[3] || a[i, j] == ans[4]) && (count < 5))
                         {
-                            a[i, j] *= 2;
+                            if (a[i, j] > 0) a[i, j] *= 2;
+                            else a[i, j] /= 2;
                             count++;
                         }
                         else
                         {
-                            a[i, j] /= 2;
+                            if (a[i, j] > 0) a[i, j] /= 2;
+                            else a[i, j] *= 2;
                         }
                     }
                 }
@@ -358,7 +360,8 @@ namespace Lab_5
                 {
                     for (int j = 0; j < a.GetLength(1); j++)
                     {
-                        a[i, j] *= 2;
+                        if (a[i, j] > 0) a[i, j] *= 2;
+                        else a[i, j] /= 2;
                     }
                 }
             }
