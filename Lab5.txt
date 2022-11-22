@@ -1,0 +1,669 @@
+_Level 1 Task 1_:
+
+using System;
+
+namespace _5Lab
+{
+    internal class Program
+    {
+        static int Fact(int n)
+        {
+            int f = 1;
+            for (int i = 2; i <= n; i++)
+            {
+                f = f * i;
+            }
+            return f;
+        }
+        static int FindCount(int n, int k)
+        {
+            int n_k = n - k;
+
+            int c = Fact(n) / (Fact(k) * Fact(n_k));
+            return c;
+        }
+        static void Main(string[] args)
+        {
+            int k = 5;
+            int n1 = 8;
+            int n2 = 10;
+            int n3 = 11;
+            int res1, res2, res3;
+
+            res1 = FindCount(n1, k);
+            res2 = FindCount(n2, k);
+            res3 = FindCount(n3, k);
+
+            Console.WriteLine($"При 8 кандидатах - {res1}");
+            Console.WriteLine($"При 10 кандидатах - {res2}");
+            Console.WriteLine($"При 11 кандидатах - {res3}");
+        }
+    }
+}
+
+
+_Level 1 Task 2_:
+
+using System;
+
+namespace _5Lab
+{
+    internal class Program
+    {
+        static double FindArea(double a, double b, double c, out double S)
+        {
+            double p = (a + b + c) / 2;
+            S = Math.Pow(p * (p - a) * (p - b) * (p - c), 0.5);
+            return S;
+
+        }
+
+        static void Main(string[] args)
+        {
+            double a1, a2, b1, b2, c1, c2;
+            double S1 = 0, S2 = 0;
+
+            Console.WriteLine("Введите длины сторон 1-ого треугольника: ");
+            double.TryParse(Console.ReadLine(), out a1);
+            double.TryParse(Console.ReadLine(), out b1);
+            double.TryParse(Console.ReadLine(), out c1);
+
+            Console.WriteLine("Введите длины сторон 2-ого треугольника: ");
+            double.TryParse(Console.ReadLine(), out a2);
+            double.TryParse(Console.ReadLine(), out b2);
+            double.TryParse(Console.ReadLine(), out c2);
+
+            FindArea(a1, b1, c1, out S1);
+            FindArea(a2, b2, c2, out S2);
+
+            Console.WriteLine($"Площадь 1-ого треугольника - {S1}");
+            Console.WriteLine($"Площадь 2-ого треугольника - {S2}");
+
+            Console.WriteLine();
+            
+            if (S2 > S1)
+            {
+                Console.WriteLine("Площадь 2-ого треугольника больше площади 1-ого");
+            }
+            else Console.WriteLine("Площадь 1-ого треугольника больше площади 2-ого");
+        }
+    }
+}
+
+_Level 2 Task 6_:
+
+using System;
+
+namespace _5Lab
+{
+    internal class Program
+    {
+        static int FindMax(int[] x)
+        {
+            int max = x[0];
+            int imax = 0;
+            for (int i = 0; i < x.Length; i++)
+            {
+                if (x[i] > max)
+                {
+                    max = x[i];
+                    imax = i;
+                }
+            }
+
+            return imax;
+        }
+
+        static int[] DelMax(int[] x)
+        {
+            int imax = FindMax(x);
+            for (int i = imax; i < x.Length - 1; i++)
+            {
+                x[i] = x[i + 1];
+            }
+            return x;
+        }
+        static void Main(string[] args)
+        {
+            Random random = new Random();
+            int[] A = new int[13];
+            int[] B = new int[8];
+
+            for (int i = 0; i < 7; i++)
+            {
+                A[i] = random.Next(0, 20);
+            }
+
+            for (int i = 0; i < 8; i++)
+            {
+                B[i] = random.Next(0, 20);
+            }
+
+            Console.Write("Массив A: ");
+            for (int i = 0; i < 7; i++)
+            {
+                Console.Write($"{A[i]}, ");
+            }
+            Console.WriteLine();
+
+            Console.Write("Массив B: ");
+            for (int i = 0; i < 8; i++)
+            {
+                Console.Write($"{B[i]}, ");
+            }
+            Console.WriteLine();
+
+            DelMax(A);
+            DelMax(B);
+
+            int B_i = 0;
+            
+            for (int i = 0; i < 15; i++)
+            {
+                if (i < 6)
+                {
+                    A[i] = A[i];
+                }
+                else
+                {
+                    if (B_i < 7)
+                    {
+                        A[i] = B[B_i];
+                        B_i++;
+                    }
+                }
+            }
+
+            Console.Write("Получившийся массив: ");
+            for (int i = 0; i < 13; i++)
+            {
+                Console.Write($"{A[i]}, ");
+            }
+        }
+    }
+}
+
+_Level 2 Task 10_:
+
+using System;
+using System.Security.Cryptography;
+
+namespace _5Lab
+{
+    internal class Program
+    {
+        static int UnderMain(int[,] x)
+        {
+            int max = x[0, 0];
+            int j_max = 0;
+            for (int i = 0; i < x.GetLength(0); i++)
+            {
+                for (int j = 0; j < x.GetLength(1); j++)
+                {
+                    if (i <= j)
+                    {
+                        if (x[i, j] > max)
+                        {
+                            max = x[i, j];
+                            j_max = j;
+                        }
+                    }
+                }
+            }
+            return j_max;
+        }
+
+        static int AboveMain(int[,] x)
+        {
+            int max = x[0, 0];
+            int j_max = 0;
+            for (int i = 0; i < x.GetLength(0); i++)
+            {
+                for (int j = 0; j < x.GetLength(1); j++)
+                {
+                    if (i >= j)
+                    {
+                        if (x[i, j] > max)
+                        {
+                            max = x[i, j];
+                            j_max = j;
+                        }
+                    }
+                }
+            }
+            return j_max;
+        }
+
+        static int[,] DelMax(int[,] x)
+        {
+            int j_max1 = UnderMain(x);
+            int j_max2 = AboveMain(x);
+
+            if (j_max1 == j_max2)
+            {
+                for (int i = 0; i < x.GetLength(0); i++)
+                {
+                    for (int j = 0; j < x.GetLength(1); j++)
+                    {
+                        if (j == j_max1)
+                        {
+                            for (int n = j; n < x.GetLength(1) - 1; n++)
+                            {
+                                x[i, n] = x[i, n + 1];
+                            }
+                        }
+                    }
+                }
+            }
+
+            else
+            {
+                for (int i = 0; i < x.GetLength(0); i++)
+                {
+                    for (int j = 0; j < x.GetLength(1); j++)
+                    {
+                        if (j == j_max1)
+                        {
+                            for (int n = j; n < x.GetLength(1) - 1; n++)
+                            {
+                                x[i, n] = x[i, n + 1];
+                            }
+                        }
+                    }
+                }
+
+                for (int i = 0; i < x.GetLength(0); i++)
+                {
+                    for (int j = 0; j < x.GetLength(1); j++)
+                    {
+                        if (j == j_max2)
+                        {
+                            for (int n = j; n < x.GetLength(1) - 1; n++)
+                            {
+                                x[i, n] = x[i, n + 1];
+                            }
+
+                        }
+                    }
+                }
+            }
+
+            return x;
+
+        }
+        static void Main(string[] args)
+        {
+            int[,] A = new int[5, 5];
+            Random random = new Random();
+
+            for (int i = 0; i < 5; i++)
+            {
+                for (int j = 0; j < 5; j++)
+                {
+                    A[i, j] = random.Next(0, 40);
+                }
+            }
+
+            int j_max1 = UnderMain(A);
+            int j_max2 = AboveMain(A);
+            
+            Console.WriteLine("Матрица А (исходный вариант): ");
+            for (int i = 0; i < A.GetLength(0); i++)
+            {
+                for (int j = 0; j < A.GetLength(1); j++)
+                {
+                    Console.Write("{0,-5}", A[i, j]);
+                }
+                Console.WriteLine();
+            }
+
+            A = DelMax(A);
+
+            if (j_max1 == j_max2)
+            {
+                Console.WriteLine("Матрица A (после удаления столбцов с максимальными элементами): ");
+                for (int i = 0; i < 5; i++)
+                {
+                    for (int j = 0; j < 4; j++)
+                    {
+                        Console.Write("{0,-5}", A[i, j]);
+                    }
+                    Console.WriteLine();
+                }
+            }
+            else
+            {
+                Console.WriteLine("Матрица A (после удаления столбцов с максимальными элементами): ");
+                for (int i = 0; i < 5; i++)
+                {
+                    for (int j = 0; j < 3; j++)
+                    {
+                        Console.Write("{0,-5}", A[i, j]);
+                    }
+                    Console.WriteLine();
+                }
+            }
+        }
+    }
+}
+
+
+_Level 2 Task 23_:
+
+using System;
+using System.Security.Cryptography;
+
+namespace _5Lab
+{
+    internal class Program
+    {
+        static int[,] CopyMatrix(int[,] a)
+        {
+            int[,] b = new int[a.GetLength(0), a.GetLength(1)];
+            for (int i = 0; i < a.GetLength(0); i++)
+            {
+                for (int j = 0; j < a.GetLength(1); j++)
+                {
+                    b[i, j] = a[i, j];
+                }
+            }
+
+            return b;
+        }
+        static void WriteMatrix(int[,] x)
+        {
+            int rows = x.GetLength(0);
+            int columns = x.GetLength(1);
+
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < columns; j++)
+                    Console.Write("{0, -5}", x[i, j]);
+                Console.WriteLine();
+            }
+            Console.WriteLine();
+        }
+        static int[,] MatrixChange(int[,] x, out int[,] b)
+        {
+            int n = 0;
+            b = CopyMatrix(x);
+            int max = x[0, 0];
+            int i_max = 0;
+            int j_max = 0;
+
+            do
+            {
+                max = x[0, 0];
+                i_max = 0;
+                j_max = 0;
+
+                for (int i = 0; i < x.GetLength(0); i++)
+                {
+                    for (int j = 0; j < x.GetLength(1); j++)
+                    {
+                        if (x[i, j] > max)
+                        {
+                            max = x[i, j];
+                            i_max = i;
+                            j_max = j;
+                        }
+                    }
+                }
+
+                b[i_max, j_max] = max * 2;
+                x[i_max, j_max] = 0;
+
+                n++;
+
+            } while (n < 5);
+
+            for (int i = 0; i < b.GetLength(0); i++)
+            {
+                for (int j = 0; j < b.GetLength(1); j++)
+                {
+                    if (b[i, j] < max)
+                    {
+                        b[i, j] = b[i, j] / 2;
+                    }
+                }
+            }
+
+            return b;
+        }
+
+        static void Main(string[] args)
+        {
+            int[,] A = new int[2, 4]
+            {
+                {2, 6, 8 , 43 },
+                {4, 19, 89, 11 }
+            };
+
+            int[,] B = new int[3, 4]
+            {
+                {1, 6, 94 , 43 },
+                {55, 19, 89, 11 },
+                {22, 1, 9, 4 }
+            };
+
+            Console.WriteLine("Исходная матрица А:");
+            WriteMatrix(A);
+
+            Console.WriteLine("Исходная матрица B:");
+            WriteMatrix(B);
+
+            MatrixChange(A, out A);
+            Console.WriteLine("Измененная матрица А: ");
+            WriteMatrix(A);
+
+            MatrixChange(B, out B);
+            Console.WriteLine("Измененная матрица B: ");
+            WriteMatrix(B);
+        }
+    }
+}
+
+
+_Level 3 Task 1_:
+
+using System;
+using System.Security.Cryptography;
+
+namespace _5Lab
+{
+    internal class Program
+    {
+        delegate double fi(double var, int i);
+        static int fact(int n)
+        {
+            int f = 1;
+            for (int i = 2; i <= n; i++)
+            {
+                f *= i;
+            }
+
+            return f;
+        }
+       static double FunctOfSum1(double var, int i)
+       {
+            double F = fact(i);
+            return Math.Cos(i * var) / F;
+       }
+        static double FunctOfSum2(double var, int i)
+        {
+            return Math.Pow(-1, i) * Math.Cos(i * var) / (i * i);
+        }
+
+        static double FindSum(fi f, double x)
+        {
+            double s = 0, var = 1;
+            int i = 1;
+            do
+            {
+                var = f(x, i);
+                s += var;
+                i++;
+
+            } while (Math.Abs(var) > 0.0001);
+
+            return s;
+        }
+        static void Main(string[] args)
+        {
+            double S1;
+            Console.WriteLine("Сумма 1: ");
+            for (double x = 0.1; x < 1.0; x += 0.1)
+            {
+                S1 = FindSum(FunctOfSum1, x);
+                Console.WriteLine($"x={Math.Round(x, 2)} \t y={Math.Round(Math.Pow(Math.E, Math.Cos(x)) * Math.Cos(Math.Sin(x)), 3)} \t s={Math.Round(S1 + 1, 3)}");
+            }
+            Console.WriteLine();
+
+            double S2;
+            Console.WriteLine("Сумма 2: ");
+            for (double x = Math.PI / 5; x < Math.PI; x += Math.PI / 25)
+            {
+                S2 = FindSum(FunctOfSum2, x);
+                Console.WriteLine($"x={Math.Round(x, 2)} \t y={Math.Round((x*x - Math.PI * Math.PI / 3) / 4, 3)} \t s={Math.Round(S2, 3)}");
+            }
+            Console.WriteLine();
+
+        }
+    }
+}
+
+_Level 3 Task 2_:
+
+
+using System;
+using System.Security.Cryptography;
+
+namespace _5Lab
+{
+    internal class Program
+    {
+        static void WriteMatrix(int[,] x)
+        {
+            int rows = x.GetLength(0);
+            int columns = x.GetLength(1);
+
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < columns; j++)
+                    Console.Write("{0, -5}", x[i, j]);
+                Console.WriteLine();
+            }
+            Console.WriteLine();
+        }
+
+        delegate int[] ForSort(int[] x);
+        static int[] Sort(ForSort f, int[] x)
+        {
+            return f(x);
+        }
+        static int[] SortToHigh(int[] x)
+        {
+            for (int i = 1; i < x.Length; i++)
+            {
+                var remembered = x[i];
+                var j = i;
+                while (j > 0 && x[j - 1] > x[j])
+                {
+                    var temp = x[j - 1];
+                    x[j - 1] = x[j];
+                    x[j] = temp;
+                    j--;
+                }
+                x[j] = remembered;
+            }
+            return x;
+        }
+
+
+        static int[] SortToLow(int[] x)
+        {
+            for (int i = 1; i < x.Length; i++)
+            {
+                var remembered = x[i];
+                var j = i;
+                while (j > 0 && x[j - 1] < x[j])
+                {
+                    var temp = x[j - 1];
+                    x[j - 1] = x[j];
+                    x[j] = temp;
+                    j--;
+                }
+                x[j] = remembered;
+            }
+            return x;
+        }
+        static int[,] MatrixChange(int[,] x)
+        {
+            int n = 0;
+            int[] transfer = new int[x.GetLength(1)];
+
+            do
+            {
+                for (int i = 0; i < transfer.Length; i++)
+                {
+                    transfer[i] = 0;
+                }
+
+                if (n % 2 == 0)
+                {
+                    for (int i = 0; i < transfer.Length; i++)
+                    {
+                        transfer[i] = x[n, i];
+                    }
+
+                    transfer = Sort(SortToHigh,transfer);
+                }
+                else
+                {
+                    for (int i = 0; i < transfer.Length; i++)
+                    {
+                        transfer[i] = x[n, i];
+                    }
+
+                    transfer = Sort(SortToLow, transfer);
+                }
+
+                for (int i = 0; i < transfer.Length; i++)
+                {
+                    x[n, i] = transfer[i];
+                }
+
+                n++;
+            } while (n < x.GetLength(0));
+
+            return x;
+        }
+        
+        static void Main(string[] args)
+        {
+            int n, m;
+            Random random = new Random();
+
+            Console.Write("Введите количество строк: ");
+            Int32.TryParse(Console.ReadLine(), out n);
+
+            Console.Write("Введите количество столбцов: ");
+            Int32.TryParse(Console.ReadLine(), out m);
+
+            int[,] matrix = new int[n, m];
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < m; j++)
+                {
+                    matrix[i, j] = random.Next(0, 40);
+                }
+            }
+
+            WriteMatrix(matrix);
+
+            matrix = MatrixChange(matrix);
+            WriteMatrix(matrix);
+
+        }
+    }
+}
