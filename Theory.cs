@@ -1,233 +1,371 @@
 using System;
-using System.Drawing;
 
-namespace _5th_Lab
+namespace lab5
 {
     class Program
     {
-        #region How to use Delegate. Example 1.
-        delegate int LinkUsing(int[] arr); // create a delegate with type: return int value, input: 1st param: int[]
-        static int GetLength(int[] arr) // create a 1st method with same params as ddelegate has
-        {
-            return arr.Length;
-        }
-        static int GetSum(int[] arr) // create a 2nd method with same params as ddelegate has
-        {
-            int sum = 0;
-            foreach (int element in arr)
-                sum += element;
-            return sum;
-        }
-        static int Calculate(LinkUsing func, int[] arr, int count)
-        {
-            int total = 0;
-            for (int i = 0; i < count; i++)
-            {
-                total += func(arr);
-            }
-            return total;
-        }
-        #endregion
-
-        #region How to use Delegate. Example 2.
-        delegate void SequenceUsing(int[] arr); // create a delegate with type: return void (!!!), input: 1st param: int[]
-        static void Say(int[] arr) // create a 1st method with same params as ddelegate has
-        {
-            Console.WriteLine($"It is a {arr.GetType().ToString()}");
-        }
-        static void Read(int[] arr) // create a 2nd method with same params as ddelegate has
-        {
-            foreach (int element in arr)
-                Console.Write($"{element} ");
-            Console.WriteLine();
-        }
-        static void Analyze(int[] arr, int start, int end)
-        {
-            int[] part = new int[end-start];
-            int k = 0;
-            for (int i = start; i < end; i++)
-            {
-                part[k] = arr[i];
-                k++;
-            }
-            SequenceUsing severalWorks = Say; // if we call the severalWorks after that, it would call Say(int[] arr);
-            severalWorks += Read; // if we call the severalWorks after that, it would call Say(int[] arr) and next Read(int[] arr);
-            try
-            {
-                severalWorks -= Say; // if we call the severalWorks after that, it would call Read(int[] arr) only;
-            }
-            catch { }
-            severalWorks += Say; // if we call the severalWorks after that, it would call Read(int[] arr) and next Say(int[] arr);
-            
-            severalWorks(part); // call it (2 methods).
-            /*
-             * But know, that if the methods return some value, you will get only last result!!! so better use delegates with void methods in that way!
-             */
-        }
-        #endregion
-        #region How to use Delegate. Example 3.
-        delegate double ChooseUsage(int[,] matrix, int row); // create a delegate with type: return double value, input: 2 param: int[,], int
-        static double GetAverageInTheRow(int[,] matrix, int row)
-        {
-            double avg = 0;
-            int columns = matrix.GetLength(1);
-            for (int i = 0; i < columns; i++)
-                avg += matrix[row, i] / columns;
-            return avg;
-        }
-        static double GetAverageInTheColumn(int[,] matrix, int column)
-        {
-            double avg = 0;
-            int rows = matrix.GetLength(0);
-            for (int i = 0; i < rows; i++)
-                avg += matrix[i, column] / rows;
-            return avg;
-        }
-        #endregion
-
-        static int PolymorphMethod() { return 0; }
-        static int PolymorphMethod(int number) { return number; }
-        static int PolymorphMethod(ref int number) { return number; }   // either with modificator ref - you send a link to your variable
-                                                                        //    static int PolymorphMethod(out int number) { return number; } // or out - you get additional variale (use if you need >1 variable to return. But tuple is better)
-        static int PolymorphMethod(double anotherNumber) { return (int)anotherNumber; }
-        static int PolymorphMethod<T>(T yourType) { return yourType.GetHashCode(); } // general type
-
-        //     static T PolymorphMethod<T>(T yourType) { return number; } - cannot create since there is method with same input params
-        static double PolymorphMethod(int count, double[] array)
-        {
-            var sum = 0.0;
-            foreach (double value in array)
-            {
-                sum += value;
-            }
-            return sum + count;
-        }
-
-        static bool Compare(int left, int right) => left > right; // => it is lambda operator the same as { return }
-        static bool Compare(double left, double right) => left > right;
-
         static void Main(string[] args)
         {
-
-            Console.WriteLine("Delegate example 1");
-            int[] array = new int[5] { 1, 0, 2, 0, 5 };
-            Calculate(GetLength, array, 3);
-            Calculate(GetSum, array, 3);
-
-            Console.WriteLine("Delegate example 2");
-
-            Analyze(new int[5] { 1, 2, 3, 4, 5 }, 2, 4);
-
-            Console.WriteLine("Delegate example 3");
-
-            ChooseUsage select;
-            if (int.TryParse(Console.ReadLine(), out int sample))
-                select = GetAverageInTheRow;
-            else
-                select = GetAverageInTheColumn;
-            Console.WriteLine($"Average = {select(new int[2, 3] { { 1, 2, 0 }, { 11, 3, 9 } }, 1)}");
-
-            return;
-            #region OOP principles
-
-            /* You operation mith moduls. Modul can work with data he get or keep inside. 
-             * Moduls of higher lvl hould not know about lower ones.
-             * So your code will be safe and logical.
-             * 
-             * 
-             * What are you need?
-             * 
-             * Abstraction - noone shuld know HOW another modul (class / method) works.
-             * You have to provide input value and get the output.
-             * User interface shouldn't affect on the system's work.
-             * Also realization should not change the pattern (abstract scheme)
-             * 
-             * Encapsulation - do not provide more than asked.
-             * Another class or method shouldn't know about any field or method in your object (class, structure and so on) except you provide to it.
-             * Group your data in a single object. One object (entity) should know and do only that things that incuded or were gotten outside.
-             * 
-             * Inheritance - Inheritance is the method of acquiring features of the existing class into the new class with additional properties or methods.
-             * Also it is allow us to reach better incapsulation (up-cast).
-             * Inheritance can be from 1 to many (classes / interfaces) or from many to one (interfaces only). 
-             * So we can create an object (entity) with such properties we need and agregate in with another objects that have the same property.
-             * 
-             * Polymorphism - the most essential concept which allow any object or method has more than one name associated with it. And it allow your code be more flexible.
-             * Difference can be in the type it use, parameters it get.
-             * 
-             * In that lab you will have an acquaintance with polymorphism
-             * 
-             */
-
-            Console.WriteLine(PolymorphMethod());
-
-            Console.WriteLine(PolymorphMethod(10));
-
-            Console.WriteLine(PolymorphMethod(2.56));
-
-            Console.WriteLine(PolymorphMethod("Abracadabra")); // general type will be called, because no another method that suit to this type
-
-            Console.WriteLine(PolymorphMethod(5, new[] { 0.1223, 1.2, 8.9, -1.5 }));
-
+            #region level 1 number 1
+            Console.WriteLine("--------level 1 number 1--------");
+            int a = 5;
+            int b1 = 8, b2 = 10, b3 = 11;
+            Console.WriteLine("options to assemble a team of {0} people:", a);
+            Console.WriteLine("{0} from {1} people", formula(b1, a), b1);
+            Console.WriteLine("{0} from {1} people", formula(b2, a), b2);
+            Console.WriteLine("{0} from {1} people", formula(b3, a), b3);
             #endregion
-
-            #region DRY - don't repeat yourself
-
-            /* Very simple advice :)
-             * You already did it, using cycle, for example instead maing calculation on each line
-             * 
-             * If you see that in your program is repeat, make a separate method and call it when it needs.
-             */
-
-            int numerator = 1, denominator = 1;
-
-
-            double sum = 0, average = 0;
-
-            if (numerator > denominator)
+            #region level 1 number 2
+            Console.WriteLine("--------level 1 number 2--------");
+            int a1,a2, c1,c2;
+            Console.WriteLine("Enter a, b and c of 1st triangle");
+            int.TryParse(Console.ReadLine(), out a1);
+            int.TryParse(Console.ReadLine(), out b1);
+            int.TryParse(Console.ReadLine(), out c1);
+            if (a1 + b1 < c1 || a1 + c1 < b1 || b1 + c1 < a1)
             {
-                Console.WriteLine(true);
+                Console.WriteLine("Error, enter another sides");
+                int.TryParse(Console.ReadLine(), out a1);
+                int.TryParse(Console.ReadLine(), out b1);
+                int.TryParse(Console.ReadLine(), out c1);
+            }
+            Console.WriteLine("Enter a, b and c of 2nd triangle");
+            int.TryParse(Console.ReadLine(), out a2);
+            int.TryParse(Console.ReadLine(), out b2);
+            int.TryParse(Console.ReadLine(), out c2);
+            if (a2 + b2 < c2 || a2 + c2 < b2 || b2 + c2 < a2)
+            {
+                Console.WriteLine("Error, enter another sides");
+                int.TryParse(Console.ReadLine(), out a2);
+                int.TryParse(Console.ReadLine(), out b2);
+                int.TryParse(Console.ReadLine(), out c2);
+            }
+            double S1 = S(a1, b1, c1, p(a1, b1, c1));
+            double S2 = S(a2, b2, c2, p(a2, b2, c2));
+            if (S1 > S2) Console.WriteLine("S of second triangle is less then first");
+            else if (S2 > S1) Console.WriteLine("S of first triangle is less then second");
+            else Console.WriteLine("S of triangles is equal");
+            #endregion
+            #region level 2 number 6
+            Console.WriteLine("--------level 2 number 6--------");
+            a = 7;
+            int b = 8;
+            double[] A = new double[a + b - 2];
+            Console.WriteLine("Enter elements of array A");
+            for(int i = 0; i < a; i++)
+            {
+                double.TryParse(Console.ReadLine(), out A[i]);
+            }
+            double[] B = new double[b];
+            Console.WriteLine("Enter elements of array B");
+            for (int i = 0; i < b; i++)
+            {
+                double.TryParse(Console.ReadLine(), out B[i]);
+            }
+            delete(A, a);
+            delete(B, b);
+            for(int i = a-1; i < a + b - 2; i++)
+            {
+                A[i] = B[i - a + 1];
+            }
+            Console.WriteLine("Your array:");
+            for(int i = 0; i < a + b - 2; i++)
+            {
+                Console.Write("{0} ", A[i]);
+            }
+            Console.WriteLine();
+            #endregion
+            #region level 2 number 10
+            Console.WriteLine("--------level 2 number 10--------");
+            Console.WriteLine("Enter amount of rows:");
+            int.TryParse(Console.ReadLine(), out a);
+            double[,] matrix = new double[a, a];
+            Console.WriteLine("Enter elements of matrix:");
+            for(int i = 0; i < a; i++)
+            {
+                for(int j = 0; j < a; j++)
+                {
+                    double.TryParse(Console.ReadLine(), out matrix[i, j]);
+                }
+            }
+            int index_max = 0;
+            int index_min = 1;
+            double maxi = matrix[0, 0];
+            double mini = matrix[0, 1];
+            for(int i = 0; i < a; i++)
+            {
+                for(int j = 0; j < a; j++)
+                {
+                    if (i < j)
+                    {
+                        if (matrix[i, j] < mini)
+                        {
+                            index_min = j;
+                            mini = matrix[i, j];
+                        }
+                    }
+                    else if (matrix[i, j] > maxi)
+                    {
+                        index_max = j;
+                        maxi = matrix[i, j];
+                    }
+                }
+            }
+            if (index_max == index_min)
+            {
+                del_el(matrix, index_min,a);
+                b=a-1;
             }
             else
             {
-                Console.WriteLine(false);
+                del_el(matrix, index_min, a);
+                del_el(matrix, index_max, a-1);
+                b =a-2;
             }
-
-            if (sum > average)
+            Console.WriteLine("Your matrix:");
+            for (int i = 0; i < a; i++)
             {
-                Console.WriteLine(true);
+                for (int j = 0; j < b; j++)
+                {
+                    Console.Write("{0} ", matrix[i, j]);
+                }
+                Console.WriteLine();
             }
-            else
+            #endregion
+            #region level 2 number 23
+            Console.WriteLine("--------level 2 number 23--------");
+            Console.WriteLine("Enter n of 1st matrix");
+            int n1, m1,n2,m2;
+            int.TryParse(Console.ReadLine(), out n1);
+            Console.WriteLine("Enter m of 1st matrix");
+            int.TryParse(Console.ReadLine(), out m1);
+            double[,] matrix1 = new double[n1, m1];
+            Console.WriteLine("Enter n of 2nd matrix");
+            int.TryParse(Console.ReadLine(), out n2);
+            Console.WriteLine("Enter m of 2nd matrix");
+            int.TryParse(Console.ReadLine(), out m2);
+            double[,] matrix2 = new double[n2, m2];
+            Console.WriteLine("Enter elements of 1st matrix");
+            for (int i = 0; i < n1; i++)
             {
-                Console.WriteLine(false);
+                for(int j = 0; j < m1; j++)
+                {
+                    double.TryParse(Console.ReadLine(), out matrix1[i,j]);
+                }
+            }
+            Console.WriteLine("Enter elements of 2nd matrix");
+            for(int i = 0; i < n2; i++)
+            {
+                for(int j = 0; j < m2; j++)
+                {
+                    double.TryParse(Console.ReadLine(), out matrix2[i, j]);
+                }
+            }
+            //metod1
+            change(matrix1, n1, m1);
+            change(matrix2, n2, m2);
+            //metod2
+            Console.WriteLine("Your 1st matrix:");
+            for(int i = 0; i < n1; i++)
+            {
+                for(int j = 0; j < m1; j++)
+                {
+                    Console.Write("{0} ", matrix1[i, j]);
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine("Your 2nd matrix:");
+            for(int i = 0; i < n2; i++)
+            {
+                for(int j = 0; j < m2; j++)
+                {
+                    Console.Write("{0} ", matrix2[i, j]);
+                }
+                Console.WriteLine();
+            }
+            #endregion
+            #region level 3 number 1
+            Console.WriteLine("--------level 3 number 1--------");
+            double a_1 = 0.1, b_1 = 1, h_1 = 0.1;
+            double a_2 = Math.PI / 5, b_2 = Math.PI, h_2 = Math.PI / 25;
+            Console.WriteLine("S1 = {0}", 1+sum(f1, a_1, b_1, h_1));
+            Console.WriteLine("S2 = {0}", sum(f2, a_2, b_2, h_2));
+            #endregion
+            #region level 3 number 3
+            Console.WriteLine("--------level 3 number 3--------");
+            int n;
+            Console.WriteLine("Enter n");
+            int.TryParse(Console.ReadLine(), out n);
+            double[] array = new double[n];
+            Console.WriteLine("Enter elements of array");
+            double summ = 0;
+            for (int i = 0; i < n; i++)
+            {
+                double.TryParse(Console.ReadLine(), out array[i]);
+                summ += array[i];
+            }
+            double average = summ / n;
+            if (array[0] > average)
+            {
+                summ = summi(S_1, array);
+            }
+            else summ = summi(S_2, array);
+            Console.WriteLine("Your array:");
+            for(int i = 0; i < n; i++)
+            {
+                Console.Write("{0} ", array[i]);
+            }
+            Console.WriteLine();
+            Console.WriteLine("Sum = {0}", summ);
+            #endregion
+        }
+        static int factorial(int x)
+        {
+            int fact = 1;
+            for (int i = 1; i < x; i++) fact *= i;
+            return fact;
+        }
+        static double formula(int n, int k)
+        {
+            double res = factorial(n) / (factorial(k) * factorial(n - k)*1.0);
+            return res;
+        }
+        static double p(int a, int b, int c)
+        {
+           return (a + b + c) / 2.0;
+        }
+        static double S(int a, int b, int c, double p)
+        {
+            return Math.Sqrt(p * (p - a) * (p - b) * (p - c));
+        }
+        static void delete(double[] array, int n)
+        {
+            int maxi_index = 0;
+            for(int i = 0; i < n; i++)
+            {
+                if (array[i] > array[maxi_index])
+                {
+                    maxi_index = i;
+                }
+            }
+            for(int i = maxi_index; i < n - 1; i++)
+            {
+                array[i] = array[i + 1];
+            }
+        }
+        static void del_el(double[,] matrix, int ji, int n)
+        {
+            for (int i = 0; i < n; i++)
+            {
+                for(int j = ji; j < n - 1; j++)
+                {
+                    matrix[i, j] = matrix[i, j + 1];
+                }
+            }
+        }
+        static void change(double[,] matrix, int n, int m)
+        {
+            double[] array = new double[n * m];
+            int k = 0;
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < m; j++)
+                {
+                    array[k] = matrix[i, j];
+                    k++;
+                }
+            }
+            //sort
+            int step = array.Length / 2;
+            double temp;
+            while (step > 0)
+            {
+                for (int i = step; i < array.Length; i++)
+                {
+                    int j = i;
+                    while ((j >= step) && array[j - step] < array[j])
+                    {
+                        temp = array[j - step];
+                        array[j - step] = array[j];
+                        array[j] = temp;
+                        j -= step;
+                    }
+                }
+                step /= 2;
+            }
+            //change
+            for (int i = 0; i < n; i++)
+            {
+                for(int j = 0; j < m; j++)
+                {
+                    if (matrix[i,j] == array[0] || matrix[i, j] == array[1] || matrix[i, j] == array[2] || matrix[i, j] == array[3]|| matrix[i, j] == array[4])
+                    {
+                        matrix[i, j] *= 2;
+                    }
+                    else
+                    {
+                        matrix[i, j] /= 2;
+                    }
+                }
             }
 
-            // Carry out the logic (DRY + Incapsilation + Polymorphism in such small example)) - look in the head of program
-            Compare(numerator, denominator);
-            Compare(sum, average);
-
-            #endregion
-
-            #region SOLID principles
-
-            /* single responsibility, open–closed, Liskov substitution, interface segregation и dependency inversion
-             * 
-             * S - Each class should keep everithing he need for work inside itself.
-             * O - Your program should be open for extentions but closed for changes. It is very difficlt to reach it, actually.
-             * L - Heirs should be able to use father's metods.
-             * I - Separate your program to interfaces and provide only what need in particular cases.
-             * D - One object shouldn't to talk another at the same level what to do. Use actions instead.
-             */
-
-            // We will work with SOLID closely at 7-8 & 10th labs.
-
-            #endregion
-
-            #region Signature
-            /* Signature is a linguistic concept separate from the concept of syntax, which is also often related to attributes of computer programming languages.
-             * In c# for methods (and delegates) it includes full name (namespace, class(es), method name) and type, modificator (ref/out) and order of input parameters.
-             */
-
-            #endregion
+        }
+        delegate double fx(double x, int i);
+        static int fact(int i)
+        {
+            int res = 1;
+            for (int j = 1; j <= i; j++) res *= j;
+            return res;
+        }
+        static double f1(double x, int i)
+        {
+            double res= Math.Cos(i * x) / factorial(i);
+            return res;
+        }
+        static double f2(double x, int i)
+        {
+            double res = Math.Pow(-1, i) * Math.Cos(i * x) / i * i;
+            return res;
+        }
+        static double sum(fx f, double a, double b, double h)
+        {
+            double res = 0;
+            int i = 1;
+            for (double x=a; x <= b; x += h)
+            {
+                res += f(x,i);
+                i++;
+            }
+            return res;
+        }
+        delegate void wap(double[] a);
+        static void S_1(double[] a)
+        {
+            double temp;
+            for(int i = 0; i < a.Length - 1; i += 2)
+            {
+                temp = a[i + 1];
+                a[i + 1] = a[i];
+                a[i] = temp;
+            }
+        }
+        static void S_2(double[] a)
+        {
+            double temp;
+            for (int i = a.Length-1; i >0; i -= 2)
+            {
+                temp = a[i - 1];
+                a[i - 1] = a[i];
+                a[i] = temp;
+            }
+        }
+        static double summi(wap s, double[] a)
+        {
+            double res = 0;
+            s(a);
+            for (int i = 1; i < a.Length; i += 2) res += a[i];
+            return res;
         }
     }
 }
+
