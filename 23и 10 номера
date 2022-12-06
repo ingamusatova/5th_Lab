@@ -1,0 +1,277 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace _10_и_23_pflfybz
+{
+    //23 номер
+    internal class Program
+    {
+        static void Ranndom(int[,] a)
+        {
+            Random r = new Random();
+            for (int i = 0; i < a.GetLength(0); i++)
+            {
+                for (int j = 0; j < a.GetLength(1); j++)
+                {
+                    a[i, j] = r.Next(-15, 30);
+                }
+            }
+        }
+        static int[,] copy_matrix(int[,] a)
+        {
+            int[,] New_array = new int[a.GetLength(0), a.GetLength(1)];
+            for (int i = 0; i < a.GetLength(0); i++)
+            {
+                for (int j = 0; j < a.GetLength(1); j++)
+                {
+                    New_array[i, j] = a[i, j];
+                }
+            }
+            return New_array;
+        }
+        static int[,] Evelechenie_v_2_raza_i_ymenshenie_v2_raza(int[,]a,out int[,] b)
+        {
+            b = copy_matrix(a);
+            
+            int n = 0;
+           
+            int max = a[0, 0];
+            int i_max = 0;
+            int j_max = 0;
+
+            do
+            {
+                max = a[0, 0];
+                i_max = 0;
+                j_max = 0;
+
+                for (int i = 0; i < a.GetLength(0); i++)
+                {
+                    for (int j = 0; j < a.GetLength(1); j++)
+                    {
+                        if (a[i, j] > max)
+                        {
+                            max = a[i, j];
+                            i_max = i;
+                            j_max = j;
+                        }
+                    }
+                }
+
+                b[i_max, j_max] = max * 2;
+                a[i_max, j_max] = 0;
+
+                n++;
+
+            } while (n < 5);
+
+            for (int i = 0; i < b.GetLength(0); i++)
+            {
+                for (int j = 0; j < b.GetLength(1); j++)
+                {
+                    if (b[i, j] < max)
+                    {
+                        b[i, j] = b[i, j] / 2;
+                    }
+                }
+            }
+
+            return b;
+        }
+
+
+
+    
+        static void Main(string[] args)
+        {
+                Console.WriteLine("кол-во строк");
+                string s = Console.ReadLine();
+                Console.WriteLine("кол-во столбцов");
+                string l = Console.ReadLine();
+                int n, f;
+                int.TryParse(s, out n);
+                int.TryParse(l, out f);
+                int[,] a = new int[n,f];
+                Ranndom(a);//заполнение массива случайными числами
+                Console.WriteLine("Вывод изначальной матрицы");
+                for (int i = 0; i < a.GetLength(0); i++)
+                {
+                    for (int j = 0; j < a.GetLength(1); j++)
+                    {
+                        Console.Write(a[i,j] + " ");
+                    }
+                    Console.WriteLine();
+                }
+                Evelechenie_v_2_raza_i_ymenshenie_v2_raza(a,out a);
+                Console.WriteLine("Вывод обработанной");
+                for (int i = 0; i < a.GetLength(0); i++)
+                {
+                    for (int j = 0; j < a.GetLength(1); j++)
+                    {
+                        Console.Write(a[i, j] + " ");
+                    }
+                    Console.WriteLine();
+                }
+                Console.ReadLine();
+
+
+        }
+    }
+}
+
+
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace _10_task
+{
+    internal class Program
+    {
+        //10 номер
+        static void Zap(int[,]a)
+        {
+            Random r = new Random();
+            for (int i = 0; i < a.GetLength(0); i++)
+            {
+                for (int j = 0; j < a.GetLength(1); j++)
+                {
+                    a[i,j] = r.Next(-20, 20);
+                }
+            }
+        }
+        static int under_MaIN(int[,] a)
+        {
+            int amax = a[0, 0];
+            int jmax = 0;
+            for (int i = 0; i < a.GetLength(0); i++)
+            {
+                for (int j = 0; j <= i; j++)
+                {
+                    if (a[i,j] > amax)
+                    {
+                        amax = a[i,j];
+                        jmax = j;
+                    }
+                }
+            }
+            return jmax;
+        }
+        static int Nad_mAin(int[,] a)
+        {
+            int amax = a[0, 2];
+            int jmax = 0;
+            for (int i = 0; i < a.GetLength(0); i++)
+            {
+                for (int j = a.GetLength(0) - 1; j > i; j--)
+                {
+                    if (a[i, j] < amax)
+                    {
+                        amax = a[i, j];
+                        jmax = j;
+                    }
+                }
+            }
+            return jmax;
+        }
+        static int[,] del(int[,] a)
+        {
+            int jmax = under_MaIN(a);
+            int jmin = Nad_mAin(a);
+            if (jmax == jmin)
+            {
+                for (int i = 0; i < a.GetLength(0); i++)
+                {
+                    for (int j = jmax; j < a.GetLength(1) - 1; j++)
+                    {
+                        a[i, j] = a[i, j + 1];
+                    }
+                        
+                }
+
+                
+            }
+            else
+            {
+                for (int i = 0; i < a.GetLength(0); i++)
+                {
+                    for (int j = jmax; j < a.GetLength(1) - 1; j++)
+                    {
+                        a[i, j] = a[i, j + 1];
+                    }
+
+                }
+                for (int i = 0; i < a.GetLength(0); i++)
+                {
+                    for (int j = jmin; j < a.GetLength(1) - 1; j++)
+                    {
+                        a[i, j] = a[i, j + 1];
+                    }
+
+                }
+                
+            }
+            return a;
+          
+        }
+        static void Main(string[] args)
+        {
+
+            Console.WriteLine("кол-во строк");
+            string s = Console.ReadLine();
+
+            int n;
+            int.TryParse(s, out n);
+            
+            int[,] a = new int[n, n];
+            Zap(a);//заполнение массива случайными числами
+            Console.WriteLine("Вывод изначальной матрицы");
+            for (int i = 0; i < a.GetLength(0); i++)
+            {
+                for (int j = 0; j < a.GetLength(1); j++)
+                {
+                    Console.Write(a[i, j] + " ");
+                }
+                Console.WriteLine();
+            }
+            a = del(a);
+            Console.WriteLine("Под диогнаналью");
+            Console.WriteLine(under_MaIN(a));
+            Console.WriteLine("Над диоганалью");
+            Console.WriteLine(Nad_mAin(a));
+            if (under_MaIN(a) == Nad_mAin(a))
+            {
+                for (int i = 0; i < a.GetLength(0); i++)
+                {
+                    for (int j = 0; j < a.GetLength(1) - 1; j++)
+                    {
+                        Console.Write(a[i, j] + " ");
+                    }
+                    Console.WriteLine();
+                }
+            }
+            else
+            {
+                Console.WriteLine("Вывод обработанной");
+                for (int i = 0; i < a.GetLength(0); i++)
+                {
+                    for (int j = 0; j < a.GetLength(1) - 2; j++)
+                    {
+                        Console.Write(a[i, j] + " ");
+                    }
+                    Console.WriteLine();
+                }
+                Console.ReadLine();
+            }
+           
+            Console.ReadLine();
+        }
+    }
+}
+
