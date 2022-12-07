@@ -112,9 +112,19 @@
                 maxi[i, j] = mox;
             }
         }
+        double[] hru = new double[x1 * y1];
+        int q = 0;
+        for (int i = 0; i < x1; i++)
+        {
+            for (int j = 0; j < y1; j++)
+            {
+                hru[q] = mast1[i, j];
+                q++;
+            }
+        }
         for (int n = 0; n < 5; n++)
         {
-            int[] c = f(maxi, mast1, x1, y1, mox);
+            int[] c = f(maxi, hru, x1, y1, mox);
             if (mast1[c[0], c[1]] < 0)
             {
                 maxi[c[0], c[1]] = mast1[c[0], c[1]] / 2;
@@ -143,22 +153,19 @@
         }
         return maxi;
     }
-    static int[] f(double[,] maxi1, double[,] mast2, int x2, int y2, double mox)
+    static int[] f(double[,] maxi1, double[] hru1, int x2, int y2, double mox)
     {
         double max = -(Math.Pow(9, 10));
         int indi = 0;
         int indj = 0;
-        for (int i = 0; i < x2; i++)
+        for (int i = 0; i < hru1.Length; i++)
         {
-            for (int j = 0; j < y2; j++)
-            {
-                if (maxi1[i, j] == mox & mast2[i, j] > max)
-                {
-                    max = mast2[i, j];
-                    indi = i;
-                    indj = j;
-                }
-            }
+          if (maxi1[i/y2, Math.Abs(i%y2)] == mox & hru1[i] > max)
+          {
+            max = hru1[i];
+            indi = i / y2;
+            indj = i % y2;
+          }
         }
         int[] res = new int[2] { indi, indj };
         return res;
@@ -185,10 +192,20 @@
                 maxi[i, j] = mox;
             }
         }
+        double[] hru = new double[x1 * y1];
+        int q = 0;
+        for (int i = 0; i < x1; i++)
+        {
+            for (int j = 0; j < y1; j++)
+            {
+                hru[q] = prok1[i, j];
+                q++;
+            }
+        }
         for (int n = 0; n < 5; n++)
         {
-            int[] c = f1(maxi, prok1, x1, y1, mox);
-            if(prok1[c[0], c[1]]<0)
+            int[] c = f1(maxi,hru, x1, y1, mox);
+            if (prok1[c[0], c[1]] < 0)
             {
                 maxi[c[0], c[1]] = prok1[c[0], c[1]] / 2;
             }
@@ -196,16 +213,16 @@
             {
                 maxi[c[0], c[1]] = prok1[c[0], c[1]] * 2;
             }
-            
+
         }
-        
+
         for (int i = 0; i < x1; i++)
         {
             for (int j = 0; j < y1; j++)
             {
                 if (maxi[i, j] == mox)
                 {
-                    if(prok1[i, j] < 0)
+                    if (prok1[i, j] < 0)
                     {
                         maxi[i, j] = prok1[i, j] * 2;
                     }
@@ -218,21 +235,18 @@
         }
         return maxi;
     }
-    static int[] f1(double[,] maxi1, double[,] prok2, int x2, int y2, double mox)
+    static int[] f1(double[,] maxi1, double[] hru1, int x2, int y2, double mox)
     {
         double max = -(Math.Pow(9, 10));
         int indi = 0;
         int indj = 0;
-        for (int i = 0; i < x2; i++)
+        for (int i = 0; i < hru1.Length; i++)
         {
-            for (int j = 0; j < y2; j++)
+            if (maxi1[i / y2, Math.Abs(i % y2)] == mox & hru1[i] > max)
             {
-                if (maxi1[i, j] == mox & prok2[i, j] > max)
-                {
-                    max = prok2[i, j];
-                    indi = i;
-                    indj = j;
-                }
+                max = hru1[i];
+                indi = i / y2;
+                indj = i % y2;
             }
         }
         int[] res = new int[2] { indi, indj };
