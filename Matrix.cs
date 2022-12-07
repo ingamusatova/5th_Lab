@@ -572,5 +572,24 @@ namespace _4th_Lab
             }
         }
         #endregion
+
+        #region Sort
+        public static void SortEachRow(int[,] source, Program.Sort sort)
+        {
+            if(source == null)
+            {
+                Error.Kill();
+            }
+            
+            int[] row;
+            for(int i = 0; i < source.GetLength(0); i++)
+            {
+                row = Matrix.GetRow(source, i);
+                sort.Invoke(row, true);
+                sort.Invoke(row, false);
+                Matrix.SetRow(source, row, i);
+            }
+        }
+        #endregion
     }
 }

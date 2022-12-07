@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using _4th_Lab;
 
@@ -29,7 +30,9 @@ namespace _5th_Lab
             //Task1_2();
             //Task2_6();
             //Task2_10();
-            Task2_23();
+            //Task2_23();
+            //Task3_1();
+            Task3_2();
         }
 
         #region Level1
@@ -250,6 +253,103 @@ namespace _5th_Lab
             a += b;
             b = a - b;
             a = a - b;
+        }
+        #endregion
+        #endregion
+
+        #region Level3
+        #region Task3_1
+        delegate double Member(int iterator, double x);
+        static void Task3_1()
+        {
+            double upBound = 1;
+            double firstMember = 1;
+            for (double x = 0.1; x <= upBound; x += 0.1)
+            {
+                double analitycalFunc = CalculateFunc((i, value) => Math.Cos(i * value) / Factorial(i), x, firstMember);
+                double func = Math.Pow(Math.E, Math.Cos(x)) * Math.Cos(Math.Sin(x));
+                Console.WriteLine($"x = {Math.Round(x, 2), 3}: " +
+                    $"{func} - {analitycalFunc} = {Math.Abs(func - analitycalFunc)}");
+            }
+
+            Console.WriteLine("\n\n\n");
+
+            upBound = Math.PI;
+            firstMember = 0;
+            for(double x = Math.PI / 5; x <= upBound; x += Math.PI / 25)
+            {
+                double analitycalFunc = CalculateFunc((i, value) => Math.Pow(-1, i) * Math.Cos(i * value) / (i * i), x, firstMember);
+                double func = (Math.Pow(x, 2) - Math.Pow(Math.PI, 2) / 3) / 4;
+                Console.WriteLine($"x = {Math.Round(x, 2), 3}: " +
+                    $"{func} - {analitycalFunc} = {Math.Abs(func - analitycalFunc)}");
+            }
+        }
+
+        static double CalculateFunc(Member f, double x, double firstMember)
+        {
+            double epsilon = 0.0001;
+
+            double sum = firstMember;
+            double currentMember = double.MaxValue;
+            for(int i = 1; Math.Abs(currentMember) > epsilon; i++)
+            {
+                currentMember = f(i, x);
+                sum += currentMember;
+            }
+
+            return sum;
+        }
+        #endregion
+
+        #region Task3_2
+        public delegate void Sort(int[] array, bool isEven);
+        static void Task3_2()
+        {
+            int rowLength = Matrix.SetLengthRow();
+            int colLength = Matrix.SetLengthCol();
+            int[,] matrix = new int[rowLength, colLength];
+            Matrix.Fill(matrix, -30, 30);
+            Matrix.Print(matrix);
+            Console.WriteLine();
+
+            Sort sort = SortRow;
+            Matrix.SortEachRow(matrix, sort);
+            Matrix.Print(matrix);
+        }
+
+        public static void SortRow(int[] array, bool isEven)
+        {
+            if (array == null)
+            {
+                Error.Kill();
+            }
+
+            int index = isEven ? 0 : 1;
+
+            for (int i = 0; i < array.Length - 1; i++)
+            {
+                for (int j = index; j < array.Length - 2 - i; j += 2)
+                {
+                    if (isEven)
+                    {
+                        if (array[j] > array[j + 2])
+                        {
+                            array[j] = array[j] + array[j + 2];
+                            array[j + 2] = array[j] - array[j + 2];
+                            array[j] = array[j] - array[j + 2];
+                        }
+                    }
+                    else
+                    {
+                        if (array[j] < array[j + 2])
+                        {
+                            array[j] = array[j] + array[j + 2];
+                            array[j + 2] = array[j] - array[j + 2];
+                            array[j] = array[j] - array[j + 2];
+                        }
+                    }
+                }
+            }
         }
         #endregion
         #endregion
