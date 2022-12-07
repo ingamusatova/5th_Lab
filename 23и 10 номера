@@ -1,329 +1,130 @@
-namespace _23_исправленный_номер
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace task
 {
     internal class Program
     {
-        static void Random(int[,] x)
+        static void Zap(int[,] a)
         {
-            Random r = new Random();
-            for (int i = 0; i < x.GetLength(0); i++)
+            Random R = new Random();
+            for (int i = 0; i < a.GetLength(0); i++)
             {
-                for (int j = 0; j < x.GetLength(1); j++)
+                for (int j = 0; j < a.GetLength(1); j++)
                 {
-                    x[i, j] = r.Next(-40, 40);
+                    a[i, j] = R.Next(-10, 10);
                 }
             }
         }
-        static void Vivod(int[,] x)
+        static int[] Copy(int[,] a)
         {
-            for (int i = 0; i < x.GetLength(0); i++)
+            int[] b = new int[a.GetLength(0) * a.GetLength(1)];
+            for (int i = 0, ii = 0; i < a.GetLength(0); ii++, i++)
             {
-                for (int j = 0; j < x.GetLength(1); j++)
+                for (int j = 0; j < a.GetLength(1); j++)
                 {
-                    Console.Write(x[i,j] + " ");
+                    b[ii] = a[i, j];
                 }
-                Console.WriteLine();
             }
-        }
-        static int[,] Copy(int[,] x)
-        {
-            int[,] mass = new int[x.GetLength(0), x.GetLength(1)];
-            for (int i = 0; i < x.GetLength(0); i++)
-            {
-                for (int j = 0; j < x.GetLength(1); j++)
-                {
-                    mass[i, j] = x[i, j];
-                }
-               
-            }
-            return mass;
-        }
-        static int Min(int[,] x)
-        {
-            int min = x[0, 0];
-           
-           
-            for (int i = 0; i < x.GetLength(0); i++)
-            {
-                for (int j = 0; j < x.GetLength(1); j++)
-                {
-                    if (x[i, j] < min) min = x[i, j];
-
-                   
-                      
-                }
-
-            }
-            return min;
-        }
-        static int[,] Vosvr(int[,] x)
-        {
-            int min = Min(x);
-            int[,] b = Copy(x);
-            int[] mass = new int[5];
-            int n = 0;
-            int xmax;
-            do
-            {
-                xmax = Min(x);
-                int imax = 0;
-                int jmax = 0;
-                for (int i = 0; i < x.GetLength(0); i++)
-                {
-                    for (int j = 0; j < x.GetLength(1); j++)
-                    {
-                        if (x[i, j] > xmax)
-                        {
-                            xmax = x[i, j];
-                            imax = i;
-                            jmax = j;
-                        }
-                    }
-
-                }
-                mass[n] = x[imax,jmax];
-                if (x[imax,jmax ] >= 0)
-                {
-                    b[imax, jmax] = b[imax, jmax] * 2;
-                }
-                else
-                {
-                    b[imax, jmax] = b[imax, jmax] / 2;
-                }
-                
-                x[imax, jmax] = min;
-                n+=1;
-            } while (n < 5);
-           
-           
-                for (int i = 0; i < x.GetLength(0); i++)
-                {
-                    for (int j = 0; j < x.GetLength(1); j++)
-                    {
-                        if ( b[i,j] <= xmax && b[i,j] != mass[0] && b[i, j] != mass[1] && b[i, j] != mass[2] && b[i, j] != mass[3] && b[i, j] != mass[4])
-                        {
-
-                            if (b[i, j] >= 0)
-                            {
-                                b[i, j] /= 2;
-                            }
-                            else
-                            {
-                                b[i, j] *= 2;
-                            }
-                        }
-                    }
-
-
-                }
-               
             return b;
-
+        }
+        static int[,] Yv_i_del(int[,] a)
+        {
+            int[] z = Copy(a);
+            /*
+            for (int i = 0; i < z.Length - 1; i++)
+            {
+                int amax = z[i];
+                int imax = i;
+                for (int j = i + 1; j <z.Length ; j++)
+                {
+                    if (z[j] > amax )
+                    {
+                        amax = z[j];
+                        imax = j;
+                    }
+                }
+                z[imax] = z[i];
+                z[i] = amax; 
+                
+            }
+            */
+            Array.Sort(z);
+            Array.Reverse(z);
+            int count = 0;
+            for (int i = 0; i < a.GetLength(0); i++)
+            {
+                for (int j = 0; j < a.GetLength(1); j++)
+                {
+                    if (a[i,j] == z[0] || a[i, j] == z[1] || a[i, j] == z[2] || a[i, j] == z[3] || a[i, j] == z[4] || count < 5)
+                    {
+                        if (a[i,j] >= 0)
+                        {
+                            a[i, j] *= 2;
+                        }
+                        else
+                        {
+                            a[i , j] /= 2;
+                        }
+                        count++;
+                    }
+                    else
+                    {
+                        if (a[i, j] >= 0)
+                        {
+                            a[i, j] /= 2;
+                        }
+                        else
+                        {
+                            a[i, j] *= 2;
+                        }
+                        count++;
+                    }
+                }
+               
+            }
+            return a;
+        }
+        static void Print_MAtrix(int[,] a)
+        {
+            for (int i = 0; i < a.GetLength(0); i++)
+            {
+                for (int j = 0; j < a.GetLength(1); j++)
+                {
+                    Console.Write(a[i,j] + " ");
+                }
+                Console.WriteLine();
+            }
         }
         static void Main(string[] args)
         {
-            int n;
+            Console.WriteLine("кол-во строк");
             string s = Console.ReadLine();
-            int.TryParse(s, out n);
-            int[,] A = new int[n, n];
-            Random(A);
-            Console.WriteLine("Вывод изначальной");
-            Vivod(A);
-            int[,] New_array = Vosvr(A);
-            Console.WriteLine("Вывод конечной");
-            Vivod(New_array);
-            Console.ReadLine();
-
-
-
-        }
-    }
-}
-
-
-using System;
-using System.Reflection;
-
-namespace _1st_Lab
-{
-    class Program
-    {
-        //10 task
-        static int MAX(int[,] x)
-        {
-            int max = x[0, 0];
-            for (int i = 0; i < x.GetLength(0); i++)
+            Console.WriteLine("кол-во столбцов");
+            string n = Console.ReadLine();
+            int p, l;
+            int.TryParse(n, out p);
+            int.TryParse(s, out l);
+            if (p < 3 && l < 3)
             {
-                for (int j = 0; j < x.GetLength(1); j++)
-                {
-                    if (x[i, j] > max)
-                    {
-                        max = x[i, j];
-                    }
-                }
-            }
-
-            return max;
-        }
-        static void WriteMatrix(int[,] x)
-        {
-            int rows = x.GetLength(0);
-            int columns = x.GetLength(1);
-
-            for (int i = 0; i < rows; i++)
-            {
-                for (int j = 0; j < columns; j++)
-                    Console.Write( x[i, j] + " ");
-                Console.WriteLine();
-            }
-            Console.WriteLine();
-        }
-
-        static int UnderMain(int[,] x)
-        {
-            int max = x[0, 0];
-            int j_max = 0;
-            for (int i = 0; i < x.GetLength(0); i++)
-            {
-                for (int j = 0; j <= i; j++)
-                {
-                    if (x[i, j] > max)
-                    {
-                        max = x[i, j];
-                        j_max = j;
-                    }
-                }
-            }
-            return j_max;
-        }
-
-        static int AboveMain(int[,] x)
-        {
-            int min = MAX(x);
-            int j_min = 0;
-            for (int i = 0; i < x.GetLength(0); i++)
-            {
-                for (int j = i + 1; j < x.GetLength(1); j++)
-                {
-                    if (x[i, j] < min)
-                    {
-                        min = x[i, j];
-                        j_min = j;
-                    }
-                }
-            }
-            return j_min;
-        }
-
-        static int[,] MatrixChanges(int[,] x)
-        {
-            int j_max = UnderMain(x);
-            int j_min = AboveMain(x);
-
-            if (j_max == j_min)
-            {
-                for (int i = 0; i < x.GetLength(0); i++)
-                {
-                    for (int j = j_max; j < x.GetLength(1) - 1; j++)
-                    {
-                        x[i, j] = x[i, j + 1];
-                    }
-                }
+                Console.WriteLine("слишком мало");
             }
             else
             {
-                if (j_max > j_min)
-                {
-                    for (int i = 0; i < x.GetLength(0); i++)
-                    {
-                        for (int j = j_max; j < x.GetLength(1) - 1; j++)
-                        {
-                            x[i, j] = x[i, j + 1];
-                        }
-                    }
-
-                    for (int i = 0; i < x.GetLength(0); i++)
-                    {
-                        for (int j = j_min; j < x.GetLength(1) - 1; j++)
-                        {
-                            x[i, j] = x[i, j + 1];
-                        }
-                    }
-                }
-
-                else
-                {
-                    for (int i = 0; i < x.GetLength(0); i++)
-                    {
-                        for (int j = j_min; j < x.GetLength(1) - 1; j++)
-                        {
-                            x[i, j] = x[i, j + 1];
-                        }
-                    }
-
-                    for (int i = 0; i < x.GetLength(0); i++)
-                    {
-                        for (int j = j_max; j < x.GetLength(1) - 1; j++)
-                        {
-                            x[i, j] = x[i, j + 1];
-                        }
-                    }
-                }
+                
+                int[,] a = new int[l, p];
+                Zap(a);
+                Console.WriteLine("Изначальная");
+                Print_MAtrix(a);
+                a = Yv_i_del(a);
+                Console.WriteLine("Обработанная");
+                Print_MAtrix(a);
+                Console.ReadLine();
             }
 
-            return x;
-        }
-
-        static void Main(string[] args)
-        {
-            int n;
-            string s = Console.ReadLine();
-            
-            int.TryParse(s, out n);
-            int[,] A = new int[n, n];
-            Random random = new Random();
-
-            for (int i = 0; i < n; i++)
-            {
-                for (int j = 0; j < n; j++)
-                {
-                    A[i, j] = random.Next(0, 40);
-                }
-            }
-
-            Console.WriteLine("Исходная матрица: ");
-            WriteMatrix(A);
-
-            int j_max = UnderMain(A);
-            int j_min = AboveMain(A);
-
-            Console.WriteLine(j_max);
-            Console.WriteLine(j_min);
-
-            A = MatrixChanges(A);
-
-            if (j_max == j_min)
-            {
-                Console.WriteLine("Итоговая матрица: ");
-                for (int i = 0; i < A.GetLength(0); i++)
-                {
-                    for (int j = 0; j < A.GetLength(1) - 1; j++)
-                        Console.Write( A[i, j] + " ");
-                    Console.WriteLine();
-                }
-                Console.WriteLine();
-            }
-            else
-            {
-                Console.WriteLine("Итоговая матрица: ");
-                for (int i = 0; i < A.GetLength(0); i++)
-                {
-                    for (int j = 0; j < A.GetLength(1) - 2; j++)
-                        Console.Write("{0, -5}", A[i, j]);
-                    Console.WriteLine();
-                }
-                Console.WriteLine();
-            }
-            Console.ReadLine();
         }
     }
 }
