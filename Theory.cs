@@ -17,31 +17,14 @@ namespace lab5
             #endregion
             #region level 1 number 2
             Console.WriteLine("--------level 1 number 2--------");
-            int a1,a2, c1,c2;
-            Console.WriteLine("Enter a, b and c of 1st triangle");
-            int.TryParse(Console.ReadLine(), out a1);
-            int.TryParse(Console.ReadLine(), out b1);
-            int.TryParse(Console.ReadLine(), out c1);
-            if (a1 + b1 < c1 || a1 + c1 < b1 || b1 + c1 < a1)
-            {
-                Console.WriteLine("Error, enter another sides");
-                int.TryParse(Console.ReadLine(), out a1);
-                int.TryParse(Console.ReadLine(), out b1);
-                int.TryParse(Console.ReadLine(), out c1);
-            }
-            Console.WriteLine("Enter a, b and c of 2nd triangle");
-            int.TryParse(Console.ReadLine(), out a2);
-            int.TryParse(Console.ReadLine(), out b2);
-            int.TryParse(Console.ReadLine(), out c2);
-            if (a2 + b2 < c2 || a2 + c2 < b2 || b2 + c2 < a2)
-            {
-                Console.WriteLine("Error, enter another sides");
-                int.TryParse(Console.ReadLine(), out a2);
-                int.TryParse(Console.ReadLine(), out b2);
-                int.TryParse(Console.ReadLine(), out c2);
-            }
-            double S1 = S(a1, b1, c1, p(a1, b1, c1));
-            double S2 = S(a2, b2, c2, p(a2, b2, c2));
+            int[] arr1 = new int[3];
+            int[] arr2 = new int[3];
+            
+            enter(arr1);
+            enter(arr2);
+            
+            double S1 = S(arr1[0], arr1[1], arr1[2], p(arr1[0], arr1[1], arr1[2]));
+            double S2 = S(arr2[0], arr2[1], arr2[2], p(arr2[0], arr2[1], arr2[2]));
             if (S1 > S2) Console.WriteLine("S of second triangle is less then first");
             else if (S2 > S1) Console.WriteLine("S of first triangle is less then second");
             else Console.WriteLine("S of triangles is equal");
@@ -293,6 +276,7 @@ namespace lab5
                 }
                 step /= 2;
             }
+            int count = 0;
             //change
             for (int i = 0; i < n; i++)
             {
@@ -300,11 +284,20 @@ namespace lab5
                 {
                     if (matrix[i,j] == array[0] || matrix[i, j] == array[1] || matrix[i, j] == array[2] || matrix[i, j] == array[3]|| matrix[i, j] == array[4])
                     {
-                        matrix[i, j] *= 2;
+                        if (count < 5)
+                        {
+                            matrix[i, j] *= 2;
+                            count++;
+                        }
+                        else
+                        {
+                            matrix[i, j] /= 2.0;
+                        }
                     }
                     else
                     {
-                        matrix[i, j] /= 2;
+                        matrix[i, j] /= 2.0;
+
                     }
                 }
             }
@@ -365,6 +358,20 @@ namespace lab5
             s(a);
             for (int i = 1; i < a.Length; i += 2) res += a[i];
             return res;
+        }
+        static void enter(int[] a) 
+        {
+            Console.WriteLine("Enter a, b and c of triangle");
+            int.TryParse(Console.ReadLine(), out a[0]);
+            int.TryParse(Console.ReadLine(), out a[1]);
+            int.TryParse(Console.ReadLine(), out a[2]);
+            while (a[0] + a[1] < a[2] || a[0] + a[2] < a[1] || a[1] + a[2] < a[0])
+            {
+                Console.WriteLine("Error, enter another sides");
+                int.TryParse(Console.ReadLine(), out a[0]);
+                int.TryParse(Console.ReadLine(), out a[1]);
+                int.TryParse(Console.ReadLine(), out a[2]);
+            }
         }
     }
 }
