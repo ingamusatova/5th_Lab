@@ -286,17 +286,20 @@ namespace lab5
                     {
                         if (count < 5)
                         {
-                            matrix[i, j] *= 2;
+                            if (matrix[i, j] > 0) matrix[i, j] *= 2;
+                            else matrix[i, j] /= 2.0;
                             count++;
                         }
                         else
                         {
-                            matrix[i, j] /= 2.0;
+                            if (matrix[i, j] > 0) matrix[i, j] /= 2.0;
+                            else matrix[i, j] *= 2;
                         }
                     }
                     else
                     {
-                        matrix[i, j] /= 2.0;
+                        if (matrix[i, j] > 0) matrix[i, j] /= 2.0;
+                        else matrix[i, j] *= 2;
 
                     }
                 }
