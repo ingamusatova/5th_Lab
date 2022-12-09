@@ -1,0 +1,130 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace task
+{
+    internal class Program
+    {
+        static void Zap(int[,] a)
+        {
+            Random R = new Random();
+            for (int i = 0; i < a.GetLength(0); i++)
+            {
+                for (int j = 0; j < a.GetLength(1); j++)
+                {
+                    a[i, j] = R.Next(-10, 10);
+                }
+            }
+        }
+        static int[] Copy(int[,] a)
+        {
+            int[] b = new int[a.GetLength(0) * a.GetLength(1)];
+            for (int i = 0, ii = 0; i < a.GetLength(0); ii++, i++)
+            {
+                for (int j = 0; j < a.GetLength(1); j++)
+                {
+                    b[ii] = a[i, j];
+                }
+            }
+            return b;
+        }
+        static int[,] Yv_i_del(int[,] a)
+        {
+            int[] z = Copy(a);
+            /*
+            for (int i = 0; i < z.Length - 1; i++)
+            {
+                int amax = z[i];
+                int imax = i;
+                for (int j = i + 1; j <z.Length ; j++)
+                {
+                    if (z[j] > amax )
+                    {
+                        amax = z[j];
+                        imax = j;
+                    }
+                }
+                z[imax] = z[i];
+                z[i] = amax; 
+                
+            }
+            */
+            Array.Sort(z);
+            Array.Reverse(z);
+            int count = 0;
+            for (int i = 0; i < a.GetLength(0); i++)
+            {
+                for (int j = 0; j < a.GetLength(1); j++)
+                {
+                    if (a[i,j] == z[0] || a[i, j] == z[1] || a[i, j] == z[2] || a[i, j] == z[3] || a[i, j] == z[4] || count < 5)
+                    {
+                        if (a[i,j] >= 0)
+                        {
+                            a[i, j] *= 2;
+                        }
+                        else
+                        {
+                            a[i , j] /= 2;
+                        }
+                        count++;
+                    }
+                    else
+                    {
+                        if (a[i, j] >= 0)
+                        {
+                            a[i, j] /= 2;
+                        }
+                        else
+                        {
+                            a[i, j] *= 2;
+                        }
+                        count++;
+                    }
+                }
+               
+            }
+            return a;
+        }
+        static void Print_MAtrix(int[,] a)
+        {
+            for (int i = 0; i < a.GetLength(0); i++)
+            {
+                for (int j = 0; j < a.GetLength(1); j++)
+                {
+                    Console.Write(a[i,j] + " ");
+                }
+                Console.WriteLine();
+            }
+        }
+        static void Main(string[] args)
+        {
+            Console.WriteLine("кол-во строк");
+            string s = Console.ReadLine();
+            Console.WriteLine("кол-во столбцов");
+            string n = Console.ReadLine();
+            int p, l;
+            int.TryParse(n, out p);
+            int.TryParse(s, out l);
+            if (p < 3 && l < 3)
+            {
+                Console.WriteLine("слишком мало");
+            }
+            else
+            {
+                
+                int[,] a = new int[l, p];
+                Zap(a);
+                Console.WriteLine("Изначальная");
+                Print_MAtrix(a);
+                a = Yv_i_del(a);
+                Console.WriteLine("Обработанная");
+                Print_MAtrix(a);
+                Console.ReadLine();
+            }
+
+        }
+    }
+}
