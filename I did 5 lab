@@ -1,0 +1,659 @@
+// Level 1 Num 1
+        static int fact(int n)
+        {
+            int f = 1;
+            for (int i = 2; i <= n; i++)
+            {
+                f = f * i;
+            }
+            return f;
+        }
+
+        static int count(int n, int k)
+        {
+            int a = n - k;
+            int s = fact(n) / (fact(k) * fact(a));
+            return s;
+        }
+        static void Main()
+        {
+            int k = 5, n1 = 8, n2 = 10, n3 = 11;
+            int c1, c2, c3;
+            c1 = count(n1, k);
+            c2 = count(n2, k);
+            c3 = count(n3, k);
+
+            Console.WriteLine($"With 8 candidates: {c1}");
+            Console.WriteLine($"With 10 candidates: {c2}");
+            Console.WriteLine($"With 11 candidates: {c3}");
+        }
+    }
+}
+
+// Level 1 Num 2
+
+        static double area(double a, double b, double c, out double s)
+        {
+            double p = (a + b + c) / 2;
+
+            s = Math.Pow(p * (p - a) * (p - b) * (p - c), 0.5);
+            return s;
+        }
+
+        static void Main(string[] args)
+        {
+            double a1, b1, c1, a2, b2, c2, s1 = 0, s2 = 0;
+
+            Console.WriteLine("Enter the sides of the fist triangle: ");
+            double.TryParse(Console.ReadLine(), out a1);
+            double.TryParse(Console.ReadLine(), out b1);
+            double.TryParse(Console.ReadLine(), out c1);
+
+            Console.WriteLine("Enter the sides of the second triangle: ");
+            double.TryParse(Console.ReadLine(), out a2);
+            double.TryParse(Console.ReadLine(), out b2);
+            double.TryParse(Console.ReadLine(), out c2);
+
+            if (a1 > 0 && b1 > 0 && c1 > 0 && a2 > 0 && b2 > 0 && c2 > 0)
+            {
+                if (a1 + b1 > c1 && a1 + c1 > b1 && b1 + c1 > a1)
+                {
+                    area(a1, b1, c1, out s1);
+                    Console.WriteLine($"Area fist triangle is: {s1}");
+                }
+                else
+                {
+                    Console.WriteLine("Fist triangle doesn't exist");
+                }
+
+                if (a2 + b2 > c2 && a2 + c2 > b2 && b2 + c2 > a2)
+                {
+                    area(a2, b2, c2, out s2);
+                    Console.WriteLine($"Area second triangle is: {s2}");
+                }
+                else
+                {
+                    Console.WriteLine("Second triangle doesn't exist");
+                }
+
+                if (s1 != 0 && s2 != 0)
+                {
+                    if (s1 > s2)
+                    {
+                        Console.WriteLine("Fist triangle the larger than second");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Second triangle the larger than fist");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Triangles must > 0");
+                }
+            }
+        }
+    }
+}
+
+// Level 2 Num 6
+            static int max(int[] x)
+            {
+                int max = x[0], max_i = 0;
+
+                for (int i = 0; i < x.Length; i++)
+                {
+                    if (x[i] > max)
+                    {
+                        max = x[i];
+                        max_i = i;
+                    }
+                }
+
+            return max_i;
+            }
+
+            static int[] delete(int[] x)
+            {
+                int max_i = max(x);
+                for (int i = max_i; i < x.Length - 1; i++)
+                {
+                    x[i] = x[i + 1];
+                }
+                return x;
+            }
+
+            static void Main(string[] args)
+            {
+                int[] a = new int[13];
+                int[] b = new int[8];
+                Random random = new Random();
+
+                for (int i = 0; i < 7; i++)
+                {
+                    a[i] = random.Next(0, 40);
+                }
+
+                for (int i = 0; i < 8; i++)
+                {
+                    b[i] = random.Next(0, 40);
+                }
+
+                Console.WriteLine("Array A: ");
+                for (int i = 0; i < 7; i++)
+                {
+                    Console.WriteLine(a[i]);
+                }
+                Console.WriteLine();
+
+                Console.WriteLine("Array B: ");
+                for (int i = 0; i < 8; i++)
+                {
+                    Console.WriteLine(b[i]);
+                }
+                Console.WriteLine();
+
+                delete(a);
+                delete(b);
+
+                int b_i = 0;
+
+                for (int i = 0; i < 15; i++)
+                {
+                    if (i < 6)
+                    {
+                        a[i] = a[i];
+                    }
+                    else
+                    {
+                        if (b_i < 7)
+                        {
+                            a[i] = b[b_i];
+                            b_i++;
+                        }
+                    }
+                }
+
+                Console.Write("Final array: ");
+                for (int i = 0; i < 13; i++)
+                {
+                    Console.Write($"{a[i]}, ");
+                }
+
+            }
+
+        }
+    }
+
+
+// Level 2 Num 10
+
+        static int max_(int[,] x)
+        {
+            int max = x[0, 0];
+
+            for (int i = 0; i < x.GetLength(0); i++)
+            {
+                for (int j = 0; j < x.GetLength(1); j++)
+                {
+                    if (x[i, j] > max)
+                    {
+                        max = x[i, j];
+                    }
+                }
+            }
+            return max;
+        }
+            static int under(int[,] x)
+            {
+                int max = x[0, 0], max_j = 0;
+
+                for (int i = 0; i < x.GetLength(0); i++)
+                {
+                    for (int j = 0; j < i; j++)
+                    {
+                        if (x[i, j] > max)
+                        {
+                            max = x[i, j];
+                            max_j = j;
+                        }
+                    }
+                }
+
+                return max_j;
+            }
+
+            static int above(int[,] x)
+            {
+                int min = max_(x), min_j = 0;
+
+                for (int i = 0; i < x.GetLength(0); i++)
+                {
+                    for (int j = i + 1; j < x.GetLength(1); j++)
+                    {
+                        if (x[i, j] < min)
+                        {
+                            min = x[i, j];
+                            min_j = j;
+                        }
+                    }
+                }
+
+                return min_j;
+            }
+
+            static int[,] change(int[,] x)
+            {
+                int max_j = under(x);
+                int min_j = above(x);
+
+                if (max_j == min_j)
+                {
+                    for (int i = 0; i < x.GetLength(0); i++)
+                    {
+                        for (int j = max_j + 1; j < x.GetLength(1) - 1; j++)
+                        {
+                            x[i, j] = x[i, j + 1];
+                        }
+                    }
+                }
+
+                else
+                {
+                    if (max_j > min_j)
+                    {
+                        for (int i = 0; i < x.GetLength(0); i++)
+                        {
+                            for (int j = max_j; j < x.GetLength(1) - 1; j++)
+                            {
+                                x[i, j] = x[i, j + 1];
+                            }
+                        }
+
+                        for (int i = 0; i < x.GetLength(0); i++)
+                        {
+                            for (int j = min_j; j < x.GetLength(1) - 1; j++)
+                            {
+                                x[i, j] = x[i, j + 1];
+                            }
+                        }
+                    }
+
+                    else
+                    {
+                        for (int i = 0; i < x.GetLength(0); i++)
+                        {
+                            for (int j = min_j; j < x.GetLength(1) - 1; j++)
+                            {
+                                x[i, j] = x[i, j + 1];
+                            }
+                        }
+
+                        for (int i = 0; i < x.GetLength(0); i++)
+                        {
+                            for (int j = max_j; j < x.GetLength(1) - 1; j++)
+                            {
+                                x[i, j] = x[i, j + 1];
+                            }
+                        }
+                    }
+                }
+
+                return x;
+            }
+
+            static void Main(string[] args)
+            {
+
+                int n = 6, m = 6;
+                int[,] a = new int[n, m];
+
+                Random random = new Random();
+
+                for (int i = 0; i < n; i++)
+                {
+                    for (int j = 0; j < m; j++)
+                    {
+                        a[i, j] = random.Next(0, 40);
+                    }
+                }
+
+                Console.WriteLine("Start matrix: ");
+                for (int i = 0; i < n; i++)
+                {
+                    for (int j = 0; j < m; j++)
+                    {
+                        Console.WriteLine("{0, -5}", a[i, j]);
+                    }
+                }
+
+                int max_j = under(a);
+                int min_j = above(a);
+
+                Console.WriteLine($"Max - {max_j}, min - {min_j} ");
+
+                a = change(a);
+
+                if (max_j == min_j)
+                {
+                    Console.WriteLine("Final matrix: ");
+                    for (int i = 0; i < a.GetLength(0); i++)
+                    {
+                        for (int j = 0; j < a.GetLength(1) - 1; j++)
+                            Console.Write("{0, -5}", a[i, j]);
+                        Console.WriteLine();
+                    }
+                    Console.WriteLine();
+                }
+                else
+                {
+                    Console.WriteLine("Final matrix: ");
+                    for (int i = 0; i < a.GetLength(0); i++)
+                    {
+                        for (int j = 0; j < a.GetLength(1) - 2; j++)
+                            Console.Write("{0, -5}", a[i, j]);
+                        Console.WriteLine();
+                    }
+                    Console.WriteLine();
+                }
+            }
+    }
+} 
+
+// Level 2 Num 23
+
+        static int min_(int[,] x)
+        {
+            int min = x[0, 0];
+
+            for (int i = 0; i < x.GetLength(0); i++)
+            {
+                for (int j = 0; j < x.GetLength(1); j++)
+                {
+                    if (x[i, j] < min)
+                    {
+                        min = x[i, j];
+                    }
+                }
+            }
+            return min;
+        }
+
+        static int[,] copy(int[,] a)
+        {
+            int[,] b = new int[a.GetLength(0), a.GetLength(1)];
+            for (int i = 0; i < a.GetLength(0); i++)
+            {
+                for (int j = 0; j < a.GetLength(1); j++)
+                {
+                    b[i, j] = a[i, j];
+                }
+            }
+
+            return b;
+        }
+
+        static void WriteMatrix(int[,] x)
+        {
+            int rows = x.GetLength(0);
+            int columns = x.GetLength(1);
+
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < columns; j++)
+                    Console.Write("{0, -5}", x[i, j]);
+                Console.WriteLine();
+            }
+            Console.WriteLine();
+        }
+
+        static int[,] change(int[,] x, out int[,] b)
+        {
+            int n = 0;
+
+            b = copy(x);
+
+            int[,] c = copy(x);
+
+            int max = x[0, 0], min = min_(x), max_i = 0, max_j = 0;
+            int[] mas = new int[5];
+            int mas_i = 0;
+
+            do
+            {
+                max = x[0, 0];
+                max_i = 0;
+                max_j = 0;
+
+                for (int i = 0; i < x.GetLength(0); i++)
+                {
+                    for (int j = 0; j < x.GetLength(1); j++)
+                    {
+                        if (x[i, j] > max)
+                        {
+                            max = x[i, j];
+                            max_i = i;
+                            max_j = j;
+                        }
+                    }
+                }
+
+                if (max > 0)
+                {
+                    b[max_i, max_j] = max * 2;
+                }
+                else b[max_i, max_j] = max / 2;
+
+                x[max_i, max_j] = min;
+                mas[mas_i] = b[max_i, max_j];
+
+                n++;
+                mas_i++;
+
+            } while (n < 5);
+
+            for (int i = 0; i < x.GetLength(0); i++)
+            {
+                for (int j = 0; j < x.GetLength(1); j++)
+                {
+                    if (b[i, j] <= max && b[i, j] != mas[0] && b[i, j] != mas[1] && b[i, j] != mas[2] && b[i, j] != mas[3] && b[i, j] != mas[4])
+                    {
+                        if (b[i, j] > 0)
+                        {
+                            b[i, j] = b[i, j] / 2;
+                        }
+                        else b[i, j] = b[i, j] * 2;
+                    }
+                }
+            }
+            return b;
+        }
+
+            static void Main(string[] args)
+            {
+                int[,] A = new int[4, 7];
+                int[,] B = new int[6, 9];
+                Random r = new Random();
+
+                for (int i = 0; i < A.GetLength(0); i++)
+                {
+                    for (int j = 0; j < A.GetLength(1); j++)
+                    {
+                        A[i, j] = r.Next(-10, 30);
+                    }
+                }
+
+                for (int i = 0; i < B.GetLength(0); i++)
+                {
+                    for (int j = 0; j < B.GetLength(1); j++)
+                    {
+                        B[i, j] = r.Next(-30, 30);
+                    }
+                }
+
+                Console.WriteLine("Start matrix А:");
+                WriteMatrix(A);
+
+                Console.WriteLine("Start matrix B:");
+                WriteMatrix(B);
+
+                change(A, out A);
+                Console.WriteLine("Final matrix А: ");
+                WriteMatrix(A);
+
+                change(B, out B);
+                Console.WriteLine("Final matrix B: ");
+                WriteMatrix(B);
+            }
+        }
+    }
+
+// Level 3 Num 1
+
+        delegate double f(double b, int i);
+        static int fact(int n)
+        {
+            int f = 1;
+            for (int i = 2; i <= n; i++)
+            {
+                f *= i;
+            }
+
+            return f;
+        }
+        static double sum1(double b, int i)
+        {
+            double F = fact(i);
+            return Math.Cos(i * b) / F;
+        }
+        static double sum2(double b, int i)
+        {
+            return Math.Pow(-1, i) * Math.Cos(i * b) / (i * i);
+        }
+
+        static double find_sum(f f, double x)
+        {
+            double s = 0, b = 1;
+            int i = 1;
+            do
+            {
+                b = f(x, i);
+                s += b;
+                i++;
+
+            } while (Math.Abs(b) > 0.0001);
+
+            return s;
+        }
+        static void Main(string[] args)
+        {
+            double S1;
+            Console.WriteLine("Sum 1: ");
+            for (double x = 0.1; x < 1.0; x += 0.1)
+            {
+                S1 = find_sum(sum1, x);
+                Console.WriteLine($"x={Math.Round(x, 2)} \t y={Math.Round(Math.Pow(Math.E, Math.Cos(x)) * Math.Cos(Math.Sin(x)), 3)} \t s={Math.Round(S1 + 1, 3)}");
+            }
+            Console.WriteLine();
+
+            double S2;
+            Console.WriteLine("Sum 2: ");
+            for (double x = Math.PI / 5; x < Math.PI; x += Math.PI / 25)
+            {
+                S2 = find_sum(sum2, x);
+                Console.WriteLine($"x={Math.Round(x, 2)} \t y={Math.Round((x * x - Math.PI * Math.PI / 3) / 4, 3)} \t s={Math.Round(S2, 3)}");
+            }
+            Console.WriteLine();
+
+        }
+    }
+}
+
+// Level 3 Num 3
+
+        static void WriteMass(int[] x)
+        {
+            for (int i = 0; i < x.Length; i++)
+            {
+                Console.Write($"{x[i]}, ");
+            }
+            Console.WriteLine();
+        }
+        static bool check(int[] x)
+        {
+            int sum = 0;
+            double average = 0;
+
+            for (int i = 0; i < x.Length; i++)
+            {
+                sum += x[i];
+            }
+
+            average = sum / x.Length;
+
+            if (x[0] > average)
+            {
+                return true;
+            }
+            else return false;
+        }
+
+        delegate int[] change(int[] x);
+
+        static int[] changing(change f, int[] x)
+        {
+            return f(x);
+        }
+        static int[] positions(int[] x)
+        {
+            bool a = check(x);
+            int b = 0;
+            if (a == true)
+            {
+                for (int i = 0; i < x.Length - 1; i += 2)
+                {
+                    b = x[i];
+                    x[i] = x[i + 1];
+                    x[i + 1] = b;
+                }
+            }
+            else
+            {
+                for (int i = x.Length - 1; i > 0; i -= 2)
+                {
+                    b = x[i];
+                    x[i] = x[i - 1];
+                    x[i - 1] = b;
+                }
+            }
+
+            return x;
+        }
+
+        static int sum(int[] x)
+        {
+            int sum = 0;
+            for (int i = 1; i < x.Length; i += 2)
+            {
+                sum += x[i];
+            }
+
+            return sum;
+        }
+        static void Main(string[] args)
+        {
+            int[] A = new int[10] {53, 81, 14, 76, 16, 0, 64, 16, 47, 48};
+
+            Console.WriteLine("Start array: ");
+            WriteMass(A);
+
+            A = changing(positions, A);
+
+            Console.WriteLine("Final array");
+            WriteMass(A);
+
+            int sum = Program.sum(A);
+            Console.WriteLine($"Sum: {sum}");
+        }
+    }
+}
