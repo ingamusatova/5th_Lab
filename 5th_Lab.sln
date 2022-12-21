@@ -1,4 +1,3 @@
-
 using System;
 using System.Numerics;
 using System.Linq;
@@ -21,8 +20,8 @@ public class Proga
         //resh.lvl2ex6();
         //resh.lvl2ex10();
         //resh.lvl2ex23();
-        //resh.lvl3ex2();
-        resh.lvl3ex3();
+        resh.lvl3ex2();
+        //resh.lvl3ex3();
     }
 
     public class resh
@@ -42,9 +41,7 @@ public class Proga
             Console.WriteLine("Enter size of matrix");
             int.TryParse(Console.ReadLine(), out int lines);
             int.TryParse(Console.ReadLine(), out int colums);
-
             double[,] a = new double[lines, colums];
-
             for (int i = 0; i < a.GetLength(0); i++)
             {
                 for (int j = 0; j < a.GetLength(1); j++)
@@ -55,7 +52,6 @@ public class Proga
             }
             return a;
         }
-
         public static void matrixoutput(double[,] a)
         {
             for (int i = 0; i < a.GetLength(0); i++)
@@ -67,7 +63,6 @@ public class Proga
                 Console.WriteLine("");
             }
         }
-
         public static double faktorial(int a)
         {
             double b = 1;
@@ -77,7 +72,6 @@ public class Proga
             }
             return b;
         }
-
         public static double checkmore0(double a)
         {
             while (a < 0)
@@ -87,7 +81,6 @@ public class Proga
             }
             return a;
         }
-
         public static double[] deliteElemntArray(double[] a, int element)
         {
             double[] b = new double[a.Length - 1];
@@ -123,7 +116,6 @@ public class Proga
             }
             return b;
         }
-
         public static double[,] SwapColumn(double[,] a, int First, int Second)
         {
             for (int i = 0; i < a.GetLength(0); i++)
@@ -135,7 +127,6 @@ public class Proga
             }
             return a;
         }
-
         public static double Striangle()
         {
             double s, a, b, c, p;
@@ -157,8 +148,6 @@ public class Proga
             s = Math.Sqrt(p * (p - a) * (p - b) * (p - c));
             return s;
         }
-
-
         public static double[,] copymatrix(double[,] a)
         {
             double[,] b = new double[a.GetLength(0), a.GetLength(1)];
@@ -171,7 +160,6 @@ public class Proga
             }
             return b;
         }
-
         public static double[,] multiply2(double[,] a)
         {
             double[,] b = copymatrix(a);
@@ -191,23 +179,35 @@ public class Proga
                         maxIn1 = j % sizecolumns;
                     }
                 }
-                a[maxIn0, maxIn1] *= 2;
+                if (a[maxIn0, maxIn1] > 0)
+                {
+                    a[maxIn0, maxIn1] *= 2;
+                }
+                else
+                {
+                    a[maxIn0, maxIn1] /= 2;
+                }
+                
                 b[maxIn0, maxIn1] = double.MinValue;
                 max = double.MinValue;
             }
-
             for (int j = 0; j < a.Length; j++)
             {
                 int sizecolumns = a.GetLength(1);
                 if (b[j / sizecolumns, j % sizecolumns] > double.MinValue)
                 {
-                    a[j / sizecolumns, j % sizecolumns] /= 2;
+                    if (b[j / sizecolumns, j % sizecolumns] < 0)
+                    {
+                        a[j / sizecolumns, j % sizecolumns] *= 2;
+                    }
+                    else
+                    {
+                        a[j / sizecolumns, j % sizecolumns] /= 2;
+                    }
                 }
             }
-
             return a;
         }
-
         public static void lvl1ex1()
         {
             int team = 5;
@@ -218,7 +218,6 @@ public class Proga
             Console.WriteLine($"Team of 5 can be chosen from 10 people by {resh.faktorial(var2) / (resh.faktorial(team) * resh.faktorial(var2 - team))} ways");
             Console.WriteLine($"Team of 5 can be chosen from 11 people by {resh.faktorial(var3) / (resh.faktorial(team) * resh.faktorial(var3 - team))} ways");
         }
-
         public static void lvl1ex2()
         {
             Console.WriteLine();
@@ -245,7 +244,6 @@ public class Proga
                 Console.WriteLine("Eaquals!!!");
             }
         }
-
         public static void lvl2ex6()
         {
             int LenA = 7;
@@ -266,7 +264,6 @@ public class Proga
                 }
             }
             a = resh.deliteElemntArray(a, maxInA);
-
             tmp = double.MinValue;
             for (int i = 0; i < LenB; i++)
             {
@@ -279,7 +276,6 @@ public class Proga
                 }
             }
             b = resh.deliteElemntArray(b, maxInB);
-
             for (int i = LenA - 1, ii = 0; i < a.Length; i++, ii++)
             {
                 a[i] = b[ii];
@@ -289,18 +285,15 @@ public class Proga
                 Console.Write(s + "\t");
             }
         }
-
         public static void lvl2ex10()
         {
             Console.WriteLine("Enter size of matrix");
             int.TryParse(Console.ReadLine(), out int size);
-
             double[,] a = new double[size, size];
             double tmpmin = double.MaxValue;
             double tmpmax = double.MinValue;
             int minIn = 0;
             int maxIn = 0;
-
             for (int i = 0; i < a.GetLength(0); i++)
             {
                 for (int j = 0; j < a.GetLength(1); j++)
@@ -319,9 +312,6 @@ public class Proga
                     }
                 }
             }
-
-
-
             if (minIn > maxIn)
             {
                 a = resh.deliteColumn(a, minIn);
@@ -336,7 +326,6 @@ public class Proga
             {
                 a = resh.deliteColumn(a, minIn);
             }
-
             for (int i = 0; i < a.GetLength(0); i++)
             {
                 for (int j = 0; j < a.GetLength(1); j++)
@@ -346,7 +335,6 @@ public class Proga
                 Console.WriteLine();
             }
         }
-
         public static void lvl2ex23()
         {
             double[,] mat = resh.multiply2(resh.matrixinput());
@@ -357,8 +345,7 @@ public class Proga
         }
 
         delegate double[] deleg(double[] i);
-
-        public static double[] SortToLow(double[] a)
+        static double[] SortToLow(double[] a)
         {
             for (int i = 0; i < a.Length; i++)
             {
@@ -367,8 +354,7 @@ public class Proga
             }
             return a;
         }
-
-        public static double[] SortToHight(double[] a)
+        static double[] SortToHight(double[] a)
         {
             for (int i = 0; i < a.Length; i++)
             {
@@ -377,40 +363,36 @@ public class Proga
             return a;
         }
 
+        static double[] Sorting(deleg x, double[] a)
+        {
+            return x(a);
+        }
         public static void lvl3ex2()
         {
             Console.WriteLine("Enetr size of matrix: ");
             int.TryParse(Console.ReadLine(), out int n);
             int.TryParse(Console.ReadLine(), out int m);
             double[,] mat = new double[n, m];
-
-
             for (int i = 0; i < mat.GetLength(0); i++)
             {
-                double[] tmp = new double [mat.GetLength(1)];
+                double[] tmp = new double[mat.GetLength(1)];
                 for (int j = 0; j < mat.GetLength(1); j++)
                 {
                     Console.WriteLine($"Enter element of matrix [{i}, {j}]:");
                     double.TryParse(Console.ReadLine(), out tmp[j]);
                 }
-
                 if (i % 2 == 0)
                 {
-                    deleg tmp2 = SortToHight;
-                    tmp = tmp2(tmp);
-                    for (int j = 0; j < mat.GetLength(1); j++)
-                    {
-                        mat[i, j] = tmp[j];
-                    }
+                    tmp = Sorting(SortToHight, tmp);
                 }
                 else
                 {
-                    deleg tmp2 = SortToLow;
-                    tmp = tmp2(tmp);
-                    for (int j = 0; j < mat.GetLength(1); j++)
-                    {
-                        mat[i, j] = tmp[j];
-                    }
+                    tmp = Sorting(SortToLow, tmp);
+                }
+
+                for (int j = 0; j < mat.GetLength(1); j++)
+                {
+                    mat[i, j] = tmp[j];
                 }
             }
 
@@ -423,41 +405,33 @@ public class Proga
                 Console.WriteLine();
             }
         }
-
-/////////////////////////////////////////////////////////////////////////////////
-
+        /////////////////////////////////////////////////////////////////////////////////
         public delegate double[] delSwap(double[] x);
-
         public static double[] Swapping(delSwap a, double[] x)
         {
             return a(x);
-        } 
-
+        }
         public static bool MoreAverage(double[] x)
         {
             double sum = 0;
             double average = 0;
-
             for (int i = 0; i < x.Length; i++)
             {
                 sum += x[i];
             }
-
             average = sum / x.Length;
-
             if (x[0] > average)
             {
                 return true;
             }
             else return false;
         }
-
         public static double[] SwapNeigрbour(double[] x)
         {
             double tmp;
             if (MoreAverage(x) == true)
             {
-                for (int i = 0; i <x.Length - 1; i += 2)
+                for (int i = 0; i < x.Length - 1; i += 2)
                 {
                     tmp = x[i];
                     x[i] = x[i + 1];
@@ -475,7 +449,6 @@ public class Proga
             }
             return x;
         }
-
         public static double Summ(double[] x)
         {
             double sum = 0;
@@ -483,23 +456,17 @@ public class Proga
             {
                 sum += x[i];
             }
-
             return sum;
         }
-
         public static void lvl3ex3()
         {
-            double[] mat = new double[] {1, 6, -10, 333, 17, -470, 0.1, 55, -987, 5};
-
+            double[] mat = new double[] { 1, 6, -10, 333, 17, -470, 0.1, 55, -987, 5 };
             mat = Swapping(SwapNeigрbour, mat);
-
             foreach (double s in mat)
             {
                 Console.Write($"{s}   ");
             }
-
             Console.WriteLine($"Сумма элементов с нечётными индексами: {Summ(mat)}");
-
         }
     }
 }
