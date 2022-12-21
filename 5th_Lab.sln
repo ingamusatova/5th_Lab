@@ -19,8 +19,8 @@ public class Proga
         //resh.lvl1ex2();
         //resh.lvl2ex6();
         //resh.lvl2ex10();
-        //resh.lvl2ex23();
-        resh.lvl3ex2();
+        resh.lvl2ex23();
+        //resh.lvl3ex2();
         //resh.lvl3ex3();
     }
 
@@ -187,7 +187,6 @@ public class Proga
                 {
                     a[maxIn0, maxIn1] /= 2;
                 }
-                
                 b[maxIn0, maxIn1] = double.MinValue;
                 max = double.MinValue;
             }
@@ -196,13 +195,13 @@ public class Proga
                 int sizecolumns = a.GetLength(1);
                 if (b[j / sizecolumns, j % sizecolumns] > double.MinValue)
                 {
-                    if (b[j / sizecolumns, j % sizecolumns] < 0)
+                    if (a[j / sizecolumns, j % sizecolumns] > 0)
                     {
-                        a[j / sizecolumns, j % sizecolumns] *= 2;
+                        a[j / sizecolumns, j % sizecolumns] /= 2;
                     }
                     else
                     {
-                        a[j / sizecolumns, j % sizecolumns] /= 2;
+                        a[j / sizecolumns, j % sizecolumns] *= 2;
                     }
                 }
             }
@@ -343,9 +342,8 @@ public class Proga
             Console.WriteLine("");
             resh.matrixoutput(mat2);
         }
-
         delegate double[] deleg(double[] i);
-        static double[] SortToLow(double[] a)
+        public static double[] SortToLow(double[] a)
         {
             for (int i = 0; i < a.Length; i++)
             {
@@ -354,18 +352,13 @@ public class Proga
             }
             return a;
         }
-        static double[] SortToHight(double[] a)
+        public static double[] SortToHight(double[] a)
         {
             for (int i = 0; i < a.Length; i++)
             {
                 Array.Sort(a);
             }
             return a;
-        }
-
-        static double[] Sorting(deleg x, double[] a)
-        {
-            return x(a);
         }
         public static void lvl3ex2()
         {
@@ -383,19 +376,23 @@ public class Proga
                 }
                 if (i % 2 == 0)
                 {
-                    tmp = Sorting(SortToHight, tmp);
+                    deleg tmp2 = SortToHight;
+                    tmp = tmp2(tmp);
+                    for (int j = 0; j < mat.GetLength(1); j++)
+                    {
+                        mat[i, j] = tmp[j];
+                    }
                 }
                 else
                 {
-                    tmp = Sorting(SortToLow, tmp);
-                }
-
-                for (int j = 0; j < mat.GetLength(1); j++)
-                {
-                    mat[i, j] = tmp[j];
+                    deleg tmp2 = SortToLow;
+                    tmp = tmp2(tmp);
+                    for (int j = 0; j < mat.GetLength(1); j++)
+                    {
+                        mat[i, j] = tmp[j];
+                    }
                 }
             }
-
             for (int i = 0; i < mat.GetLength(0); i++)
             {
                 for (int j = 0; j < mat.GetLength(1); j++)
