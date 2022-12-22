@@ -1,25 +1,509 @@
+//1.1
+using System;
+namespace TaskForLab5
+{
+    internal class Program
+    {
+        static int Fact(int a)
+        {
+            int fk = 1;
+            for (int i = 1; i <= a; i++)
+            {
+                fk *= i;
+            }
+            return fk;
+        }
+        static int Combination(int n, int k)
+        {
+            return Fact(n) / (Fact(k) * Fact(n - k));
+        }
+        static void Task1_1()
+        {
+            int n = 0;
+            int k = 5;
+            Console.WriteLine("Enter the number of candidates:");
+            int.TryParse(Console.ReadLine(), out n);
+            int C = Combination(n, k);
+            Console.WriteLine($"Number of methods: {C}");
+        }
+        static void Main()
+        {
+            Task1_1();
+        }
+    }
+}
 
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31019.35
-MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "5th_Lab", "5th_Lab.csproj", "{7E7A3BD3-5FD1-4DC8-BAC5-78CB2CF666A0}"
-EndProject
-Global
-	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{7E7A3BD3-5FD1-4DC8-BAC5-78CB2CF666A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7E7A3BD3-5FD1-4DC8-BAC5-78CB2CF666A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7E7A3BD3-5FD1-4DC8-BAC5-78CB2CF666A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7E7A3BD3-5FD1-4DC8-BAC5-78CB2CF666A0}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {B2908471-A915-4DD9-9304-AE4A425C3A88}
-	EndGlobalSection
-EndGlobal
+//1.2
+using System;
+namespace TaskForLab5
+{
+    internal class Program
+    {
+        static double geron(double a, double b, double c)
+        {
+            double p = (a + b + c) / 2;
+            return Math.Sqrt(p * (p - a) * (p - b) * (p - c));
+        }
+        static void Task1_2()
+        {
+            Console.WriteLine("Enter a, b, c:");
+            double.TryParse(Console.ReadLine(), out double a);
+            double.TryParse(Console.ReadLine(), out double b);
+            double.TryParse(Console.ReadLine(), out double c);
+
+                double S = geron(a, b, c);
+                Console.WriteLine($"S = {S}");
+        }
+        static void Main()
+        {
+            Task1_2();
+        }
+    }
+}
+
+//2.6
+using System;
+namespace TaskForLab5
+{
+    internal class Program
+    {
+        static int Max(int[] a2)
+        {
+            int max = 0;
+            int maxi = 0;
+            for (int i = 0; i < a2.Length; i++)
+            {
+                if (a2[i] > max)
+                {
+                    max = a2[i];
+                    maxi = i;
+                }
+            }
+            return maxi;
+        }
+        static int[] Delete(int[] arr, int index)
+        {
+            int[] a1 = new int[arr.Length - 1];
+            int k = 0;
+            for (int i = 0; i < arr.Length; i++)
+            {
+                if (i == index)
+                {
+                    continue;
+                }
+                a1[k] = arr[i];
+                k++;
+            }
+            return a1;
+        }
+        static int[] Newarray(int[] a, int[] b)
+        {
+            int[] arr = new int[a.Length + b.Length];
+            for (int i = 0; i < a.Length; i++)
+            {
+                arr[i] = a[i];
+            }
+            for (int i = 0; i < b.Length; i++)
+            {
+                arr[i + a.Length] = b[i];
+            }
+            return arr;
+        }
+        static void Task2_6()
+        {
+            int n = 7, m = 8;
+            int[] a = new int[n];
+            int[] b = new int[m];
+            int[] c = new int[n + m - 2];
+            int x = 0;
+            int h = 0;
+            Console.WriteLine("Enter a:");
+            for (int i = 0; i < n; i++)
+            {
+                int.TryParse(Console.ReadLine(), out x);
+                a[i] = x;
+            }
+            Console.WriteLine("Enter b:");
+            for (int i = 0; i < m; i++)
+            {
+                int.TryParse(Console.ReadLine(), out h);
+                b[i] = h;
+            }
+            int ai = Max(a);
+            int bi = Max(b);
+            c = Newarray(Delete(a, ai), Delete(b, bi));
+            Console.WriteLine("New array:");
+            for (int i = 0; i < c.Length; i++)
+                Console.Write("{0}   ", c[i]);
+        }
+        static void Main()
+        {
+            Task2_6();
+        }
+    }
+}
+
+
+//2.10
+using System;
+namespace TaskForLab5
+{
+    internal class Program
+    {
+        static int[,] searchmaxmin(int[,] a, int ind)
+        {
+            int n = a.GetLength(0); 
+            int m = a.GetLength(1);
+            for (int i = 0; i < n; i++)
+                for (int j = ind; j < m - 1; j++)
+                    a[i, j] = a[i, j + 1];
+            return a;
+        }
+        static void Task2_10()
+        {
+            Console.WriteLine("Enter n:");
+            int.TryParse(Console.ReadLine(), out int n);
+            int[,] array = new int[n, n]; 
+            int k = 0;
+            int x = 0;
+            Console.WriteLine("Enter elements:");
+            for (int i = 0; i < n; i++)
+                for (int j = 0; j < n; j++)
+                {
+                    int.TryParse(Console.ReadLine(), out x);
+                    array[i, j] = x;
+                }
+            Console.WriteLine("Matrix:");
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < n; j++)
+                {
+                    Console.Write(array[i, j] + "\t");
+                }
+                Console.WriteLine();
+            }
+            int max = array[1, 0];
+            int min = array[0, 1];
+            int maxj = 0;
+            int minj = 0;
+            for (int i = 0; i < array.GetLength(0); i++)
+            {
+                for (int j = 0; j < array.GetLength(1); j++)
+                {
+                    if (max < array[i, j] && ((i > j) || (i == j)))
+                    {
+                        max = array[i, j];
+                        maxj = j;
+                    }
+                    if (min > array[i, j] && (i < j))
+                    {
+                        min = array[i, j];
+                        minj = j;
+                    }
+                }
+            }
+            if (maxj == minj)
+            {
+                searchmaxmin(array, minj); k += 1;
+            }
+            else if (minj > maxj)
+            {
+                searchmaxmin(array, maxj);
+                searchmaxmin(array, minj - 1); 
+                k += 2; 
+            }
+            else
+            {
+                searchmaxmin(array, minj);
+                searchmaxmin(array, maxj - 1); 
+                k += 2;
+            }
+            Console.WriteLine("Matrix:");
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < n - k; j++)
+                {
+                    Console.Write(array[i, j] + "\t");
+                }
+                Console.WriteLine();
+            }
+        }
+        static void Main()
+        {
+            Task2_10();
+        }
+    }
+}
+
+//2.23
+using System;
+namespace TaskForLab5
+{
+    internal class Program
+    {
+        static void FIX(int[,] a)
+        {
+            int[] arr = new int[a.GetLength(0) * a.GetLength(1)];
+            int k = 0;
+            for (int i = 0; i < a.GetLength(0); i++)
+            {
+                for (int j = 0; j < a.GetLength(1); j++)
+                {
+                    arr[k] = a[i, j];
+                    k++;
+                }
+            }
+            int p = 0;
+            for (int i = 0; i < arr.Length; i++)
+            {
+                for (int j = 0; j < arr.Length - 1; j++)
+                {
+                    if (arr[j] < arr[j + 1])
+                    {
+                        p = arr[j]; 
+                        arr[j] = arr[j + 1]; 
+                        arr[j + 1] = p;
+                    }
+                }
+            }
+            int count = 0;
+            if (arr.Length > 5)
+            {
+                for (int i = 0; i < a.GetLength(0); i++)
+                {
+                    for (int j = 0; j < a.GetLength(1); j++)
+                    {
+                        if ((a[i, j] == arr[0] || a[i, j] == arr[1] || a[i, j] == arr[2] || a[i, j] == arr[3] || a[i, j] == arr[4]) && (count < 5))
+                        {
+                            a[i, j] *= 2;
+                            count++;
+                        }
+                        else
+                        {
+                            a[i, j] /= 2;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                for (int i = 0; i < a.GetLength(0); i++)
+                {
+                    for (int j = 0; j < a.GetLength(1); j++)
+                    {
+                        a[i, j] *= 2;
+                    }
+                }
+            }
+        }
+        //integer division
+        static void Task2_23()
+        {
+            Console.WriteLine("Enter n, m:");
+            int.TryParse(Console.ReadLine(), out int n);
+            int.TryParse(Console.ReadLine(), out int m);
+            int[,] array = new int[n, m];
+            int x = 0;
+            Console.WriteLine("Enter elements:");
+            for (int i = 0; i < n; i++)
+                for (int j = 0; j < m; j++)
+                {
+                    int.TryParse(Console.ReadLine(), out x);
+                    array[i, j] = x;
+                }
+            Console.WriteLine("Matrix:");
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < m; j++)
+                {
+                    Console.Write(array[i, j] + "\t");
+                }
+                Console.WriteLine();
+            }
+            FIX(array);
+            Console.WriteLine("Matrix:");
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < m; j++)
+                {
+                    Console.Write(array[i, j] + "\t");
+                }
+                Console.WriteLine();
+            }
+        }
+        static void Main()
+        {
+            Task2_23();
+        }
+    }
+}
+
+
+//3.2
+using System;
+namespace TaskForLab5
+{
+    internal class Program
+    {
+        static void Treatment(double[,] matrix, int index, out double[] array)
+        {
+            array = new double[matrix.GetLength(1)];
+            for (int j = 0; j < matrix.GetLength(1); j++)
+            {
+                array[j] = matrix[index, j];
+            }
+        }
+        delegate void Deleg(double[] array);
+        static void Increase(double[] array)
+        {
+            Array.Sort(array);
+        }
+        static void Decrease(double[] array)
+        {
+            Array.Sort(array);
+            Array.Reverse(array);
+        }
+        static void Return(Deleg funk, double[,] matrix, int index)
+        {
+            Treatment(matrix, index, out double[] array);
+            funk(array);
+            double[] array2 = array;
+            for (int i = 0; i < array2.Length; i++)
+            {
+                matrix[index, i] = array2[i];
+            }
+        }
+        static void Task3_2()
+        {
+            Console.WriteLine("Enter n, m:");
+            int.TryParse(Console.ReadLine(), out int n);
+            int.TryParse(Console.ReadLine(), out int m);
+            double[,] array = new double[n, m];
+            double x = 0;
+            Console.WriteLine("Enter elements:");
+            for (int i = 0; i < n; i++)
+                for (int j = 0; j < m; j++)
+                {
+                    double.TryParse(Console.ReadLine(), out x);
+                    array[i, j] = x;
+                }
+            Console.WriteLine("Matrix:");
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < m; j++)
+                {
+                    Console.Write(array[i, j] + "\t");
+                }
+                Console.WriteLine();
+            }
+
+            for (int i = 0; i < n; i++)
+                {
+                    if (i % 2 == 0) Return(Increase, array, i);
+                    else Return(Decrease, array, i);
+                }
+                Console.WriteLine("Matrix:");
+                for (int i = 0; i < n; i++)
+                {
+                    for (int j = 0; j < m; j++)
+                    {
+                        Console.Write(array[i, j] + "\t");
+                    }
+                    Console.WriteLine();
+                }
+        }
+        static void Main()
+        {
+            Task3_2();
+        }
+    }
+}
+
+
+//3.6
+using System;
+using System.Xml.Linq;
+
+namespace TaskForLab5
+{
+    internal class Program
+    {
+        delegate int Task_6(double[,] matrix);
+        static int Max1(double[,] matrix)
+        {
+            double maxi = double.MinValue;
+            int index = 0;
+            for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+                if (matrix[0, i] > maxi)
+                { 
+                    maxi = matrix[0, i]; 
+                    index = i; 
+                }
+            }
+            return index;
+        }
+        static int Max2(double[,] matrix)
+        {
+            double maxi = double.MinValue;
+            int index = 0;
+            for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+                if (matrix[i, i] > maxi) 
+                { 
+                    maxi = matrix[i, i]; 
+                    index = i; 
+                }
+            }
+            return index;
+        }
+        static void Change(double[,] matrix, Task_6 f1, Task_6 f2)
+        {
+            double p = 0; 
+            int index1 = f1(matrix), index2 = f2(matrix);
+            for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+                p = matrix[i, index1];
+                matrix[i, index1] = matrix[i, index2];
+                matrix[i, index2] = p;
+            }
+        }
+        static void Task3_6()
+        {
+            Console.WriteLine("Enter n:");
+            int.TryParse(Console.ReadLine(), out int n);
+            double [,] array = new double[n, n];
+            double x = 0;
+            Console.WriteLine("Enter elements:");
+            for (int i = 0; i < n; i++)
+                for (int j = 0; j < n; j++)
+                {
+                    double.TryParse(Console.ReadLine(), out x);
+                    array[i, j] = x;
+                }
+            Console.WriteLine("Matrix:");
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < n; j++)
+                {
+                    Console.Write(array[i, j] + "\t");
+                }
+                Console.WriteLine();
+            }
+            Change(array, Max1, Max2);
+            Console.WriteLine("Matrix:");
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < n; j++)
+                {
+                    Console.Write(array[i, j] + "\t");
+                }
+                Console.WriteLine();
+            }
+        }
+        static void Main()
+        {
+            Task3_6();
+        }
+    }
+}
